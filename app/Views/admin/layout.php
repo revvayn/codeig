@@ -112,16 +112,16 @@
             <span class="nav-link-text ms-1">Master Data</span>
           </a>
         </li>
-          <li class="collapse nav-item border-start my-0 pt-2"  id="rekapMenuMaster">
-            <a class="nav-link position-relative ms-0 ps-2 py-2" href="<?= base_url('admin/jabatan') ?>">
-              <span class="nav-link-text ms-1">Data Jabatan</span>
-            </a>
-          </li>
-          <li class="collapse nav-item border-start my-0 pt-2" id="rekapMenuMaster">
-            <a class="nav-link position-relative ms-0 ps-2 py-2" href="<?= base_url('admin/lokasi_presensi') ?>">
-              <span class="nav-link-text ms-1">Lokasi Presensi</span>
-            </a>
-          </li>
+        <li class="collapse nav-item border-start my-0 pt-2" id="rekapMenuMaster">
+          <a class="nav-link position-relative ms-0 ps-2 py-2" href="<?= base_url('admin/jabatan') ?>">
+            <span class="nav-link-text ms-1">Data Jabatan</span>
+          </a>
+        </li>
+        <li class="collapse nav-item border-start my-0 pt-2" id="rekapMenuMaster">
+          <a class="nav-link position-relative ms-0 ps-2 py-2" href="<?= base_url('admin/lokasi_presensi') ?>">
+            <span class="nav-link-text ms-1">Lokasi Presensi</span>
+          </a>
+        </li>
         <li class="nav-item mt-2">
           <div class="d-flex align-items-center nav-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="ms-2" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -320,6 +320,19 @@
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebarLinks = document.querySelectorAll('.navbar-nav a');
+      const currentUrl = window.location.origin + window.location.pathname;
+
+      sidebarLinks.forEach(link => {
+        if (link.href === currentUrl) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 

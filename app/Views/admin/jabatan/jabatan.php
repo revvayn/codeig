@@ -25,8 +25,8 @@
                         <thead class="bg-gray-100">
                             <tr>
                                 <th class="text-start text-secondary text-xs font-weight-semibold opacity-7">No</th>
-                                <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Nama Jabatan</th>
-                                <th class="px-3 text-secondary text-xs font-weight-semibold opacity-7">Aksi</th>
+                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Nama Jabatan</th>
+                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Aksi</th>
                             </tr>
                         </thead>
 

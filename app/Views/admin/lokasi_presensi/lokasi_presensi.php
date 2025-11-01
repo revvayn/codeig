@@ -25,10 +25,10 @@
                         <thead class="bg-gray-100">
                             <tr>
                                 <th class="text-start text-secondary text-xs font-weight-semibold opacity-7">No</th>
-                                <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Nama Lokasi</th>
-                                <th class="px-3 text-secondary text-xs font-weight-semibold opacity-7">Alamat Lokasi</th>
-                                <th class="text-secondary text-xs font-weight-semibold opacity-7 ps-2">Lokasi</th>
-                                <th class="px-3 text-secondary text-xs font-weight-semibold opacity-7">Aksi</th>
+                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Nama Lokasi</th>
+                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Alamat Lokasi</th>
+                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Lokasi</th>
+                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Aksi</th>
                             </tr>
                         </thead>
 

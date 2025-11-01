@@ -25,4 +25,12 @@ $routes->post('admin/lokasi_presensi/update/(:segment)', 'Admin\LokasiPresensi::
 $routes->get('admin/lokasi_presensi/delete/(:num)', 'Admin\LokasiPresensi::delete/$1', ['filter' => 'adminfilter']);
 $routes->get('admin/lokasi_presensi/detail/(:segment)', 'Admin\LokasiPresensi::detail/$1', ['filter' => 'adminfilter']);
 
+$routes->get('admin/data_pegawai', 'Admin\DataPegawai::index', ['filter' => 'adminfilter']);
+$routes->get('admin/data_pegawai/create', 'Admin\DataPegawai::create', ['filter' => 'adminfilter']);
+$routes->post('admin/data_pegawai/store', 'Admin\DataPegawai::store', ['filter' => 'adminfilter']);
+$routes->get('admin/data_pegawai/edit/(:segment)', 'Admin\DataPegawai::edit/$1', ['filter' => 'adminfilter']);
+$routes->post('admin/data_pegawai/update/(:segment)', 'Admin\DataPegawai::update/$1', ['filter' => 'adminfilter']);
+$routes->get('admin/data_pegawai/delete/(:num)', 'Admin\DataPegawai::delete/$1', ['filter' => 'adminfilter']);
+$routes->get('admin/data_pegawai/detail/(:segment)', 'Admin\DataPegawai::detail/$1', ['filter' => 'adminfilter']);
+
 $routes->get('pegawai/home', 'Pegawai\Home::index', ['filter' => 'pegawaifilter']);

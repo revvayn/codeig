@@ -8,6 +8,7 @@ class UserModel extends Model
 {
     protected $table            = 'users';
     protected $allowedFields    = [
+        'id_pegawai',
         'username',
         'password',
         'status',

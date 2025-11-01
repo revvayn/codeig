@@ -17,5 +17,13 @@ class PegawaiModel extends Model
         'lokasi_presensi',
         'foto'
     ];
-
+    public function DetailPegawai($id = false)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('pegawai');
+        $builder->select('pegawai.*, users.username, users.status, users.role');
+        $builder->join('users', 'users.id_pegawai = pegawai.id');
+        $builder->where('pegawai.id', $id);
+        return $builder->get()->getRowArray();
+    }
 }

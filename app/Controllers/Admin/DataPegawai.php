@@ -6,6 +6,8 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\PegawaiModel;
 use App\Models\UserModel;
+use App\Models\LokasiPresensiModel;
+use App\Models\JabatanModel;
 
 class DataPegawai extends BaseController
 {
@@ -23,95 +25,149 @@ class DataPegawai extends BaseController
         $PegawaiModel = new PegawaiModel();
         $data = [
             'title' => 'Detail Data Pegawai',
-            'data_pegawai' => $PegawaiModel->find($id),
+            'data_pegawai' => $PegawaiModel->DetailPegawai($id),
         ];
         return view('admin/data_pegawai/detail', $data);
     }
 
     public function create()
     {
+        $lokasi_presensi = new LokasiPresensiModel();
+        $jabatan = new JabatanModel();
         $data = [
             'title' => 'Tambah Data Pegawai',
+            'lokasi_presensi' => $lokasi_presensi->findAll(),
+            'jabatan' => $jabatan->orderBy('jabatan', 'ASC')->findAll(),
             'validation' => \Config\Services::validation(),
         ];
         return view('admin/data_pegawai/create', $data);
     }
+
+    public function generateNIP()
+    {
+        $PegawaiModel = new PegawaiModel();
+        $PegawaiTerakhir = $PegawaiModel->select('nip')->orderBy('id', 'DESC')->first();
+        $nipTerakhir = $PegawaiTerakhir ? $PegawaiTerakhir['nip'] : 'PEG-000000';
+        $angkaNIP = (int) substr($nipTerakhir, 6);
+        $angkaNIP++;
+        return 'PEG-' . str_pad($angkaNIP, 6, '0', STR_PAD_LEFT);
+    }
+
     public function store()
     {
         $rules = [
-            'nama_lokasi' => [
+            'nama' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Nama Lokasi harus diisi.',
+                    'required' => 'Nama harus diisi.',
                 ],
             ],
-            'alamat_lokasi' => [
+            'jenis_kelamin' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jenis Kelamin harus diisi.',
+                ],
+            ],
+            'alamat' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'Alamat harus diisi.',
                 ],
             ],
-            'tipe_lokasi' => [
+            'no_handphone' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Tipe Lokasi harus diisi.',
+                    'required' => 'No Handphone harus diisi.',
                 ],
             ],
-            'latitude' => [
+            'jabatan' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Latitude harus diisi.',
+                    'required' => 'Jabatan harus diisi.',
                 ],
             ],
-            'longitude' => [
+            'lokasi_presensi' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Longitude harus diisi.',
+                    'required' => 'Lokasi presensi harus diisi.',
                 ],
             ],
-            'radius' => [
-                'rules' => 'required',
+            'foto' => [
+                'rules' => 'uploaded[foto]|max_size[foto,10240]|is_image[foto]|mime_in[foto,image/jpg,image/jpeg,image/png]',
                 'errors' => [
-                    'required' => 'Radius harus diisi.',
+                    'required' => 'Foto harus diisi.',
+                    'max_size' => 'Ukuran foto terlalu besar.',
+                    'mime_in' => 'Format foto tidak valid. Hanya jpg, jpeg, png yang diperbolehkan.',
                 ],
             ],
-            'zona_waktu' => [
-                'rules' => 'required',
+            'username' => [
+                'rules' => 'required|alpha_numeric|min_length[5]|is_unique[users.username]',
                 'errors' => [
-                    'required' => 'Zona Waktu harus diisi.',
+                    'required' => 'Username harus diisi.',
+                    'alpha_numeric' => 'Username hanya boleh berisi huruf dan angka.',
+                    'min_length' => 'Username minimal 5 karakter.',
+                    'is_unique' => 'Username sudah digunakan.',
                 ],
             ],
-            'jam_masuk' => [
+            'password' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Jam Masuk harus diisi.',
+                    'required' => 'Password harus diisi.',
                 ],
             ],
-            'jam_pulang' => [
+            'konfirmasi_password' => [
+                'rules' => 'required|matches[password]',
+                'errors' => [
+                    'required' => 'Konfirmasi Password harus diisi.',
+                    'matches' => 'Konfirmasi Password tidak sesuai dengan Password.',
+                ],
+            ],
+            'role' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Jam Pulang harus diisi.',
+                    'required' => 'Role harus diisi.',
                 ],
             ],
         ];
         if (!$this->validate($rules)) {
+            $lokasi_presensi = new LokasiPresensiModel();
+            $jabatan = new JabatanModel();
             $data = [
                 'title' => 'Tambah Data Pegawai',
+                'lokasi_presensi' => $lokasi_presensi->findAll(),
+                'jabatan' => $jabatan->orderBy('jabatan', 'ASC')->findAll(),
                 'validation' => \Config\Services::validation(),
             ];
             echo view('admin/data_pegawai/create', $data);
         } else {
+            $nipNew = $this->generateNIP();
+            $foto = $this->request->getFile('foto');
+            if ($foto->getError() == 4) {
+                $fotoName = '';
+            } else {
+                $fotoName = $foto->getRandomName();
+                $foto->move('profile', $fotoName);
+            }
+
             $PegawaiModel = new PegawaiModel();
             $PegawaiModel->insert([
-                'nama_lokasi' => $this->request->getPost('nama_lokasi'),
-                'alamat_lokasi' => $this->request->getPost('alamat_lokasi'),
-                'tipe_lokasi' => $this->request->getPost('tipe_lokasi'),
-                'latitude' => $this->request->getPost('latitude'),
-                'longitude' => $this->request->getPost('longitude'),
-                'radius' => $this->request->getPost('radius'),
-                'zona_waktu' => $this->request->getPost('zona_waktu'),
-                'jam_masuk' => $this->request->getPost('jam_masuk'),
-                'jam_pulang' => $this->request->getPost('jam_pulang'),
+                'nip' => $nipNew,
+                'nama' => $this->request->getPost('nama'),
+                'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+                'alamat' => $this->request->getPost('alamat'),
+                'no_handphone' => $this->request->getPost('no_handphone'),
+                'jabatan' => $this->request->getPost('jabatan'),
+                'lokasi_presensi' => $this->request->getPost('lokasi_presensi'),
+                'foto' => $fotoName,
+            ]);
+            $id_pegawai =$PegawaiModel->insertID();
+            $UserModel = new UserModel();
+            $UserModel->insert([
+                'id_pegawai' => $id_pegawai,
+                'username' => $this->request->getPost('username'),
+                'password' => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT),
+                'status' => 'Aktif',
+                'role' => $this->request->getPost('role'),
             ]);
             session()->setFlashdata('success', 'Data Pegawai berhasil ditambahkan.');
 

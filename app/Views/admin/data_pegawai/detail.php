@@ -5,87 +5,81 @@
 <div class="row">
     <div class="col-xl-4 col-md-6 d-flex flex-column mx-auto">
         <div class="card card-plain mt-0">
+            <img width="120px"
+                style="border-radius: 10px; display: block; margin: 0 auto;"
+                src="<?= base_url('profile/' . $data_pegawai['foto']) ?>"
+                alt="Foto Profil">
+
             <div class="card-body">
-                <form role="form" method="POST" action="<?= base_url('admin/data_pegawai/update/' . $pegawai['id']) ?>">
-                    <label>Nama Lokasi</label>
+                <form role="form">
+                    <label>NIP</label>
                     <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['nama_lokasi'] ?>"
-                            class="form-control"
-                            name="nama_lokasi" placeholder="Nama Lokasi" aria-label="nama_lokasi">
+                        <input type="text" class="form-control" name="nip" aria-label="nip" disabled
+                            value="<?= $data_pegawai['nip'] ?>">
                         <div class="invalid-feedback"></div>
                     </div>
 
-                    <label>Alamat Lokasi</label>
+                    <label>Nama</label>
                     <div class="mb-1">
-                        <textarea class="form-control"
-                            name="alamat_lokasi" placeholder="Alamat Lokasi" aria-label="alamat_lokasi"><?= $pegawai['alamat_lokasi'] ?></textarea>
+                        <input type="text" class="form-control" name="nama" aria-label="nama" disabled
+                            value="<?= $data_pegawai['nama'] ?>">
                         <div class="invalid-feedback"></div>
                     </div>
 
-                    <label>Tipe Lokasi</label>
+                    <label>Jenis Kelamin</label>
                     <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['tipe_lokasi'] ?>"
-                            class="form-control"
-                            name="tipe_lokasi" placeholder="Tipe Lokasi" aria-label="tipe_lokasi">
+                        <input type="text" class="form-control" name="jenis_kelamin" aria-label="jenis_kelamin" disabled
+                            value="<?= $data_pegawai['jenis_kelamin'] ?>">
                         <div class="invalid-feedback"></div>
                     </div>
 
-                    <label>Latitude</label>
+                    <label>Alamat</label>
                     <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['latitude'] ?>"
-                            class="form-control"
-                            name="latitude" placeholder="Latitude" aria-label="latitude">
+                        <input type="text" class="form-control" name="alamat" aria-label="alamat" disabled
+                            value="<?= $data_pegawai['alamat'] ?>">
                         <div class="invalid-feedback"></div>
                     </div>
 
-                    <label>Longitude</label>
+                    <label>No Handphone</label>
                     <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['longitude'] ?>"
-                            class="form-control"
-                            name="longitude" placeholder="Longitude" aria-label="longitude">
+                        <input type="text" class="form-control" name="no_handphone" aria-label="no_handphone" disabled
+                            value="<?= $data_pegawai['no_handphone'] ?>">
                         <div class="invalid-feedback"></div>
                     </div>
 
-                    <label>Radius</label>
+                    <label>Jabatan</label>
                     <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['radius'] ?>"
-                            class="form-control"
-                            name="radius" placeholder="Radius" aria-label="radius">
+                        <input type="text" class="form-control" name="jabatan" aria-label="jabatan" disabled
+                            value="<?= $data_pegawai['jabatan'] ?>">
                         <div class="invalid-feedback"></div>
                     </div>
 
-                    <label>Zona Waktu</label>
+                    <label>Lokasi Presensi</label>
                     <div class="mb-1">
-                        <input class="form-control"
-                            name="zona_waktu" aria-label="zona_waktu" value="<?= $pegawai['zona_waktu'] ?>">Pilih Zona Waktu</option>
-                    </div>
-
-                    <label>Jam Masuk</label>
-                    <div class="mb-1">
-                        <input type="time"
-                            value="<?= $pegawai['jam_masuk'] ?>"
-                            class="form-control"
-                            name="jam_masuk" placeholder="Jam Masuk" aria-label="jam_masuk">
+                        <input type="text" class="form-control" name="lokasi_presensi" aria-label="lokasi_presensi" disabled
+                            value="<?= $data_pegawai['lokasi_presensi'] ?>">
                         <div class="invalid-feedback"></div>
                     </div>
 
-                    <label>Jam Pulang</label>
+                    <label>Username</label>
                     <div class="mb-1">
-                        <input type="time"
-                            value="<?= $pegawai['jam_pulang'] ?>"
-                            class="form-control"
-                            name="jam_pulang" placeholder="Jam Pulang" aria-label="jam_pulang">
+                        <input type="text" class="form-control" name="username" aria-label="username" disabled
+                            value="<?= $data_pegawai['username'] ?>">
                         <div class="invalid-feedback"></div>
                     </div>
 
+                    <label>Role</label>
+                    <div class="mb-1">
+                        <input type="text" class="form-control" name="role" aria-label="role" disabled
+                            value="<?= $data_pegawai['role'] ?>">
+                        <div class="invalid-feedback"></div>
+                    </div>
 
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-dark w-100 mt-4 mb-3">Keluar</button>
+                    <label>Status</label>
+                    <div class="mb-1">
+                        <input type="text" class="form-control" name="status" aria-label="status" disabled
+                            value="<?= $data_pegawai['status'] ?>">
+                        <div class="invalid-feedback"></div>
                     </div>
                 </form>
             </div>

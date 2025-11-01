@@ -26,7 +26,7 @@
                             <tr>
                                 <th class="text-start text-secondary text-xs font-weight-semibold opacity-7">No</th>
                                 <th class="text-secondary text-xs font-weight-semibold opacity-7">NIP</th>
-                                <th class="text-secondarytext-xs font-weight-semibold opacity-7">Nama</th>
+                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Nama</th>
                                 <th class="text-secondary text-xs font-weight-semibold opacity-7">Jabatan</th>
                                 <th class="text-secondary text-xs font-weight-semibold opacity-7">Lokasi Presensi</th>
                                 <th class="text-secondary text-xs font-weight-semibold opacity-7">Aksi</th>

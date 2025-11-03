@@ -160,7 +160,7 @@ class DataPegawai extends BaseController
                 'lokasi_presensi' => $this->request->getPost('lokasi_presensi'),
                 'foto' => $fotoName,
             ]);
-            $id_pegawai =$PegawaiModel->insertID();
+            $id_pegawai = $PegawaiModel->insertID();
             $UserModel = new UserModel();
             $UserModel->insert([
                 'id_pegawai' => $id_pegawai,
@@ -229,33 +229,16 @@ class DataPegawai extends BaseController
                 ],
             ],
             'foto' => [
-                'rules' => 'uploaded[foto]|max_size[foto,10240]|is_image[foto]|mime_in[foto,image/jpg,image/jpeg,image/png]',
+                'rules' => 'if_exist|max_size[foto,10240]|is_image[foto]|mime_in[foto,image/jpg,image/jpeg,image/png]',
                 'errors' => [
-                    'required' => 'Foto harus diisi.',
                     'max_size' => 'Ukuran foto terlalu besar.',
                     'mime_in' => 'Format foto tidak valid. Hanya jpg, jpeg, png yang diperbolehkan.',
                 ],
             ],
             'username' => [
-                'rules' => 'required|alpha_numeric|min_length[5]|is_unique[users.username]',
-                'errors' => [
-                    'required' => 'Username harus diisi.',
-                    'alpha_numeric' => 'Username hanya boleh berisi huruf dan angka.',
-                    'min_length' => 'Username minimal 5 karakter.',
-                    'is_unique' => 'Username sudah digunakan.',
-                ],
-            ],
-            'password' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Password harus diisi.',
-                ],
-            ],
-            'konfirmasi_password' => [
-                'rules' => 'required|matches[password]',
-                'errors' => [
-                    'required' => 'Konfirmasi Password harus diisi.',
-                    'matches' => 'Konfirmasi Password tidak sesuai dengan Password.',
+                    'required' => 'Username harus diisi.',
                 ],
             ],
             'role' => [
@@ -266,25 +249,50 @@ class DataPegawai extends BaseController
             ],
         ];
         if (!$this->validate($rules)) {
+            $lokasi_presensi = new LokasiPresensiModel();
+            $jabatan = new JabatanModel();
+            $PegawaiModel = new PegawaiModel();
             $data = [
                 'title' => 'Edit Data Pegawai',
-                'data_pegawai' => $PegawaiModel->find($id),
+                'pegawai' => $PegawaiModel->EditPegawai($id),
+                'lokasi_presensi' => $lokasi_presensi->findAll(),
+                'jabatan' => $jabatan->orderBy('jabatan', 'ASC')->findAll(),
                 'validation' => \Config\Services::validation(),
             ];
             echo view('admin/data_pegawai/edit', $data);
         } else {
             $PegawaiModel = new PegawaiModel();
+            $UserModel = new UserModel();
+            $foto = $this->request->getFile('foto');
+            if ($foto->getError() == 4) {
+                $fotoName = $this->request->getPost('foto_lama');
+            } else {
+                $fotoName = $foto->getRandomName();
+                $foto->move('profile', $fotoName);
+            }
             $PegawaiModel->update($id, [
-                'nama_lokasi' => $this->request->getPost('nama_lokasi'),
-                'alamat_lokasi' => $this->request->getPost('alamat_lokasi'),
-                'tipe_lokasi' => $this->request->getPost('tipe_lokasi'),
-                'latitude' => $this->request->getPost('latitude'),
-                'longitude' => $this->request->getPost('longitude'),
-                'radius' => $this->request->getPost('radius'),
-                'zona_waktu' => $this->request->getPost('zona_waktu'),
-                'jam_masuk' => $this->request->getPost('jam_masuk'),
-                'jam_pulang' => $this->request->getPost('jam_pulang'),
+                'nama' => $this->request->getPost('nama'),
+                'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
+                'alamat' => $this->request->getPost('alamat'),
+                'no_handphone' => $this->request->getPost('no_handphone'),
+                'jabatan' => $this->request->getPost('jabatan'),
+                'lokasi_presensi' => $this->request->getPost('lokasi_presensi'),
+                'foto' => $fotoName,
             ]);
+            if($this->request->getPost('password')== ''){
+                $password = $this->request->getPost('password_lama');
+            } else {
+                $password = password_hash($this->request->getPost('password'), PASSWORD_BCRYPT);
+            }
+            $UserModel
+            ->where('id_pegawai', $id)
+            ->set([
+                'username' => $this->request->getPost('username'),
+                'password' => $password,
+                'status' => $this->request->getPost('status'),
+                'role' => $this->request->getPost('role'),
+            ])
+            ->update();
             session()->setFlashdata('success', 'Data Pegawai berhasil diupdate.');
 
             return redirect()->to(base_url('admin/data_pegawai'));
@@ -293,7 +301,13 @@ class DataPegawai extends BaseController
     public function delete($id)
     {
         $PegawaiModel = new PegawaiModel();
-        $PegawaiModel->delete($id);
+        $UserModel = new UserModel();
+        $pegawai = $PegawaiModel->find($id);
+        if ($pegawai){
+            $UserModel->where('id_pegawai', $id)->delete();
+            $PegawaiModel->delete($id);
+        }
+        
 
         session()->setFlashdata('success', 'Data Pegawai berhasil dihapus!');
         return redirect()->to(base_url('admin/data_pegawai'));

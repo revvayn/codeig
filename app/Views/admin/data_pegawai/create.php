@@ -94,8 +94,8 @@
                             aria-label="role"
                             aria-describedby="zona-addon">
                             <option value="">Pilih Role</option>
-                            <option value="Laki-laki">Admin</option>
-                            <option value="Perempuan">Pegawai</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Pegawai">Pegawai</option>
                         </select>
                         <div class="invalid-feedback">
                             <?= $validation->getError('role') ?>

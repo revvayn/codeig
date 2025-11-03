@@ -65,7 +65,7 @@
 
                                         <label>Password</label>
                                         <div class="mb-3">
-                                            <input id="password" name="password" type="text" class="<?= ($validation->hasError('password')) ? 'is-invalid' : '' ?> form-control" placeholder="Masukkan password">
+                                            <input id="password" name="password" type="password" class="<?= ($validation->hasError('password')) ? 'is-invalid' : '' ?> form-control" placeholder="Masukkan password">
                                             <?= $validation->getError('password') ?>
                                         </div>
 

@@ -63,7 +63,7 @@
                     <div class="mb-1">
                         <select class="form-select <?= ($validation->hasError('zona_waktu')) ? 'is-invalid' : '' ?>"
                             name="zona_waktu" aria-label="zona_waktu">
-                            <option value="">Pilih Zona Waktu</option>
+                            <option value="">--Pilih Zona Waktu--</option>
                             <option value="WIB" <?= $lokasi_presensi['zona_waktu'] == 'WIB' ? 'selected' : '' ?>>WIB (Waktu Indonesia Barat)</option>
                             <option value="WITA" <?= $lokasi_presensi['zona_waktu'] == 'WITA' ? 'selected' : '' ?>>WITA (Waktu Indonesia Tengah)</option>
                             <option value="WIT" <?= $lokasi_presensi['zona_waktu'] == 'WIT' ? 'selected' : '' ?>>WIT (Waktu Indonesia Timur)</option>

@@ -176,10 +176,14 @@ class DataPegawai extends BaseController
     }
     public function edit($id)
     {
+        $lokasi_presensi = new LokasiPresensiModel();
+        $jabatan = new JabatanModel();
         $PegawaiModel = new PegawaiModel();
         $data = [
             'title' => 'Edit Data Pegawai',
-            'data_pegawai' => $PegawaiModel->find($id),
+            'pegawai' => $PegawaiModel->EditPegawai($id),
+            'lokasi_presensi' => $lokasi_presensi->findAll(),
+            'jabatan' => $jabatan->orderBy('jabatan', 'ASC')->findAll(),
             'validation' => \Config\Services::validation(),
         ];
         return view('admin/data_pegawai/edit', $data);
@@ -188,58 +192,76 @@ class DataPegawai extends BaseController
     {
         $PegawaiModel = new PegawaiModel();
         $rules = [
-            'nama_lokasi' => [
+            'nama' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Nama Lokasi harus diisi.',
+                    'required' => 'Nama harus diisi.',
                 ],
             ],
-            'alamat_lokasi' => [
+            'jenis_kelamin' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jenis Kelamin harus diisi.',
+                ],
+            ],
+            'alamat' => [
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'Alamat harus diisi.',
                 ],
             ],
-            'tipe_lokasi' => [
+            'no_handphone' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Tipe Lokasi harus diisi.',
+                    'required' => 'No Handphone harus diisi.',
                 ],
             ],
-            'latitude' => [
+            'jabatan' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Latitude harus diisi.',
+                    'required' => 'Jabatan harus diisi.',
                 ],
             ],
-            'longitude' => [
+            'lokasi_presensi' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Longitude harus diisi.',
+                    'required' => 'Lokasi presensi harus diisi.',
                 ],
             ],
-            'radius' => [
-                'rules' => 'required',
+            'foto' => [
+                'rules' => 'uploaded[foto]|max_size[foto,10240]|is_image[foto]|mime_in[foto,image/jpg,image/jpeg,image/png]',
                 'errors' => [
-                    'required' => 'Radius harus diisi.',
+                    'required' => 'Foto harus diisi.',
+                    'max_size' => 'Ukuran foto terlalu besar.',
+                    'mime_in' => 'Format foto tidak valid. Hanya jpg, jpeg, png yang diperbolehkan.',
                 ],
             ],
-            'zona_waktu' => [
-                'rules' => 'required',
+            'username' => [
+                'rules' => 'required|alpha_numeric|min_length[5]|is_unique[users.username]',
                 'errors' => [
-                    'required' => 'Zona Waktu harus diisi.',
+                    'required' => 'Username harus diisi.',
+                    'alpha_numeric' => 'Username hanya boleh berisi huruf dan angka.',
+                    'min_length' => 'Username minimal 5 karakter.',
+                    'is_unique' => 'Username sudah digunakan.',
                 ],
             ],
-            'jam_masuk' => [
+            'password' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Jam Masuk harus diisi.',
+                    'required' => 'Password harus diisi.',
                 ],
             ],
-            'jam_pulang' => [
+            'konfirmasi_password' => [
+                'rules' => 'required|matches[password]',
+                'errors' => [
+                    'required' => 'Konfirmasi Password harus diisi.',
+                    'matches' => 'Konfirmasi Password tidak sesuai dengan Password.',
+                ],
+            ],
+            'role' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Jam Pulang harus diisi.',
+                    'required' => 'Role harus diisi.',
                 ],
             ],
         ];

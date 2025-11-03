@@ -6,90 +6,98 @@
     <div class="col-xl-4 col-md-6 d-flex flex-column mx-auto">
         <div class="card card-plain mt-0">
             <div class="card-body">
-                <form role="form" method="POST" action="<?= base_url('admin/data_pegawai/update/' . $pegawai['id']) ?>">
-                    <label>Nama Lokasi</label>
+                <form role="form" method="POST" action="<?= base_url('admin/data_pegawai/update' . $pegawai['id']) ?>" enctype="multipart/form-data">
+                    <label>Nama</label>
                     <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['nama_lokasi'] ?>"
-                            class="form-control <?= ($validation->hasError('nama_lokasi')) ? 'is-invalid' : '' ?>"
-                            name="nama_lokasi" placeholder="Nama Lokasi" aria-label="nama_lokasi">
-                        <div class="invalid-feedback"><?= $validation->getError('nama_lokasi') ?></div>
+                        <input type="text" value="<?= $pegawai['nama'] ?>" class="form-control <?= ($validation->hasError('nama')) ? 'is-invalid' : '' ?>" name="nama" placeholder="Nama Pegawai" aria-label="nama" aria-describedby="name-addon">
+                        <div class="invalid-feedback"><?= $validation->getError('nama') ?></div>
                     </div>
-
-                    <label>Alamat Lokasi</label>
+                    <label>Jenis Kelamin</label>
                     <div class="mb-1">
-                        <textarea class="form-control <?= ($validation->hasError('alamat_lokasi')) ? 'is-invalid' : '' ?>"
-                            name="alamat_lokasi" placeholder="Alamat Lokasi" aria-label="alamat_lokasi"><?= $pegawai['alamat_lokasi'] ?></textarea>
-                        <div class="invalid-feedback"><?= $validation->getError('alamat_lokasi') ?></div>
-                    </div>
-
-                    <label>Tipe Lokasi</label>
-                    <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['tipe_lokasi'] ?>"
-                            class="form-control <?= ($validation->hasError('tipe_lokasi')) ? 'is-invalid' : '' ?>"
-                            name="tipe_lokasi" placeholder="Tipe Lokasi" aria-label="tipe_lokasi">
-                        <div class="invalid-feedback"><?= $validation->getError('tipe_lokasi') ?></div>
-                    </div>
-
-                    <label>Latitude</label>
-                    <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['latitude'] ?>"
-                            class="form-control <?= ($validation->hasError('latitude')) ? 'is-invalid' : '' ?>"
-                            name="latitude" placeholder="Latitude" aria-label="latitude">
-                        <div class="invalid-feedback"><?= $validation->getError('latitude') ?></div>
-                    </div>
-
-                    <label>Longitude</label>
-                    <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['longitude'] ?>"
-                            class="form-control <?= ($validation->hasError('longitude')) ? 'is-invalid' : '' ?>"
-                            name="longitude" placeholder="Longitude" aria-label="longitude">
-                        <div class="invalid-feedback"><?= $validation->getError('longitude') ?></div>
-                    </div>
-
-                    <label>Radius</label>
-                    <div class="mb-1">
-                        <input type="text"
-                            value="<?= $pegawai['radius'] ?>"
-                            class="form-control <?= ($validation->hasError('radius')) ? 'is-invalid' : '' ?>"
-                            name="radius" placeholder="Radius" aria-label="radius">
-                        <div class="invalid-feedback"><?= $validation->getError('radius') ?></div>
-                    </div>
-
-                    <label>Zona Waktu</label>
-                    <div class="mb-1">
-                        <select class="form-select <?= ($validation->hasError('zona_waktu')) ? 'is-invalid' : '' ?>"
-                            name="zona_waktu" aria-label="zona_waktu">
-                            <option value="">Pilih Zona Waktu</option>
-                            <option value="WIB" <?= $pegawai['zona_waktu'] == 'WIB' ? 'selected' : '' ?>>WIB (Waktu Indonesia Barat)</option>
-                            <option value="WITA" <?= $pegawai['zona_waktu'] == 'WITA' ? 'selected' : '' ?>>WITA (Waktu Indonesia Tengah)</option>
-                            <option value="WIT" <?= $pegawai['zona_waktu'] == 'WIT' ? 'selected' : '' ?>>WIT (Waktu Indonesia Timur)</option>
+                        <select class="form-select <?= ($validation->hasError('jenis_kelamin')) ? 'is-invalid' : '' ?>"
+                            name="jenis_kelamin" aria-label="jenis_kelamin">
+                            <option value="">--Pilih Jenis Kelamin--</option>
+                            <option value="laki-laki" <?= $pegawai['jenis_kelamin'] == 'Laki-laki' ? 'selected' : '' ?>>Laki-laki</option>
+                            <option value="Perempuan" <?= $pegawai['jenis_kelamin'] == 'Perempuan' ? 'selected' : '' ?>>Perempuan</option>
                         </select>
-                        <div class="invalid-feedback"><?= $validation->getError('zona_waktu') ?></div>
+                        <div class="invalid-feedback"><?= $validation->getError('jenis_kelamin') ?></div>
                     </div>
-
-                    <label>Jam Masuk</label>
+                    <label>Alamat</label>
                     <div class="mb-1">
-                        <input type="time"
-                            value="<?= $pegawai['jam_masuk'] ?>"
-                            class="form-control <?= ($validation->hasError('jam_masuk')) ? 'is-invalid' : '' ?>"
-                            name="jam_masuk" placeholder="Jam Masuk" aria-label="jam_masuk">
-                        <div class="invalid-feedback"><?= $validation->getError('jam_masuk') ?></div>
+                        <textarea type="text" class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : '' ?>" name="alamat" placeholder="Alamat" aria-label="alamat" aria-describedby="name-addon"><?= $pegawai['alamat'] ?></textarea>
+                        <div class="invalid-feedback"><?= $validation->getError('alamat') ?></div>
                     </div>
-
-                    <label>Jam Pulang</label>
+                    <label>No Handphone</label>
                     <div class="mb-1">
-                        <input type="time"
-                            value="<?= $pegawai['jam_pulang'] ?>"
-                            class="form-control <?= ($validation->hasError('jam_pulang')) ? 'is-invalid' : '' ?>"
-                            name="jam_pulang" placeholder="Jam Pulang" aria-label="jam_pulang">
-                        <div class="invalid-feedback"><?= $validation->getError('jam_pulang') ?></div>
+                        <input type="text" value="<?= $pegawai['no_handphone'] ?>" class="form-control <?= ($validation->hasError('no_handphone')) ? 'is-invalid' : '' ?>" name="no_handphone" placeholder="No Handphone" aria-label="no_handphone" aria-describedby="name-addon">
+                        <div class="invalid-feedback"><?= $validation->getError('no_handphone') ?></div>
+                    </div>
+                    <label>Jabatan</label>
+                    <div class="mb-1">
+                        <select class="form-select <?= ($validation->hasError('jabatan')) ? 'is-invalid' : '' ?>"
+                            name="jabatan"
+                            aria-label="jabatan"
+                            aria-describedby="zona-addon">
+                            <option value="<?= $pegawai['jabatan'] ?>"><?= $pegawai['jabatan'] ?></option>
+                            <option value="">--Pilih Jabatan--</option>
+                                <option value="<?= $pegawai['jabatan'] ?>"><?= $pegawai['jabatan'] ?></option>
+                        </select>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('jabatan') ?>
+                        </div>
+                    </div>
+                    <label>Lokasi Presensi</label>
+                    <div class="mb-1">
+                        <select class="form-select <?= ($validation->hasError('lokasi_presensi')) ? 'is-invalid' : '' ?>"
+                            name="lokasi_presensi"
+                            aria-label="lokasi_presensi"
+                            aria-describedby="zona-addon">
+                            <option value="<?= $pegawai['lokasi_presensi'] ?>"><?= $pegawai['lokasi_presensi'] ?></option>
+                            <option value="">--Pilih Lokasi Presensi--</option>
+                            <?php foreach ($lokasi_presensi as $lok): ?>
+                                <option value="<?= $lok['nama_lokasi'] ?>"><?= $lok['nama_lokasi'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('jabatan') ?>
+                        </div>
+                    </div>
+                    <label>Foto</label>
+                    <div class="mb-1">
+                        <input type="hidden" class="form-control" value="<?=$pegawai['foto']?>"name="foto_lama">
+                        <input type="file" class="form-control <?= ($validation->hasError('foto')) ? 'is-invalid' : '' ?>" name="foto" aria-label="foto" aria-describedby="name-addon">
+                        <div class="invalid-feedback"><?= $validation->getError('foto') ?></div>
                     </div>
 
-
+                    <label>Username</label>
+                    <div class="mb-1">
+                        <input type="text" value="<?=$pegawai['username']?>" class="form-control <?= ($validation->hasError('username')) ? 'is-invalid' : '' ?>" name="username" placeholder="Username" aria-label="username" aria-describedby="name-addon">
+                        <div class="invalid-feedback"><?= $validation->getError('username') ?></div>
+                    </div>
+                    <label>Password</label>
+                    <div class="mb-1">
+                        <input type="password" class="form-control <?= ($validation->hasError('password')) ? 'is-invalid' : '' ?>" name="password" placeholder="Password" aria-label="password" aria-describedby="name-addon">
+                        <div class="invalid-feedback"><?= $validation->getError('password') ?></div>
+                    </div>
+                    <label>Konfirmasi Password</label>
+                    <div class="mb-1">
+                        <input type="password" class="form-control <?= ($validation->hasError('konfirmasi_password')) ? 'is-invalid' : '' ?>" name="konfirmasi_password" placeholder="Konfirmasi Password" aria-label="konfirmasi_password" aria-describedby="name-addon">
+                        <div class="invalid-feedback"><?= $validation->getError('konfirmasi_password') ?></div>
+                    </div>
+                    <label>Role</label>
+                    <div class="mb-1">
+                        <select class="form-select <?= ($validation->hasError('role')) ? 'is-invalid' : '' ?>"
+                            name="role"
+                            aria-label="role"
+                            aria-describedby="zona-addon">
+                            <option value="">Pilih Role</option>
+                            <option value="Laki-laki">Admin</option>
+                            <option value="Perempuan">Pegawai</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('role') ?>
+                        </div>
+                    </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-dark w-100 mt-4 mb-3">Simpan</button>
                     </div>

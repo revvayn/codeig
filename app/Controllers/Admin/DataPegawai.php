@@ -11,6 +11,10 @@ use App\Models\JabatanModel;
 
 class DataPegawai extends BaseController
 {
+    public function __construct()
+    {
+        helper(['url','form']);
+    }
     public function index()
     {
         $PegawaiModel = new PegawaiModel();

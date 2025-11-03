@@ -7,9 +7,10 @@
         <div class="card card-plain mt-0">
             <div class="card-body">
                 <form role="form" method="POST" action="<?= base_url('admin/data_pegawai/store') ?>" enctype="multipart/form-data">
+                    <?= csrf_field() ?>
                     <label>Nama</label>
                     <div class="mb-1">
-                        <input type="text" class="form-control <?= ($validation->hasError('nama')) ? 'is-invalid' : '' ?>" name="nama" placeholder="Nama Pegawai" aria-label="nama" aria-describedby="name-addon">
+                        <input type="text" class="form-control <?= ($validation->hasError('nama')) ? 'is-invalid' : '' ?>" name="nama" placeholder="Nama Pegawai" aria-label="nama" aria-describedby="name-addon" value="<?=set_value('nama')?>">
                         <div class="invalid-feedback"><?= $validation->getError('nama') ?></div>
                     </div>
                     <label>Jenis Kelamin</label>

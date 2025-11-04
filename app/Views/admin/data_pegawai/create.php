@@ -10,12 +10,13 @@
                     <?= csrf_field() ?>
                     <label>Nama</label>
                     <div class="mb-1">
-                        <input type="text" class="form-control <?= ($validation->hasError('nama')) ? 'is-invalid' : '' ?>" name="nama" placeholder="Nama Pegawai" aria-label="nama" aria-describedby="name-addon" value="<?=set_value('nama')?>">
+                        <input type="text" class="form-control <?= ($validation->hasError('nama')) ? 'is-invalid' : '' ?>" name="nama" placeholder="Nama Pegawai" aria-label="nama" aria-describedby="name-addon" value="<?= set_value('nama') ?>">
                         <div class="invalid-feedback"><?= $validation->getError('nama') ?></div>
                     </div>
                     <label>Jenis Kelamin</label>
                     <div class="mb-1">
                         <select class="form-select <?= ($validation->hasError('jenis_kelamin')) ? 'is-invalid' : '' ?>"
+                            value="<?= set_value('jenis_kelamin') ?>"
                             name="jenis_kelamin"
                             aria-label="jenis_kelamin"
                             aria-describedby="zona-addon">
@@ -29,12 +30,12 @@
                     </div>
                     <label>Alamat</label>
                     <div class="mb-1">
-                        <textarea type="text" class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : '' ?>" name="alamat" placeholder="Alamat" aria-label="alamat" aria-describedby="name-addon"></textarea>
+                        <textarea type="text" class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : '' ?>" name="alamat" placeholder="Alamat" aria-label="alamat" aria-describedby="name-addon" value="<?=set_value('alamat')?>"></textarea>
                         <div class="invalid-feedback"><?= $validation->getError('alamat') ?></div>
                     </div>
                     <label>No Handphone</label>
                     <div class="mb-1">
-                        <input type="text" class="form-control <?= ($validation->hasError('no_handphone')) ? 'is-invalid' : '' ?>" name="no_handphone" placeholder="No Handphone" aria-label="no_handphone" aria-describedby="name-addon">
+                        <input type="text" class="form-control <?= ($validation->hasError('no_handphone')) ? 'is-invalid' : '' ?>" name="no_handphone" placeholder="No Handphone" aria-label="no_handphone" aria-describedby="name-addon" value="<?=set_value('no_handphone')?>">
                         <div class="invalid-feedback"><?= $validation->getError('no_handphone') ?></div>
                     </div>
                     <label>Jabatan</label>
@@ -42,7 +43,8 @@
                         <select class="form-select <?= ($validation->hasError('jabatan')) ? 'is-invalid' : '' ?>"
                             name="jabatan"
                             aria-label="jabatan"
-                            aria-describedby="zona-addon">
+                            aria-describedby="zona-addon"
+                            value="<?=set_value('jabatan')?>">
                             <option value="">Pilih Jabatan</option>
                             <?php foreach ($jabatan as $jab): ?>
                                 <option value="<?= $jab['jabatan'] ?>"><?= $jab['jabatan'] ?></option>
@@ -57,7 +59,8 @@
                         <select class="form-select <?= ($validation->hasError('lokasi_presensi')) ? 'is-invalid' : '' ?>"
                             name="lokasi_presensi"
                             aria-label="lokasi_presensi"
-                            aria-describedby="zona-addon">
+                            aria-describedby="zona-addon"
+                            value="<?=set_value('lokasi_presensi')?>">
                             <option value="">Pilih lokasi_presensi</option>
                             <?php foreach ($lokasi_presensi as $lok): ?>
                                 <option value="<?= $lok['id'] ?>"><?= $lok['nama_lokasi'] ?></option>
@@ -69,23 +72,23 @@
                     </div>
                     <label>Foto</label>
                     <div class="mb-1">
-                        <input type="file" class="form-control <?= ($validation->hasError('foto')) ? 'is-invalid' : '' ?>" name="foto" aria-label="foto" aria-describedby="name-addon">
+                        <input type="file" class="form-control <?= ($validation->hasError('foto')) ? 'is-invalid' : '' ?>" name="foto" aria-label="foto" aria-describedby="name-addon" value="<?=set_value('foto')?>">
                         <div class="invalid-feedback"><?= $validation->getError('foto') ?></div>
                     </div>
 
                     <label>Username</label>
                     <div class="mb-1">
-                        <input type="text" class="form-control <?= ($validation->hasError('username')) ? 'is-invalid' : '' ?>" name="username" placeholder="Username" aria-label="username" aria-describedby="name-addon">
+                        <input type="text" class="form-control <?= ($validation->hasError('username')) ? 'is-invalid' : '' ?>" name="username" placeholder="Username" aria-label="username" aria-describedby="name-addon" value="<?=set_value('username')?>">
                         <div class="invalid-feedback"><?= $validation->getError('username') ?></div>
                     </div>
                     <label>Password</label>
                     <div class="mb-1">
-                        <input type="password" class="form-control <?= ($validation->hasError('password')) ? 'is-invalid' : '' ?>" name="password" placeholder="Password" aria-label="password" aria-describedby="name-addon">
+                        <input type="password" class="form-control <?= ($validation->hasError('password')) ? 'is-invalid' : '' ?>" name="password" placeholder="Password" aria-label="password" aria-describedby="name-addon" value="<?=set_value('password')?>">
                         <div class="invalid-feedback"><?= $validation->getError('password') ?></div>
                     </div>
                     <label>Konfirmasi Password</label>
                     <div class="mb-1">
-                        <input type="password" class="form-control <?= ($validation->hasError('konfirmasi_password')) ? 'is-invalid' : '' ?>" name="konfirmasi_password" placeholder="Konfirmasi Password" aria-label="konfirmasi_password" aria-describedby="name-addon">
+                        <input type="password" class="form-control <?= ($validation->hasError('konfirmasi_password')) ? 'is-invalid' : '' ?>" name="konfirmasi_password" placeholder="Konfirmasi Password" aria-label="konfirmasi_password" aria-describedby="name-addon" value="<?=set_value('konfirmasi_password')?>">
                         <div class="invalid-feedback"><?= $validation->getError('konfirmasi_password') ?></div>
                     </div>
                     <label>Role</label>
@@ -93,7 +96,8 @@
                         <select class="form-select <?= ($validation->hasError('role')) ? 'is-invalid' : '' ?>"
                             name="role"
                             aria-label="role"
-                            aria-describedby="zona-addon">
+                            aria-describedby="zona-addon"
+                            value="<?=set_value('role')?>">
                             <option value="">Pilih Role</option>
                             <option value="Admin">Admin</option>
                             <option value="Pegawai">Pegawai</option>

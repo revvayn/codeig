@@ -28,7 +28,7 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand d-flex align-items-center m-0" href=" https://demos.creative-tim.com/corporate-ui-dashboard/pages/dashboard.html " target="_blank">
-        <span class="font-weight-bold text-lg">Corporate UI</span>
+        <span class="font-weight-bold text-lg">Presensi Dashboard</span>
       </a>
     </div>
     <div class="px-4  w-auto">
@@ -158,7 +158,7 @@
           <ul class="navbar-nav justify-content-end">
             <li class="nav-item ps-2 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0">
-                <img src="<?= base_url('../assets/img/team-1.jpg') ?>" class="avatar avatar-sm" data-bs-toggle="popover" data-bs-title="Logout" alt="avatar" />
+                <img src="<?= base_url('profile/eko.jpg')?>" class="avatar avatar-sm" data-bs-toggle="popover" data-bs-title="Logout" alt="avatar" />
               </a>
             </li>
           </ul>

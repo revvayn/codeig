@@ -15,4 +15,8 @@ class Home extends BaseController
         ];
         return view('pegawai/home',$data);
     }
+    public function presensi_masuk()
+    {
+        echo "Presensi Masuk Berhasil";
+    }
 }

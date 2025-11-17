@@ -30,6 +30,7 @@
                     <div id="detik-masuk"></div>
                 </div>
                 <form method="POST" action="<?=base_url('pegawai/presensi_masuk')?>">
+                <input type="text" name="id_pegawai" value="<?= session()->get('id_pegawai') ?>">
                     <button type="submit" class="btn btn-sm btn-primary btn-icon d-flex align-items-center justify-content-center mx-auto mt-3">
                         <span class="btn-inner--text">Masuk</span></button>
                 </form>
@@ -53,7 +54,8 @@
                     <div id="detik-keluar"></div>
                 </div>
                 <form method="POST" action="<?=base_url('pegawai/presensi_pulang')?>">
-                    <button type="submit" class="btn btn-sm btn-danger btn-icon d-flex align-items-center justify-content-center mx-auto mt-3">
+                <input type="text" name="id_pegawai" value="<?= session()->get('id_pegawai') ?>">    
+                <button type="submit" class="btn btn-sm btn-danger btn-icon d-flex align-items-center justify-content-center mx-auto mt-3">
                         <span class="btn-inner--text">Pulang</span>
                 </form>
             </div>

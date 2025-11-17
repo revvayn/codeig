@@ -11,7 +11,6 @@ class Home extends BaseController
     {
         $data=[
             'title' => 'Dashboard Pegawai',
-            'nama' => session()->get('username'),
         ];
         return view('pegawai/home',$data);
     }

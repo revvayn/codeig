@@ -1,7 +1,6 @@
 <?= $this->extend('pegawai/layout.php') ?>
 
 <?= $this->section('content') ?>
-
 <style>
     .parent-clock {
         display: flex;
@@ -29,8 +28,21 @@
                     <div>:</div>
                     <div id="detik-masuk"></div>
                 </div>
-                <form method="POST" action="<?=base_url('pegawai/presensi_masuk')?>">
-                <input type="text" name="id_pegawai" value="<?= session()->get('id_pegawai') ?>">
+                <form method="POST" action="<?= base_url('pegawai/presensi_masuk') ?>">
+                    <<?php
+                        if ($lokasi_presensi['zona_waktu'] == 'WIB') {
+                            date_default_timezone_set('Asia/Jakarta');
+                        } elseif ($lokasi_presensi['zona_waktu'] == 'WITA') {
+                            date_default_timezone_set('Asia/Makassar');
+                        } elseif ($lokasi_presensi['zona_waktu'] == 'WIT') {
+                            date_default_timezone_set('Asia/Jayapura');
+                        }
+                        ?>
+                    <input type="text" value="<?= $lokasi_presensi['latitude'] ?>" name="latitude kantor">
+                    <input type="text" value="<?= $lokasi_presensi['longitude'] ?>" name="longitude kantor">
+                    <input type="text" value="<?= date('Y-m-d') ?>" name="tanggal_masuk">
+                    <input type="text" value="<?= date('H:i:s') ?>" name="jam_masuk">
+                    <input type="text" name="id_pegawai" value="<?= session()->get('id_pegawai') ?>">
                     <button type="submit" class="btn btn-sm btn-primary btn-icon d-flex align-items-center justify-content-center mx-auto mt-3">
                         <span class="btn-inner--text">Masuk</span></button>
                 </form>
@@ -38,7 +50,7 @@
         </div>
     </div>
     <div class="col-md-4">
-    <div class="card border shadow-xs mb-4">
+        <div class="card border shadow-xs mb-4">
             <h7 class="card-header border-bottom pb-3 ">
                 Presensi Pulang Pegawai
             </h7>
@@ -53,9 +65,9 @@
                     <div>:</div>
                     <div id="detik-keluar"></div>
                 </div>
-                <form method="POST" action="<?=base_url('pegawai/presensi_pulang')?>">
-                <input type="text" name="id_pegawai" value="<?= session()->get('id_pegawai') ?>">    
-                <button type="submit" class="btn btn-sm btn-danger btn-icon d-flex align-items-center justify-content-center mx-auto mt-3">
+                <form method="POST" action="<?= base_url('pegawai/presensi_pulang') ?>">
+                    <input type="text" name="id_pegawai" value="<?= session()->get('id_pegawai') ?>">
+                    <button type="submit" class="btn btn-sm btn-danger btn-icon d-flex align-items-center justify-content-center mx-auto mt-3">
                         <span class="btn-inner--text">Pulang</span>
                 </form>
             </div>

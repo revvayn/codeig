@@ -8,6 +8,7 @@ class LokasiPresensiModel extends Model
 {
     protected $table            = 'lokasi_presensi';
     protected $allowedFields    = [
+        'id_perusahaan',
         'nama_lokasi',
         'alamat_lokasi',
         'tipe_lokasi',

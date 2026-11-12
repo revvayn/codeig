@@ -1,90 +1,87 @@
 <?= $this->extend('admin/layout.php') ?>
 
 <?= $this->section('content') ?>
-<h2><?= $title ?></h2>
-<div class="row">
-    <div class="col-xl-4 col-md-6 d-flex flex-column mx-auto">
-        <div class="card card-plain mt-0">
-            <img width="120px"
-                style="border-radius: 10px; display: block; margin: 0 auto;"
-                src="<?= base_url('profile/' . $data_pegawai['foto']) ?>"
-                alt="Foto Profil">
-
-            <div class="card-body">
-                <form role="form">
-                    <label>NIP</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="nip" aria-label="nip" disabled
-                            value="<?= $data_pegawai['nip'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Nama</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="nama" aria-label="nama" disabled
-                            value="<?= $data_pegawai['nama'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Jenis Kelamin</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="jenis_kelamin" aria-label="jenis_kelamin" disabled
-                            value="<?= $data_pegawai['jenis_kelamin'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Alamat</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="alamat" aria-label="alamat" disabled
-                            value="<?= $data_pegawai['alamat'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>No Handphone</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="no_handphone" aria-label="no_handphone" disabled
-                            value="<?= $data_pegawai['no_handphone'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Jabatan</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="jabatan" aria-label="jabatan" disabled
-                            value="<?= $data_pegawai['jabatan'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Lokasi Presensi</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="lokasi_presensi" aria-label="lokasi_presensi" disabled
-                            value="<?= $data_pegawai['lokasi_presensi'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Username</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="username" aria-label="username" disabled
-                            value="<?= $data_pegawai['username'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Role</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="role" aria-label="role" disabled
-                            value="<?= $data_pegawai['role'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Status</label>
-                    <div class="mb-1">
-                        <input type="text" class="form-control" name="status" aria-label="status" disabled
-                            value="<?= $data_pegawai['status'] ?>">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="content-header">
+  <div>
+    <h3>Detail Data Pegawai</h3>
+    <p>Informasi lengkap pegawai dan akun login.</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="<?= base_url('admin/data_pegawai') ?>" class="btn btn-sm btn-outline-dark">
+      <i class="fas fa-arrow-left me-1"></i> Kembali
+    </a>
+    <a href="<?= base_url('admin/data_pegawai/edit/' . $data_pegawai['id']) ?>" class="btn btn-sm btn-dark">
+      <i class="fas fa-pen me-1"></i> Edit
+    </a>
+  </div>
 </div>
 
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="card h-100">
+      <div class="card-body p-4 text-center">
+        <?php $foto = $data_pegawai['foto'] ?: ''; ?>
+        <img src="<?= $foto && is_file(FCPATH . 'profile/' . $foto) ? base_url('profile/' . $foto) : base_url('assets/img/team-1.jpg') ?>" class="avatar avatar-lg mb-3" alt="Foto pegawai">
+        <h5 class="font-weight-bold mb-1"><?= esc($data_pegawai['nama']) ?></h5>
+        <div class="text-sm text-secondary mb-2"><?= esc($data_pegawai['nip']) ?></div>
+        <?= badge_kehadiran($data_pegawai['status'] ?: 'Tidak Aktif') ?>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="card h-100">
+      <div class="card-header py-3"><h6 class="mb-0">Informasi Pegawai</h6></div>
+      <div class="card-body p-4">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">Nama Lengkap</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['nama']) ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">NIP</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['nip']) ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">Jenis Kelamin</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['jenis_kelamin']) ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">No. Handphone</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['no_handphone']) ?></div>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">Alamat</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['alamat']) ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">Jabatan</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['jabatan']) ?></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">Lokasi Presensi</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['nama_lokasi'] ?: $data_pegawai['lokasi_presensi']) ?></div>
+          </div>
+        </div>
+
+        <hr>
+        <h6 class="font-weight-bold mb-3">Akun Login</h6>
+        <div class="row">
+          <div class="col-md-4 mb-2">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">Username</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['username'] ?: '-') ?></div>
+          </div>
+          <div class="col-md-4 mb-2">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">Role</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['role'] ?: '-') ?></div>
+          </div>
+          <div class="col-md-4 mb-2">
+            <div class="text-xs text-secondary text-uppercase font-weight-bold">Perusahaan</div>
+            <div class="font-weight-semibold"><?= esc($data_pegawai['nama_perusahaan'] ?: session()->get('nama_perusahaan')) ?></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <?= $this->endSection() ?>

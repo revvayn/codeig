@@ -32,13 +32,16 @@ class Presensi extends Migration
             ],
             'tanggal_keluar' => [
                 'type' => 'DATE',
+                'null' => true,
             ],
             'jam_keluar' => [
                 'type' => 'TIME',
+                'null' => true,
             ],
             'foto_keluar' => [
                 'type' => 'VARCHAR',
                 'constraint' => '225',
+                'null' => true,
             ],
         ]);
         $this->forge->addKey('id', true);

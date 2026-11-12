@@ -1,280 +1,479 @@
+<?php
+$uri          = uri_string();
+$flashError   = session()->getFlashdata('error');
+$flashSuccess = session()->getFlashdata('success');
+$foto         = session()->get('foto_pegawai');
+$avatar       = (! empty($foto) && is_file(FCPATH . 'profile/' . $foto))
+    ? base_url('profile/' . $foto)
+    : base_url('assets/img/team-1.jpg');
+$is = static fn (string $prefix): string => str_starts_with($uri, $prefix) ? 'active' : '';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="<?= base_url('../assets/img/apple-icon.png') ?>">
-  <link rel="icon" type="image/png" href="<?= base_url('../assets/img/favicon.png') ?>">
-  <title>
-    Codeigniter Ahmad Rafi - Dashboard
-  </title>
-  <!--     Fonts and icons     -->
+  <link rel="apple-touch-icon" sizes="76x76" href="<?= base_url('assets/img/apple-icon.png') ?>">
+  <link rel="icon" type="image/png" href="<?= base_url('assets/img/favicon.png') ?>">
+  <title><?= esc($title ?? 'Dashboard') ?> - PresensiKu</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Noto+Sans:300,400,500,600,700,800|PT+Mono:300,400,500,600,700" rel="stylesheet" />
-  <!-- Nucleo Icons -->
-  <link href="<?= base_url('../assets/css/nucleo-icons.css') ?>" rel="stylesheet" />
-  <link href="<?= base_url('../assets/css/nucleo-svg.css') ?>" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/349ee9c857.js" crossorigin="anonymous"></script>
-  <link href="<?= base_url('../assets/css/nucleo-svg.css') ?>" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link id="pagestyle" href="<?= base_url('../assets/css/corporate-ui-dashboard.css?v=1.0.0') ?>" rel="stylesheet" />
+  <link href="<?= base_url('assets/css/nucleo-icons.css') ?>" rel="stylesheet" />
+  <link href="<?= base_url('assets/css/nucleo-svg.css') ?>" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link id="pagestyle" href="<?= base_url('assets/css/corporate-ui-dashboard.css?v=1.0.0') ?>" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.css" />
+  <style>
+    :root {
+      --accent: #4f46e5;
+    }
+
+    body {
+      background: #f4f6fb;
+    }
+
+    .app-sidenav {
+      background: linear-gradient(180deg, #111827 0%, #1e293b 100%);
+      width: 250px;
+      box-shadow: 4px 0 24px rgba(15, 23, 42, .08);
+    }
+
+    .app-sidenav .sidenav-header {
+      padding: 22px 20px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: #fff;
+      font-weight: 800;
+      font-size: 18px;
+      margin-right: 12px;
+      box-shadow: 0 8px 18px rgba(99, 102, 241, .35);
+    }
+
+    .brand-title {
+      display: block;
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .brand-company {
+      display: block;
+      color: #94a3b8;
+      font-size: 11px;
+      max-width: 160px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .app-sidenav .nav-link {
+      color: #cbd5e1;
+      border-radius: 10px;
+      margin: 2px 0;
+      padding: 10px 12px;
+      font-size: 13.5px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all .18s ease;
+    }
+
+    .app-sidenav .nav-link:hover {
+      background: rgba(255, 255, 255, .07);
+      color: #fff;
+    }
+
+    .app-sidenav .nav-link.active {
+      background: linear-gradient(90deg, rgba(99, 102, 241, .95), rgba(139, 92, 246, .85));
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(79, 70, 229, .28);
+    }
+
+    .app-sidenav .nav-link svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+    }
+
+    .app-sidenav .sidenav-label {
+      color: #64748b;
+      font-size: 10.5px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin: 18px 10px 8px;
+    }
+
+    .main-content {
+      margin-left: 250px;
+    }
+
+    @media (max-width: 1199.98px) {
+      .main-content {
+        margin-left: 0;
+      }
+    }
+
+    .navbar-main {
+      background: transparent;
+    }
+
+    .company-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, .04);
+    }
+
+    .company-pill svg {
+      width: 14px;
+      height: 14px;
+      color: #6366f1;
+    }
+
+    .card {
+      border: 1px solid #e8ecf3;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .04);
+    }
+
+    .card-header {
+      background: transparent;
+      border-bottom: 1px solid #eef2f7;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .clock-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      font-size: 42px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: 1px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .clock-display span.sep {
+      color: #94a3b8;
+    }
+
+    .status-box {
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+    }
+
+    .status-box.active {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+    }
+
+    .stat-mini {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .stat-mini .icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-mini .icon svg {
+      width: 21px;
+      height: 21px;
+    }
+
+    .stat-mini .value {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+      color: #0f172a;
+    }
+
+    .stat-mini .label {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .table thead th {
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      border-bottom: 1px solid #e8ecf3;
+      white-space: nowrap;
+    }
+
+    .table tbody td {
+      vertical-align: middle;
+      font-size: 13px;
+      color: #334155;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .avatar {
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .avatar-sm {
+      width: 38px;
+      height: 38px;
+    }
+
+    .btn {
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 13.5px;
+    }
+
+    .btn-primary {
+      background: #4f46e5;
+      border-color: #4f46e5;
+    }
+
+    .btn-primary:hover {
+      background: #4338ca;
+      border-color: #4338ca;
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      border-color: #dc2626;
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 10px;
+      border-color: #dfe5ef;
+      font-size: 13.5px;
+      padding: 10px 12px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, .12);
+    }
+
+    .form-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+
+    .badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .page-footer {
+      color: #94a3b8;
+      font-size: 12px;
+      padding: 20px 0 8px;
+      text-align: center;
+    }
+
+    .empty-state {
+      padding: 32px 16px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .photo-preview {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+    }
+  </style>
+  <?= $this->renderSection('styles') ?>
 </head>
 
-<body class="g-sidenav-show  bg-gray-100">
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 bg-slate-900 fixed-start " id="sidenav-main">
-    <div class="sidenav-header">
-      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand d-flex align-items-center m-0" href=" https://demos.creative-tim.com/corporate-ui-dashboard/pages/dashboard.html " target="_blank">
-        <span class="font-weight-bold text-lg">Corporate UI</span>
+<body class="g-sidenav-show bg-gray-100">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 fixed-start app-sidenav" id="sidenav-main">
+    <div class="sidenav-header d-flex align-items-center">
+      <a class="navbar-brand m-0 d-flex align-items-center" href="<?= base_url('pegawai/home') ?>">
+        <span class="brand-icon">P</span>
+        <span class="brand-text">
+          <span class="brand-title">PresensiKu</span>
+          <span class="brand-company"><?= esc(session()->get('nama_perusahaan') ?? 'Perusahaan') ?></span>
+        </span>
       </a>
     </div>
-    <div class="px-4  w-auto">
+    <div class="px-3 pt-2 pb-4 w-auto">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link  active" href="../pages/dashboard.html">
-            <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
-              <svg width="30px" height="30px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <title>dashboard</title>
-                <g id="dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g id="template" transform="translate(12.000000, 12.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                    <path class="color-foreground" d="M0,1.71428571 C0,0.76752 0.76752,0 1.71428571,0 L22.2857143,0 C23.2325143,0 24,0.76752 24,1.71428571 L24,5.14285714 C24,6.08962286 23.2325143,6.85714286 22.2857143,6.85714286 L1.71428571,6.85714286 C0.76752,6.85714286 0,6.08962286 0,5.14285714 L0,1.71428571 Z" id="Path"></path>
-                    <path class="color-background" d="M0,12 C0,11.0532171 0.76752,10.2857143 1.71428571,10.2857143 L12,10.2857143 C12.9468,10.2857143 13.7142857,11.0532171 13.7142857,12 L13.7142857,22.2857143 C13.7142857,23.2325143 12.9468,24 12,24 L1.71428571,24 C0.76752,24 0,23.2325143 0,22.2857143 L0,12 Z" id="Path"></path>
-                    <path class="color-background" d="M18.8571429,10.2857143 C17.9103429,10.2857143 17.1428571,11.0532171 17.1428571,12 L17.1428571,22.2857143 C17.1428571,23.2325143 17.9103429,24 18.8571429,24 L22.2857143,24 C23.2325143,24 24,23.2325143 24,22.2857143 L24,12 C24,11.0532171 23.2325143,10.2857143 22.2857143,10.2857143 L18.8571429,10.2857143 Z" id="Path"></path>
-                  </g>
-                </g>
-              </svg>
-            </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+          <a class="nav-link <?= $is('pegawai/home') ?>" href="<?= base_url('pegawai/home') ?>">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h3.75c.621 0 1.125-.504 1.125-1.125V9.75" />
+            </svg>
+            <span>Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="../pages/tables.html">
-            <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
-              <svg width="30px" height="30px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <title>table</title>
-                <g id="table" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g id="view-grid" transform="translate(12.000000, 12.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                    <path class="color-foreground" d="M3.42857143,0 C1.53502286,0 0,1.53502286 0,3.42857143 L0,6.85714286 C0,8.75069143 1.53502286,10.2857143 3.42857143,10.2857143 L6.85714286,10.2857143 C8.75069143,10.2857143 10.2857143,8.75069143 10.2857143,6.85714286 L10.2857143,3.42857143 C10.2857143,1.53502286 8.75069143,0 6.85714286,0 L3.42857143,0 Z" id="Path"></path>
-                    <path class="color-background" d="M3.42857143,13.7142857 C1.53502286,13.7142857 0,15.2492571 0,17.1428571 L0,20.5714286 C0,22.4650286 1.53502286,24 3.42857143,24 L6.85714286,24 C8.75069143,24 10.2857143,22.4650286 10.2857143,20.5714286 L10.2857143,17.1428571 C10.2857143,15.2492571 8.75069143,13.7142857 6.85714286,13.7142857 L3.42857143,13.7142857 Z" id="Path"></path>
-                    <path class="color-background" d="M13.7142857,3.42857143 C13.7142857,1.53502286 15.2492571,0 17.1428571,0 L20.5714286,0 C22.4650286,0 24,1.53502286 24,3.42857143 L24,6.85714286 C24,8.75069143 22.4650286,10.2857143 20.5714286,10.2857143 L17.1428571,10.2857143 C15.2492571,10.2857143 13.7142857,8.75069143 13.7142857,6.85714286 L13.7142857,3.42857143 Z" id="Path"></path>
-                    <path class="color-foreground" d="M13.7142857,17.1428571 C13.7142857,15.2492571 15.2492571,13.7142857 17.1428571,13.7142857 L20.5714286,13.7142857 C22.4650286,13.7142857 24,15.2492571 24,17.1428571 L24,20.5714286 C24,22.4650286 22.4650286,24 20.5714286,24 L17.1428571,24 C15.2492571,24 13.7142857,22.4650286 13.7142857,20.5714286 L13.7142857,17.1428571 Z" id="Path"></path>
-                  </g>
-                </g>
-              </svg>
-            </div>
-            <span class="nav-link-text ms-1">Rekap Kehadiran</span>
+          <a class="nav-link <?= $is('pegawai/rekap') ?>" href="<?= base_url('pegawai/rekap') ?>">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            </svg>
+            <span>Rekap Kehadiran</span>
           </a>
         </li>
-        <li class="nav-item mt-2">
-          <div class="d-flex align-items-center nav-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="ms-2" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-              <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
+        <li class="nav-item">
+          <a class="nav-link <?= $is('pegawai/ketidakhadiran') ?>" href="<?= base_url('pegawai/ketidakhadiran') ?>">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
             </svg>
-            <span class="font-weight-normal text-md ms-2">Ketidakhadiran</span>
-          </div>
+            <span>Ketidakhadiran</span>
+          </a>
         </li>
       </ul>
     </div>
   </aside>
-  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-    <!-- Navbar -->
-    <nav class="navbar navbar-main navbar-expand-lg mx-5 px-0 shadow-none rounded" id="navbarBlur" navbar-scroll="true">
-      <div class="container-fluid py-1 px-2">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-transparent mb-1 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Dashboard</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
-          </ol>
-        </nav>
-        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div class="input-group">
-              <span class="input-group-text text-body bg-white  border-end-0 ">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                </svg>
-              </span>
-              <input type="text" class="form-control ps-0" placeholder="Search">
-            </div>
+
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <nav class="navbar navbar-main navbar-expand-lg mx-3 mx-lg-4 px-0 shadow-none rounded" id="navbarBlur">
+      <div class="container-fluid py-2 px-2">
+        <div class="d-flex align-items-center gap-2">
+          <i class="fas fa-bars cursor-pointer d-xl-none me-1" id="iconSidenav" aria-hidden="true"></i>
+          <div>
+            <h6 class="mb-0 font-weight-bold text-dark"><?= esc($title ?? 'Dashboard') ?></h6>
+            <small class="text-secondary d-none d-sm-block">Sistem Presensi Karyawan</small>
           </div>
-          <ul class="navbar-nav justify-content-end">
-            <li class="nav-item ps-2 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0">
-                <img src="<?= base_url('../assets/img/team-1.jpg') ?>" class="avatar avatar-sm" data-bs-toggle="popover" data-bs-title="Logout" alt="avatar" />
-              </a>
-            </li>
-          </ul>
+        </div>
+        <div class="ms-auto d-flex align-items-center gap-3">
+          <span class="company-pill d-none d-md-inline-flex">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m1.5-6H13.5m-1.5 3H13.5m-1.5 3H13.5M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+            </svg>
+            <?= esc(session()->get('nama_perusahaan') ?? '-') ?>
+          </span>
+          <div class="dropdown">
+            <a href="#" class="d-flex align-items-center gap-2 text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="<?= $avatar ?>" class="avatar avatar-sm" alt="avatar" />
+              <span class="d-none d-md-block text-start">
+                <span class="d-block text-sm font-weight-bold text-dark"><?= esc(session()->get('nama_pegawai') ?? session()->get('username')) ?></span>
+                <span class="d-block text-xs text-secondary"><?= esc(session()->get('role_id')) ?></span>
+              </span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end mt-2 shadow border-0">
+              <li class="px-3 py-2">
+                <div class="text-xs text-secondary">Login sebagai</div>
+                <div class="text-sm font-weight-bold"><?= esc(session()->get('username')) ?></div>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item text-danger" href="<?= base_url('logout') ?>">
+                  <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </nav>
-    <!-- End Navbar -->
-    <div class="container-fluid py-4 px-5">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="d-md-flex justify-content-end align-items-center mb-3 mx-2">
-            <div class="mb-md-0 mb-3">
-            <h4 class="font-weight-bold mb-0">Hallo, <?= session()->get('username')?></h4>
-            <p class="text-sm text-secondary mb-3">Welcome, <?= session()->get('role_id')?></p>
-            </div>
-          </div>
+
+    <div class="container-fluid py-3 px-3 px-lg-4">
+      <?php if ($flashError): ?>
+        <div class="alert alert-danger alert-dismissible fade show border-0" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i><?= esc($flashError) ?>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-      </div>
-      <hr class="my-0">
-      <div class="row">
-        <div class="position-relative overflow-hidden">
-          <div class="swiper mySwiper mt-4 mb-2">
-            <div class="swiper-wrapper">
-            </div>
-          </div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
-      </div>
-      <div class="row">
-      </div>
+      <?php endif; ?>
       <?= $this->renderSection('content') ?>
+      <div class="page-footer">PresensiKu &copy; <?= date('Y') ?> - <?= esc(session()->get('nama_perusahaan') ?? '') ?></div>
     </div>
   </main>
-  <!--   Core JS Files   -->
-  <script src="<?= base_url('../assets/js/core/popper.min.js') ?>"></script>
-  <script src="<?= base_url('../assets/js/core/bootstrap.min.js') ?>"></script>
-  <script src="<?= base_url('../assets/js/plugins/perfect-scrollbar.min.js') ?>"></script>
-  <script src="<?= base_url('../assets/js/plugins/smooth-scrollbar.min.js') ?>"></script>
-  <script src="<?= base_url('../assets/js/plugins/chartjs.min.js') ?>"></script>
-  <script src="<?= base_url('../assets/js/plugins/swiper-bundle.min.js') ?>" type="text/javascript"></script>
+
+  <script src="<?= base_url('assets/js/core/popper.min.js') ?>"></script>
+  <script src="<?= base_url('assets/js/core/bootstrap.min.js') ?>"></script>
+  <script src="<?= base_url('assets/js/plugins/perfect-scrollbar.min.js') ?>"></script>
+  <script src="<?= base_url('assets/js/plugins/smooth-scrollbar.min.js') ?>"></script>
+  <script src="<?= base_url('assets/js/corporate-ui-dashboard.min.js?v=1.0.0') ?>"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    if (document.getElementsByClassName('mySwiper')) {
-      var swiper = new Swiper(".mySwiper", {
-        effect: "cards",
-        grabCursor: true,
-        initialSlide: 1,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-      });
-    };
-
-
-    var ctx = document.getElementById("chart-bars").getContext("2d");
-
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-        datasets: [{
-            label: "Sales",
-            tension: 0.4,
-            borderWidth: 0,
-            borderSkipped: false,
-            backgroundColor: "#2ca8ff",
-            data: [450, 200, 100, 220, 500, 100, 400, 230, 500, 200],
-            maxBarThickness: 6
-          },
-          {
-            label: "Sales",
-            tension: 0.4,
-            borderWidth: 0,
-            borderSkipped: false,
-            backgroundColor: "#7c3aed",
-            data: [200, 300, 200, 420, 400, 200, 300, 430, 400, 300],
-            maxBarThickness: 6
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            backgroundColor: '#fff',
-            titleColor: '#1e293b',
-            bodyColor: '#1e293b',
-            borderColor: '#e9ecef',
-            borderWidth: 1,
-            usePointStyle: true
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            stacked: true,
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [4, 4],
-            },
-            ticks: {
-              beginAtZero: true,
-              padding: 10,
-              font: {
-                size: 12,
-                family: "Noto Sans",
-                style: 'normal',
-                lineHeight: 2
-              },
-              color: "#64748B"
-            },
-          },
-          x: {
-            stacked: true,
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false
-            },
-            ticks: {
-              font: {
-                size: 12,
-                family: "Noto Sans",
-                style: 'normal',
-                lineHeight: 2
-              },
-              color: "#64748B"
-            },
-          },
-        },
-      },
-    });
-
-
-    var ctx2 = document.getElementById("chart-line").getContext("2d");
-
-    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke1.addColorStop(1, 'rgba(45,168,255,0.2)');
-    gradientStroke1.addColorStop(0.2, 'rgba(45,168,255,0.0)');
-    gradientStroke1.addColorStop(0, 'rgba(45,168,255,0)'); //blue colors
-
-    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke2.addColorStop(1, 'rgba(119,77,211,0.4)');
-    gradientStroke2.addColorStop(0.7, 'rgba(119,77,211,0.1)');
-    gradientStroke2.addColorStop(0, 'rgba(119,77,211,0)'); //purple colors
-  </script>
-  <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
+    $(function() {
+      if ($.fn.dataTable) {
+        $.fn.dataTable.ext.errMode = 'none';
       }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
+      if ($.fn.DataTable && $('#datatables').length) {
+        $('#datatables').DataTable({
+          responsive: true,
+          pagingType: 'simple_numbers',
+          language: {
+            search: 'Cari:',
+            lengthMenu: 'Tampilkan _MENU_ data',
+            info: 'Menampilkan _START_ - _END_ dari _TOTAL_ data',
+            infoEmpty: 'Tidak ada data',
+            zeroRecords: 'Data tidak ditemukan',
+            paginate: { previous: 'Sebelumnya', next: 'Berikutnya' }
+          }
+        });
+      }
+
+      <?php if ($flashSuccess): ?>
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: <?= json_encode($flashSuccess) ?>,
+          showConfirmButton: false,
+          timer: 3200,
+          timerProgressBar: true
+        });
+      <?php endif; ?>
+
+      <?php if ($flashError): ?>
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'error',
+          title: <?= json_encode($flashError) ?>,
+          showConfirmButton: false,
+          timer: 4200,
+          timerProgressBar: true
+        });
+      <?php endif; ?>
+    });
   </script>
-  <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!-- Control Center for Corporate UI Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="<?= base_url('../assets/js/corporate-ui-dashboard.min.js?v=1.0.0') ?>"></script>
+  <?= $this->renderSection('scripts') ?>
 </body>
 
 </html>

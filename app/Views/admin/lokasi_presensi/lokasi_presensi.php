@@ -1,73 +1,66 @@
 <?= $this->extend('admin/layout.php') ?>
-
 <?= $this->section('content') ?>
-<h2><?= $title ?></h2>
-<div class="row">
-    <div class="col-12">
-        <div class="card border shadow-xs mb-4">
-            <div class="card-header border-bottom pb-0">
-                <div class="d-sm-flex align-items-center">
-                    <div class="ms-auto d-flex">
-                        <a href="<?= base_url('admin/lokasi_presensi/create') ?>" type="button" class="btn btn-sm btn-dark btn-icon d-flex align-items-center me-2">
-                            <span class="btn-inner--icon">
-                                <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="d-block me-2">
-                                    <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z" />
-                                </svg>
-                            </span>
-                            <span class="btn-inner--text">Add member</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="card p-4 shadow-sm border-0 rounded-3">
-                <div class="table-responsive p-0">
-                    <table id="datatables" class="table align-items-center justify-content-center mb-0">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="text-start text-secondary text-xs font-weight-semibold opacity-7">No</th>
-                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Nama Lokasi</th>
-                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Alamat Lokasi</th>
-                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Lokasi</th>
-                                <th class="text-secondary text-xs font-weight-semibold opacity-7">Aksi</th>
-                            </tr>
-                        </thead>
 
-                        <tbody>
-                            <?php $no = 1;
-                            foreach ($lokasi_presensi as $lok): ?>
-                                <tr>
-                                    <td>
-                                        <p class="d-flex px-3 text-sm text-dark font-weight-semibold mb-0"><?= $no++ ?></p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm text-dark font-weight-semibold mb-0"><?= $lok['nama_lokasi'] ?></p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm text-dark font-weight-semibold mb-0"><?= $lok['alamat_lokasi'] ?></p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm text-dark font-weight-semibold mb-0"><?= $lok['tipe_lokasi'] ?></p>
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="<?= base_url('admin/lokasi_presensi/detail/' . $lok['id']) ?>" class="text-secondary font-weight-bold text-xs" data-bs-toggle="tooltip" data-bs-title="Detail">
-                                        <span class="badge badge-m border border-success text-success bg-success">Detail</span>
+<div class="app-page-head">
+  <div>
+    <h2 class="app-title">Lokasi Presensi</h2>
+    <p class="app-subtitle">Kelola plant atau lokasi presensi beserta pengaturan GPS dan radiusnya.</p>
+  </div>
+  <a href="<?= base_url('admin/lokasi_presensi/create') ?>" class="app-btn-dark"><i class="fa-solid fa-plus"></i> Tambah Lokasi</a>
+</div>
 
-                                        </a>
-                                        <a href="<?= base_url('admin/lokasi_presensi/edit/' . $lok['id']) ?>" class="text-secondary font-weight-bold text-xs" data-bs-toggle="tooltip" data-bs-title="Edit">
-                                        <span class="badge badge-m border border-warning text-warning bg-warning ">Edit</span>
-                                        </a>
-                                        <a href="<?= base_url('admin/lokasi_presensi/delete/' . $lok['id']) ?>" class="text-secondary font-weight-bold text-xs tombol-hapus" data-bs-toggle="tooltip" data-bs-title="Delete">
-                                        <span class="badge badge-m border border-danger text-danger bg-danger">Hapus</span>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<div class="app-card overflow-hidden">
+  <div class="app-card-header">
+    <div>
+      <h3 class="text-[15px] font-bold text-slate-900">Daftar Lokasi (Plant)</h3>
+      <p class="mt-0.5 text-[11.5px] text-slate-400"><?= count($lokasi_presensi) ?> lokasi terdaftar</p>
     </div>
+  </div>
+  <div class="p-3 sm:p-4">
+    <?php if (empty($lokasi_presensi)): ?>
+      <div class="app-empty">
+        <i class="fa-solid fa-location-dot"></i>
+        <div>Belum ada lokasi presensi.</div>
+        <a href="<?= base_url('admin/lokasi_presensi/create') ?>" class="app-btn-dark app-btn-sm mt-1">Tambah Lokasi</a>
+      </div>
+    <?php else: ?>
+        <table id="datatables" class="app-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Lokasi</th>
+              <th>Alamat</th>
+              <th>Tipe</th>
+              <th class="text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $no = 1; foreach ($lokasi_presensi as $lok): ?>
+              <tr>
+                <td class="text-slate-400"><?= $no++ ?></td>
+                <td>
+                  <div class="flex items-center gap-2.5">
+                    <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-solid fa-location-dot text-[11px]"></i></span>
+                    <span class="font-semibold text-slate-800"><?= esc($lok['nama_lokasi']) ?></span>
+                  </div>
+                </td>
+                <td class="max-w-[280px] truncate"><?= esc($lok['alamat_lokasi']) ?></td>
+                <td>
+                  <span class="inline-flex rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600 ring-1 ring-inset ring-slate-200"><?= esc($lok['tipe_lokasi']) ?></span>
+                </td>
+                <td>
+                  <div class="flex items-center justify-end gap-1.5">
+                    <a href="<?= base_url('admin/lokasi_presensi/detail/' . $lok['id']) ?>" class="app-icon-btn border-emerald-200 text-emerald-600 hover:bg-emerald-50" title="Detail"><i class="fa-solid fa-eye text-[11px]"></i></a>
+                    <a href="<?= base_url('admin/lokasi_presensi/edit/' . $lok['id']) ?>" class="app-icon-btn border-amber-200 text-amber-600 hover:bg-amber-50" title="Edit"><i class="fa-solid fa-pen text-[11px]"></i></a>
+                    <a href="<?= base_url('admin/lokasi_presensi/delete/' . $lok['id']) ?>" class="app-icon-btn border-rose-200 text-rose-600 hover:bg-rose-50 tombol-hapus" title="Hapus"><i class="fa-solid fa-trash text-[11px]"></i></a>
+                  </div>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+    <?php endif; ?>
+  </div>
 </div>
 
 <?= $this->endSection() ?>

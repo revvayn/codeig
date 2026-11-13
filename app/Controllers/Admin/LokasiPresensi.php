@@ -68,6 +68,7 @@ class LokasiPresensi extends BaseController
         ]);
 
         session()->setFlashdata('success', 'Lokasi presensi (plant) berhasil ditambahkan.');
+        \App\Models\AuditLogModel::catat('create', 'plant', null, 'Menambah plant ' . $this->request->getPost('nama_lokasi'));
 
         return redirect()->to(base_url('admin/lokasi_presensi'));
     }
@@ -119,6 +120,7 @@ class LokasiPresensi extends BaseController
         ]);
 
         session()->setFlashdata('success', 'Lokasi presensi (plant) berhasil diperbarui.');
+        \App\Models\AuditLogModel::catat('update', 'plant', (int) $id, 'Memperbarui plant ID ' . $id);
 
         return redirect()->to(base_url('admin/lokasi_presensi'));
     }
@@ -135,6 +137,7 @@ class LokasiPresensi extends BaseController
         $model->delete($id);
 
         session()->setFlashdata('success', 'Lokasi presensi (plant) berhasil dihapus.');
+        \App\Models\AuditLogModel::catat('delete', 'plant', (int) $id, 'Menghapus plant ID ' . $id);
 
         return redirect()->to(base_url('admin/lokasi_presensi'));
     }

@@ -57,6 +57,7 @@ class Admin extends BaseController
         ]);
 
         session()->setFlashdata('success', 'Akun admin berhasil ditambahkan.');
+        \App\Models\AuditLogModel::catat('create', 'admin_user', null, 'Menambah admin ' . $this->request->getPost('username'));
 
         return redirect()->to(base_url('superadmin/admin'));
     }
@@ -114,6 +115,7 @@ class Admin extends BaseController
         $userModel->update($id, $data);
 
         session()->setFlashdata('success', 'Akun admin berhasil diperbarui.');
+        \App\Models\AuditLogModel::catat('update', 'admin_user', (int) $id, 'Memperbarui admin ID ' . $id);
 
         return redirect()->to(base_url('superadmin/admin'));
     }
@@ -136,6 +138,7 @@ class Admin extends BaseController
         $userModel->delete($id);
 
         session()->setFlashdata('success', 'Akun admin berhasil dihapus.');
+        \App\Models\AuditLogModel::catat('delete', 'admin_user', (int) $id, 'Menghapus admin ID ' . $id);
 
         return redirect()->to(base_url('superadmin/admin'));
     }

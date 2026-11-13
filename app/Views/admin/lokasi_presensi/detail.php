@@ -1,91 +1,85 @@
 <?= $this->extend('admin/layout.php') ?>
-
 <?= $this->section('content') ?>
-<h2><?= $title ?></h2>
-<div class="row">
-    <div class="col-xl-4 col-md-6 d-flex flex-column mx-auto">
-        <div class="card card-plain mt-0">
-            <div class="card-body">
-                <form role="form">
-                    <label>Nama Lokasi</label>
-                    <div class="mb-1">
-                        <input type="text"
-                            value="<?= $lokasi_presensi['nama_lokasi'] ?>"
-                            class="form-control" disabled
-                            name="nama_lokasi" placeholder="Nama Lokasi" aria-label="nama_lokasi">
-                        <div class="invalid-feedback"></div>
-                    </div>
 
-                    <label>Alamat Lokasi</label>
-                    <div class="mb-1">
-                        <textarea class="form-control" disabled
-                            name="alamat_lokasi" placeholder="Alamat Lokasi" aria-label="alamat_lokasi"><?= $lokasi_presensi['alamat_lokasi'] ?></textarea>
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Tipe Lokasi</label>
-                    <div class="mb-1">
-                        <input type="text"
-                            value="<?= $lokasi_presensi['tipe_lokasi'] ?>"
-                            class="form-control" disabled
-                            name="tipe_lokasi" placeholder="Tipe Lokasi" aria-label="tipe_lokasi">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Latitude</label>
-                    <div class="mb-1">
-                        <input type="text"
-                            value="<?= $lokasi_presensi['latitude'] ?>"
-                            class="form-control" disabled
-                            name="latitude" placeholder="Latitude" aria-label="latitude">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Longitude</label>
-                    <div class="mb-1">
-                        <input type="text"
-                            value="<?= $lokasi_presensi['longitude'] ?>"
-                            class="form-control" disabled
-                            name="longitude" placeholder="Longitude" aria-label="longitude">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Radius</label>
-                    <div class="mb-1">
-                        <input type="text"
-                            value="<?= $lokasi_presensi['radius'] ?>"
-                            class="form-control" disabled
-                            name="radius" placeholder="Radius" aria-label="radius">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Zona Waktu</label>
-                    <div class="mb-1">
-                        <input class="form-control" disabled
-                            name="zona_waktu" aria-label="zona_waktu" value="<?= $lokasi_presensi['zona_waktu'] ?>">
-                    </div>
-
-                    <label>Jam Masuk</label>
-                    <div class="mb-1">
-                        <input type="time"
-                            value="<?= $lokasi_presensi['jam_masuk'] ?>"
-                            class="form-control" disabled
-                            name="jam_masuk" placeholder="Jam Masuk" aria-label="jam_masuk">
-                        <div class="invalid-feedback"></div>
-                    </div>
-
-                    <label>Jam Pulang</label>
-                    <div class="mb-1">
-                        <input type="time"
-                            value="<?= $lokasi_presensi['jam_pulang'] ?>"
-                            class="form-control" disabled
-                            name="jam_pulang" placeholder="Jam Pulang" aria-label="jam_pulang">
-                        <div class="invalid-feedback"></div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="app-page-head">
+  <div>
+    <h2 class="app-title">Detail Lokasi Presensi</h2>
+    <p class="app-subtitle">Informasi pengaturan GPS dan jam presensi lokasi.</p>
+  </div>
+  <div class="flex flex-wrap items-center gap-2">
+    <a href="<?= base_url('admin/lokasi_presensi') ?>" class="app-btn-outline"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+    <a href="<?= base_url('admin/lokasi_presensi/edit/' . $lokasi_presensi['id']) ?>" class="app-btn-dark"><i class="fa-solid fa-pen"></i> Edit</a>
+  </div>
 </div>
 
+<div class="grid grid-cols-1 gap-[26px] lg:grid-cols-8">
+  <div class="lg:col-span-5">
+    <div class="app-card overflow-hidden">
+      <div class="app-card-header">
+        <div class="flex items-center gap-2.5">
+          <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-solid fa-location-dot text-[11px]"></i></span>
+          <h3 class="text-[14px] font-bold text-slate-900"><?= esc($lokasi_presensi['nama_lokasi']) ?></h3>
+        </div>
+        <span class="inline-flex rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600 ring-1 ring-inset ring-slate-200"><?= esc($lokasi_presensi['tipe_lokasi']) ?></span>
+      </div>
+      <div class="p-6">
+        <div class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
+          <div class="sm:col-span-2">
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Alamat</div>
+            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($lokasi_presensi['alamat_lokasi']) ?></div>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Radius</div>
+            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= (int) $lokasi_presensi['radius'] ?> meter</div>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Zona Waktu</div>
+            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($lokasi_presensi['zona_waktu']) ?></div>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Jam Masuk</div>
+            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= substr($lokasi_presensi['jam_masuk'], 0, 5) ?></div>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Jam Pulang</div>
+            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= substr($lokasi_presensi['jam_pulang'], 0, 5) ?></div>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Latitude</div>
+            <div class="mt-1 font-mono text-[12px] font-semibold text-slate-700"><?= esc($lokasi_presensi['latitude']) ?></div>
+          </div>
+          <div>
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Longitude</div>
+            <div class="mt-1 font-mono text-[12px] font-semibold text-slate-700"><?= esc($lokasi_presensi['longitude']) ?></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lg:col-span-3">
+    <div class="app-card h-full overflow-hidden p-4">
+      <div id="map" class="h-[300px] w-full overflow-hidden rounded-xl border border-slate-200 lg:h-full lg:min-h-[300px]"></div>
+    </div>
+  </div>
+</div>
+
+<?= $this->endSection() ?>
+
+<?= $this->section('styles') ?>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function() {
+  var lat = parseFloat('<?= esc($lokasi_presensi['latitude']) ?>') || -7.101301356164437;
+  var lng = parseFloat('<?= esc($lokasi_presensi['longitude']) ?>') || 109.9167435556062;
+  var map = L.map('map').setView([lat, lng], 17);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+  L.marker([lat, lng]).addTo(map);
+  setTimeout(function(){ map.invalidateSize(); }, 200);
+})();
+</script>
 <?= $this->endSection() ?>

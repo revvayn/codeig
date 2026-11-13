@@ -1,15 +1,23 @@
 <?= $this->extend('admin/layout.php') ?>
-
 <?= $this->section('content') ?>
-<div class="content-header">
+
+<div class="app-page-head">
   <div>
-    <h3>Rekap Kehadiran Harian</h3>
-    <p>Pantau kehadiran seluruh karyawan pada tanggal tertentu.</p>
+    <h2 class="app-title">Rekap Kehadiran Harian</h2>
+    <p class="app-subtitle">Pantau kehadiran seluruh karyawan pada tanggal tertentu.</p>
   </div>
-  <form method="GET" action="<?= base_url('admin/rekap/harian') ?>" class="d-flex gap-2">
-    <input type="date" name="tanggal" class="form-control form-control-sm" value="<?= esc($tanggal) ?>">
-    <button type="submit" class="btn btn-dark btn-sm"><i class="fas fa-search me-1"></i> Tampilkan</button>
-  </form>
+  <div class="flex flex-wrap items-end gap-2">
+    <form method="GET" action="<?= base_url('admin/rekap/harian') ?>" class="flex items-end gap-2">
+      <div>
+        <label class="app-label">Tanggal</label>
+        <input type="date" name="tanggal" class="app-input h-10 w-[150px] text-[12.5px]" value="<?= esc($tanggal) ?>">
+      </div>
+      <button type="submit" class="app-btn-dark"><i class="fa-solid fa-magnifying-glass"></i> Tampilkan</button>
+    </form>
+    <a href="<?= base_url('admin/rekap/harian/export?tanggal=' . urlencode($tanggal)) ?>" class="app-btn-outline border-emerald-200 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800">
+      <i class="fa-solid fa-file-csv"></i> Export CSV
+    </a>
+  </div>
 </div>
 
 <?php
@@ -26,43 +34,36 @@ foreach ($rekap as $row) {
     }
 }
 ?>
-<div class="row g-3 mb-4">
-  <div class="col-md-4">
-    <div class="card stat-card">
-      <div class="card-body p-4">
-        <div class="stat-label">Hadir</div>
-        <div class="stat-value text-success"><?= $jumlahHadir ?></div>
-      </div>
-    </div>
+<div class="mb-[26px] grid grid-cols-1 gap-[26px] sm:grid-cols-3">
+  <div class="app-card relative overflow-hidden p-5">
+    <span class="absolute inset-y-0 left-0 w-1 bg-emerald-500"></span>
+    <div class="text-[10.5px] font-bold uppercase tracking-[0.1em] text-slate-400">Hadir</div>
+    <div class="mt-2 text-[34px] font-extrabold leading-none text-emerald-600"><?= $jumlahHadir ?></div>
   </div>
-  <div class="col-md-4">
-    <div class="card stat-card">
-      <div class="card-body p-4">
-        <div class="stat-label">Izin / Sakit / Cuti</div>
-        <div class="stat-value text-warning"><?= $jumlahIzin ?></div>
-      </div>
-    </div>
+  <div class="app-card relative overflow-hidden p-5">
+    <span class="absolute inset-y-0 left-0 w-1 bg-amber-500"></span>
+    <div class="text-[10.5px] font-bold uppercase tracking-[0.1em] text-slate-400">Izin / Sakit / Cuti</div>
+    <div class="mt-2 text-[34px] font-extrabold leading-none text-amber-500"><?= $jumlahIzin ?></div>
   </div>
-  <div class="col-md-4">
-    <div class="card stat-card">
-      <div class="card-body p-4">
-        <div class="stat-label">Alpa / Belum Presensi</div>
-        <div class="stat-value text-danger"><?= $jumlahAlpa ?></div>
-      </div>
-    </div>
+  <div class="app-card relative overflow-hidden p-5">
+    <span class="absolute inset-y-0 left-0 w-1 bg-rose-500"></span>
+    <div class="text-[10.5px] font-bold uppercase tracking-[0.1em] text-slate-400">Alpa / Belum Presensi</div>
+    <div class="mt-2 text-[34px] font-extrabold leading-none text-rose-600"><?= $jumlahAlpa ?></div>
   </div>
 </div>
 
-<div class="card">
-  <div class="card-header py-3 d-flex justify-content-between align-items-center">
+<div class="app-card overflow-hidden">
+  <div class="app-card-header">
     <div>
-      <h6 class="mb-0">Rekap <?= tanggal_indo($tanggal, true) ?></h6>
-      <small class="text-secondary"><?= count($rekap) ?> karyawan</small>
+      <h3 class="text-[15px] font-bold text-slate-900">Rekap <?= tanggal_indo($tanggal, true) ?></h3>
+      <p class="mt-0.5 text-[11.5px] text-slate-400"><?= count($rekap) ?> karyawan</p>
     </div>
+    <span class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1.5 text-[11px] font-bold text-brand-700">
+      <span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span> Harian
+    </span>
   </div>
-  <div class="card-body p-3">
-    <div class="table-responsive">
-      <table id="datatables" class="table align-items-center mb-0">
+  <div class="p-3 sm:p-4">
+      <table id="datatables" class="app-table">
         <thead>
           <tr>
             <th>No</th>
@@ -78,12 +79,12 @@ foreach ($rekap as $row) {
         <tbody>
           <?php $no = 1; foreach ($rekap as $row): ?>
             <tr>
-              <td><?= $no++ ?></td>
+              <td class="text-slate-400"><?= $no++ ?></td>
               <td>
-                <div class="d-flex align-items-center gap-2">
+                <div class="flex items-center gap-2.5">
                   <?php $foto = $row['pegawai']['foto'] ?: ''; ?>
-                  <img src="<?= $foto && is_file(FCPATH . 'profile/' . $foto) ? base_url('profile/' . $foto) : base_url('assets/img/team-1.jpg') ?>" class="avatar avatar-sm" alt="Foto">
-                  <span class="font-weight-semibold"><?= esc($row['pegawai']['nama']) ?></span>
+                  <img src="<?= $foto && is_file(FCPATH . 'profile/' . $foto) ? base_url('profile/' . $foto) : base_url('assets/img/team-1.jpg') ?>" class="h-8 w-8 rounded-lg object-cover ring-2 ring-white shadow-sm" alt="Foto">
+                  <span class="font-semibold text-slate-800"><?= esc($row['pegawai']['nama']) ?></span>
                 </div>
               </td>
               <td><?= esc($row['pegawai']['nip']) ?></td>
@@ -91,18 +92,14 @@ foreach ($rekap as $row) {
               <td><?= esc($row['jam_masuk']) ?></td>
               <td><?= esc($row['jam_keluar']) ?></td>
               <td><?= badge_kehadiran($row['status']) ?></td>
-              <td>
-                <?php if ($row['izin']): ?>
-                  <span class="text-xs text-secondary"><?= esc($row['izin']['deskripsi']) ?></span>
-                <?php else: ?>
-                  <span class="text-secondary">-</span>
-                <?php endif; ?>
+              <td class="max-w-[220px] truncate text-[11.5px] text-slate-400">
+                <?= $row['izin'] ? esc($row['izin']['deskripsi']) : '-' ?>
               </td>
             </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
-    </div>
   </div>
 </div>
+
 <?= $this->endSection() ?>

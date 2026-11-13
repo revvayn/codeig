@@ -18,7 +18,7 @@ class Home extends BaseController
         $presensiModel     = new PresensiModel();
         $ketidakhadiranModel = new KetidakhadiranModel();
 
-        $totalPegawai = $pegawaiModel->where('id_perusahaan', $idPerusahaan)->countAllResults();
+        $totalPegawai = $pegawaiModel->jumlahPegawaiPerusahaan($idPerusahaan);
         $hadir        = $presensiModel->jumlahHadirTanggal($tanggal, $idPerusahaan);
         $izin         = $ketidakhadiranModel->jumlahDisetujuiTanggal($tanggal, $idPerusahaan);
         $alpa         = max(0, $totalPegawai - $hadir - $izin);

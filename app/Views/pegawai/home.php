@@ -1,5 +1,4 @@
 <?= $this->extend('pegawai/layout.php') ?>
-
 <?= $this->section('content') ?>
 <?php
 $sudahMasuk  = ! empty($presensi_hari_ini);
@@ -9,61 +8,71 @@ $terlambat   = false;
 if ($sudahMasuk && $lokasi_presensi && ! empty($presensi_hari_ini['jam_masuk'])) {
     $terlambat = $presensi_hari_ini['jam_masuk'] > $lokasi_presensi['jam_masuk'];
 }
+
+$fotoPegawai = $pegawai['foto'] ?? session()->get('foto_pegawai');
+$fotoUrl     = foto_profil_url($fotoPegawai);
+
+$lokasiLat    = isset($lokasi_presensi['latitude']) ? (float) $lokasi_presensi['latitude'] : 0;
+$lokasiLng    = isset($lokasi_presensi['longitude']) ? (float) $lokasi_presensi['longitude'] : 0;
+$lokasiRadius = isset($lokasi_presensi['radius']) ? (int) $lokasi_presensi['radius'] : 0;
+$punyaLokasi  = $lokasiLat !== 0.0 && $lokasiLng !== 0.0 && $lokasiRadius > 0;
 ?>
-<div class="content-header">
+
+<div class="app-page-head">
   <div>
-    <h3>Halo, <?= esc($pegawai['nama'] ?? session()->get('nama_pegawai')) ?> 👋</h3>
-    <p><?= esc($tanggal_hari_ini) ?> &middot; <?= esc($pegawai['jabatan'] ?? '-') ?></p>
+    <h2 class="app-title">Halo, <?= esc($pegawai['nama'] ?? session()->get('nama_pegawai')) ?> 👋</h2>
+    <p class="app-subtitle"><?= esc($tanggal_hari_ini) ?> &middot; <?= esc($pegawai['jabatan'] ?? '-') ?></p>
   </div>
-  <div class="company-pill">
-    <svg fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-    </svg>
+  <span class="inline-flex items-center gap-2 self-start rounded-full border border-brand-100 bg-brand-50 px-3.5 py-2 text-[11.5px] font-bold text-brand-700 sm:self-auto">
+    <i class="fa-solid fa-location-dot"></i>
     <?= esc($lokasi_presensi['nama_lokasi'] ?? 'Lokasi belum diatur') ?>
-  </div>
+  </span>
 </div>
 
-<div class="row g-3 mb-3">
-  <div class="col-lg-7">
-    <div class="card h-100">
-      <div class="card-body p-4">
-        <div class="d-flex justify-content-between align-items-start mb-3">
-          <div>
-            <div class="text-xs text-uppercase text-secondary font-weight-bold">Waktu Server</div>
-            <div class="clock-display mt-1">
-              <span id="jam">--</span><span class="sep">:</span><span id="menit">--</span><span class="sep">:</span><span id="detik">--</span>
-            </div>
+<div class="mb-[26px] grid grid-cols-1 gap-[26px] lg:grid-cols-8">
+  <!-- Jam server -->
+  <div class="lg:col-span-5">
+    <div class="app-card relative h-full overflow-hidden p-6">
+      <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-500/[0.06]"></div>
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <div class="text-[10.5px] font-bold uppercase tracking-[0.12em] text-slate-400">Waktu Server</div>
+          <div class="mt-3 flex items-baseline gap-1 text-[42px] font-extrabold leading-none tracking-tight text-slate-900 tabular-nums">
+            <span id="jam">--</span>
+            <span class="text-slate-300">:</span>
+            <span id="menit">--</span>
+            <span class="text-slate-300">:</span>
+            <span id="detik">--</span>
           </div>
-          <span class="badge bg-primary"><?= esc($lokasi_presensi['zona_waktu'] ?? 'WIB') ?></span>
         </div>
+        <span class="rounded-full bg-brand-50 px-3 py-1.5 text-[10.5px] font-bold text-brand-700"><?= esc($lokasi_presensi['zona_waktu'] ?? 'WIB') ?></span>
+      </div>
 
-        <div class="status-box <?= $sudahMasuk ? 'active' : '' ?>">
-          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <div>
-              <div class="text-xs text-secondary font-weight-bold text-uppercase">Status Hari Ini</div>
-              <div class="mt-1">
-                <?php if ($sudahPulang): ?>
-                  <span class="badge bg-success">Presensi Lengkap</span>
-                <?php elseif ($sudahMasuk): ?>
-                  <span class="badge bg-warning">Sudah Masuk, Belum Pulang</span>
-                  <?php if ($terlambat): ?>
-                    <span class="badge bg-danger ms-1">Terlambat</span>
-                  <?php endif; ?>
-                <?php else: ?>
-                  <span class="badge bg-secondary">Belum Presensi</span>
+      <div class="mt-6 rounded-2xl border border-slate-100 bg-slate-50/70 p-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div class="text-[10.5px] font-bold uppercase tracking-[0.12em] text-slate-400">Status Hari Ini</div>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <?php if ($sudahPulang): ?>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/20"><span class="h-1.5 w-1.5 rounded-full bg-current"></span>Presensi Lengkap</span>
+              <?php elseif ($sudahMasuk): ?>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-[11px] font-bold text-amber-700 ring-1 ring-inset ring-amber-600/20"><span class="h-1.5 w-1.5 rounded-full bg-current"></span>Sudah Masuk, Belum Pulang</span>
+                <?php if ($terlambat): ?>
+                  <span class="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-3 py-1 text-[11px] font-bold text-rose-700 ring-1 ring-inset ring-rose-600/20"><span class="h-1.5 w-1.5 rounded-full bg-current"></span>Terlambat</span>
                 <?php endif; ?>
-              </div>
+              <?php else: ?>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600 ring-1 ring-inset ring-slate-500/20"><span class="h-1.5 w-1.5 rounded-full bg-current"></span>Belum Presensi</span>
+              <?php endif; ?>
             </div>
-            <div class="d-flex gap-4">
-              <div>
-                <div class="text-xs text-secondary">Masuk</div>
-                <div class="font-weight-bold"><?= $sudahMasuk && $presensi_hari_ini['jam_masuk'] ? substr($presensi_hari_ini['jam_masuk'], 0, 5) : '--:--' ?></div>
-              </div>
-              <div>
-                <div class="text-xs text-secondary">Pulang</div>
-                <div class="font-weight-bold"><?= $sudahPulang ? substr($presensi_hari_ini['jam_keluar'], 0, 5) : '--:--' ?></div>
-              </div>
+          </div>
+          <div class="flex gap-6">
+            <div>
+              <div class="text-[10.5px] font-medium text-slate-400">Masuk</div>
+              <div class="mt-0.5 text-[15px] font-bold text-slate-800"><?= $sudahMasuk && $presensi_hari_ini['jam_masuk'] ? substr($presensi_hari_ini['jam_masuk'], 0, 5) : '--:--' ?></div>
+            </div>
+            <div>
+              <div class="text-[10.5px] font-medium text-slate-400">Pulang</div>
+              <div class="mt-0.5 text-[15px] font-bold text-slate-800"><?= $sudahPulang ? substr($presensi_hari_ini['jam_keluar'], 0, 5) : '--:--' ?></div>
             </div>
           </div>
         </div>
@@ -71,146 +80,231 @@ if ($sudahMasuk && $lokasi_presensi && ! empty($presensi_hari_ini['jam_masuk']))
     </div>
   </div>
 
-  <div class="col-lg-5">
-    <div class="row g-3 h-100">
-      <div class="col-6">
-        <div class="card stat-mini h-100">
-          <div class="icon bg-success-subtle text-success" style="background:#ecfdf5;">
-            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-            </svg>
-          </div>
-          <div>
-            <div class="value"><?= (int) $total_hadir ?></div>
-            <div class="label">Hadir Bulan Ini</div>
-          </div>
+  <!-- Statistik -->
+  <div class="grid grid-cols-1 gap-[26px] sm:grid-cols-2 lg:col-span-3 lg:grid-cols-1">
+    <div class="grid grid-cols-2 gap-[26px] lg:col-span-1">
+      <div class="app-card flex items-center gap-3 p-5">
+        <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
+          <i class="fa-solid fa-calendar-check text-sm"></i>
+        </div>
+        <div>
+          <div class="text-[26px] font-extrabold leading-none text-slate-900"><?= (int) $total_hadir ?></div>
+          <div class="mt-1 text-[10.5px] font-semibold text-slate-400">Hadir Bulan Ini</div>
         </div>
       </div>
-      <div class="col-6">
-        <div class="card stat-mini h-100">
-          <div class="icon" style="background:#eff6ff;color:#2563eb;">
-            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
-            </svg>
-          </div>
-          <div>
-            <div class="value"><?= (int) $total_izin ?></div>
-            <div class="label">Izin Disetujui</div>
-          </div>
+      <div class="app-card flex items-center gap-3 p-5">
+        <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-sky-50 text-sky-600">
+          <i class="fa-solid fa-file-lines text-sm"></i>
+        </div>
+        <div>
+          <div class="text-[26px] font-extrabold leading-none text-slate-900"><?= (int) $total_izin ?></div>
+          <div class="mt-1 text-[10.5px] font-semibold text-slate-400">Izin Disetujui</div>
         </div>
       </div>
-      <div class="col-12">
-        <div class="card h-100">
-          <div class="card-body p-3">
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <span class="text-xs text-secondary font-weight-bold text-uppercase">Ringkasan</span>
-              <a href="<?= base_url('pegawai/rekap') ?>" class="text-xs text-decoration-none font-weight-bold">Lihat rekap</a>
-            </div>
-            <div class="d-flex justify-content-between text-sm mb-1">
-              <span class="text-secondary">Jam masuk kantor</span>
-              <span class="font-weight-bold"><?= $lokasi_presensi ? substr($lokasi_presensi['jam_masuk'], 0, 5) : '-' ?></span>
-            </div>
-            <div class="d-flex justify-content-between text-sm mb-1">
-              <span class="text-secondary">Jam pulang kantor</span>
-              <span class="font-weight-bold"><?= $lokasi_presensi ? substr($lokasi_presensi['jam_pulang'], 0, 5) : '-' ?></span>
-            </div>
-            <div class="d-flex justify-content-between text-sm">
-              <span class="text-secondary">Radius lokasi</span>
-              <span class="font-weight-bold"><?= $lokasi_presensi ? (int) $lokasi_presensi['radius'] . ' m' : '-' ?></span>
-            </div>
-          </div>
+    </div>
+
+    <div class="app-card p-5 lg:col-span-1">
+      <div class="mb-3 flex items-center justify-between">
+        <span class="text-[10.5px] font-bold uppercase tracking-[0.12em] text-slate-400">Ringkasan</span>
+        <a href="<?= base_url('pegawai/rekap') ?>" class="text-[11px] font-bold text-brand-600 hover:text-brand-700">Lihat rekap</a>
+      </div>
+      <div class="space-y-2 text-[12.5px]">
+        <div class="flex items-center justify-between">
+          <span class="text-slate-500">Jam masuk kantor</span>
+          <span class="font-bold text-slate-800"><?= $lokasi_presensi ? substr($lokasi_presensi['jam_masuk'], 0, 5) : '-' ?></span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-500">Jam pulang kantor</span>
+          <span class="font-bold text-slate-800"><?= $lokasi_presensi ? substr($lokasi_presensi['jam_pulang'], 0, 5) : '-' ?></span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-500">Radius lokasi</span>
+          <span class="font-bold text-slate-800"><?= $lokasi_presensi ? (int) $lokasi_presensi['radius'] . ' m' : '-' ?></span>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row g-3 mb-4">
-  <div class="col-lg-6">
-    <div class="card h-100">
-      <div class="card-header py-3">
-        <i class="fas fa-sign-in-alt me-1 text-success"></i> Presensi Masuk
+<!-- Foto pegawai + lokasi GPS -->
+<div class="mb-[26px] grid grid-cols-1 gap-[26px] lg:grid-cols-12">
+  <!-- 1. Foto -->
+  <div class="lg:col-span-4">
+    <div class="app-card flex h-full flex-col overflow-hidden">
+      <div class="app-card-header">
+        <div class="flex items-center gap-2.5">
+          <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-600 text-[10.5px] font-extrabold text-white">1</span>
+          <h3 class="text-[14px] font-bold text-slate-900">Foto Pegawai</h3>
+        </div>
+        <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/15">
+          <i class="fa-solid fa-circle-check mr-1"></i> Terverifikasi
+        </span>
       </div>
-      <div class="card-body p-4">
-        <?php if ($sudahMasuk): ?>
-          <div class="alert alert-success border-0 mb-0">
-            <i class="fas fa-check-circle me-2"></i> Anda sudah presensi masuk pukul <strong><?= substr($presensi_hari_ini['jam_masuk'], 0, 5) ?></strong>.
+      <div class="flex flex-1 flex-col p-5">
+        <div class="relative mx-auto w-full max-w-[260px] overflow-hidden rounded-2xl bg-slate-100 ring-1 ring-slate-200">
+          <img src="<?= $fotoUrl ?>" alt="Foto <?= esc($pegawai['nama'] ?? 'pegawai') ?>" class="aspect-[4/5] w-full object-cover">
+          <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/70 to-transparent px-3 pb-2.5 pt-8 text-[10px] font-semibold text-white">
+            Foto dasar profil
+          </span>
+        </div>
+        <div class="mt-4 text-center">
+          <div class="text-[15px] font-bold text-slate-900"><?= esc($pegawai['nama'] ?? session()->get('nama_pegawai')) ?></div>
+          <div class="mt-0.5 text-[11.5px] text-slate-400">
+            <?= esc($pegawai['jabatan'] ?? '-') ?>
+            <?php if (! empty($pegawai['nip'])): ?> &middot; NIP <?= esc($pegawai['nip']) ?><?php endif; ?>
           </div>
-        <?php else: ?>
-          <form method="POST" action="<?= base_url('pegawai/presensi_masuk') ?>" enctype="multipart/form-data" class="form-presensi" data-nama="masuk">
-            <?= csrf_field() ?>
-            <input type="hidden" name="latitude" class="input-latitude">
-            <input type="hidden" name="longitude" class="input-longitude">
-
-            <div class="mb-3">
-              <label class="form-label">Foto Presensi <span class="text-secondary font-weight-normal">(opsional)</span></label>
-              <input type="file" name="foto_masuk" class="form-control" accept="image/*" capture="user">
-            </div>
-            <div class="small text-secondary mb-3">
-              <i class="fas fa-map-marker-alt me-1"></i>
-              Lokasi GPS akan diperiksa otomatis saat tombol ditekan.
-            </div>
-            <button type="submit" class="btn btn-primary w-100">
-              <i class="fas fa-fingerprint me-1"></i> Presensi Masuk Sekarang
-            </button>
-          </form>
-        <?php endif; ?>
+        </div>
+        <p class="mt-auto pt-4 text-center text-[11px] leading-relaxed text-slate-400">
+          Foto presensi memakai foto profil kepegawaian, jadi tidak perlu unggah ulang saat presensi.
+        </p>
       </div>
     </div>
   </div>
 
-  <div class="col-lg-6">
-    <div class="card h-100">
-      <div class="card-header py-3">
-        <i class="fas fa-sign-out-alt me-1 text-danger"></i> Presensi Pulang
-      </div>
-      <div class="card-body p-4">
-        <?php if (! $sudahMasuk): ?>
-          <div class="alert alert-secondary border-0 mb-0">
-            <i class="fas fa-info-circle me-2"></i> Lakukan presensi masuk terlebih dahulu.
+  <!-- 2. Lokasi & radius -->
+  <div class="lg:col-span-8">
+    <div class="app-card flex h-full flex-col overflow-hidden">
+      <div class="app-card-header">
+        <div class="flex items-center gap-2.5">
+          <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-600 text-[10.5px] font-extrabold text-white">2</span>
+          <div>
+            <h3 class="text-[14px] font-bold text-slate-900">Lokasi &amp; Radius Presensi</h3>
+            <p class="mt-0.5 text-[11px] text-slate-400">
+              <?= esc($lokasi_presensi['nama_lokasi'] ?? 'Lokasi belum diatur') ?>
+              <?php if ($punyaLokasi): ?> &middot; radius <?= $lokasiRadius ?> m<?php endif; ?>
+            </p>
           </div>
-        <?php elseif ($sudahPulang): ?>
-          <div class="alert alert-success border-0 mb-0">
-            <i class="fas fa-check-circle me-2"></i> Anda sudah presensi pulang pukul <strong><?= substr($presensi_hari_ini['jam_keluar'], 0, 5) ?></strong>.
-          </div>
-        <?php else: ?>
-          <form method="POST" action="<?= base_url('pegawai/presensi_pulang') ?>" enctype="multipart/form-data" class="form-presensi" data-nama="pulang">
-            <?= csrf_field() ?>
-            <input type="hidden" name="latitude" class="input-latitude">
-            <input type="hidden" name="longitude" class="input-longitude">
-
-            <div class="mb-3">
-              <label class="form-label">Foto Presensi <span class="text-secondary font-weight-normal">(opsional)</span></label>
-              <input type="file" name="foto_keluar" class="form-control" accept="image/*" capture="user">
-            </div>
-            <div class="small text-secondary mb-3">
-              <i class="fas fa-map-marker-alt me-1"></i>
-              Pastikan Anda berada dalam radius lokasi presensi.
-            </div>
-            <button type="submit" class="btn btn-danger w-100">
-              <i class="fas fa-door-open me-1"></i> Presensi Pulang Sekarang
-            </button>
-          </form>
+        </div>
+        <?php if ($punyaLokasi): ?>
+          <button type="button" id="perbaruiLokasi" class="app-btn-outline app-btn-sm">
+            <i class="fa-solid fa-crosshairs"></i> Perbarui
+          </button>
         <?php endif; ?>
       </div>
+
+      <?php if ($punyaLokasi): ?>
+        <div class="flex flex-1 flex-col px-4 pt-4">
+          <div id="petaPresensi" class="min-h-[300px] w-full flex-1 overflow-hidden rounded-xl border border-slate-200 bg-slate-100"></div>
+        </div>
+        <div class="mt-auto grid grid-cols-3 divide-x divide-slate-100 border-t border-slate-100">
+          <div class="px-4 py-3.5">
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Jarak Anda</div>
+            <div id="jarakAnda" class="mt-1 text-[15px] font-extrabold tabular-nums text-slate-800">--</div>
+          </div>
+          <div class="px-4 py-3.5">
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Radius</div>
+            <div class="mt-1 text-[15px] font-extrabold tabular-nums text-slate-800"><?= $lokasiRadius ?> m</div>
+          </div>
+          <div class="px-4 py-3.5">
+            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Status</div>
+            <div id="statusRadius" class="mt-1 inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[10.5px] font-bold text-slate-500">
+              <span class="h-1.5 w-1.5 rounded-full bg-current"></span> Mendeteksi…
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-x-5 gap-y-1.5 border-t border-slate-100 bg-slate-50/60 px-4 py-2.5 text-[10.5px] font-medium text-slate-500">
+          <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-brand-600 ring-2 ring-white"></span> Titik lokasi presensi</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-sky-500 ring-2 ring-white"></span> Posisi Anda saat ini</span>
+          <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full border border-brand-500 bg-brand-500/20"></span> Area radius</span>
+        </div>
+      <?php else: ?>
+        <div class="app-empty m-4">
+          <i class="fa-regular fa-map"></i>
+          <div>Lokasi presensi Anda belum diatur. Hubungi admin perusahaan.</div>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </div>
 
-<div class="card">
-  <div class="card-header d-flex align-items-center justify-content-between py-3">
+<div class="mb-[26px] grid grid-cols-1 gap-[26px] lg:grid-cols-2">
+  <!-- Presensi masuk -->
+  <div class="app-card flex flex-col overflow-hidden">
+    <div class="app-card-header">
+      <div class="flex items-center gap-2.5">
+        <span class="grid h-8 w-8 place-items-center rounded-lg bg-emerald-50 text-emerald-600"><i class="fa-solid fa-right-to-bracket text-[11px]"></i></span>
+        <h3 class="text-[14px] font-bold text-slate-900">Presensi Masuk</h3>
+      </div>
+      <span class="text-[10.5px] font-semibold text-slate-400">Foto dasar profil</span>
+    </div>
+    <div class="flex flex-1 flex-col p-5">
+      <?php if ($sudahMasuk): ?>
+        <div class="flex items-start gap-2.5 rounded-xl bg-emerald-50 px-4 py-3.5 text-[12.5px] text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+          <i class="fa-solid fa-circle-check mt-0.5"></i>
+          <span>Anda sudah presensi masuk pukul <strong><?= substr($presensi_hari_ini['jam_masuk'], 0, 5) ?></strong>.</span>
+        </div>
+      <?php else: ?>
+        <form method="POST" action="<?= base_url('pegawai/presensi_masuk') ?>" class="form-presensi flex flex-1 flex-col" data-nama="masuk">
+          <?= csrf_field() ?>
+          <input type="hidden" name="latitude" class="input-latitude">
+          <input type="hidden" name="longitude" class="input-longitude">
+          <div class="space-y-2.5 text-[12px] text-slate-500">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-camera w-4 text-center text-slate-400"></i> Foto presensi menggunakan foto dasar profil Anda.</div>
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-location-crosshairs w-4 text-center text-slate-400"></i> Lokasi GPS akan diperiksa otomatis saat tombol ditekan.</div>
+          </div>
+          <button type="submit" class="app-btn mt-5 h-12 w-full bg-emerald-600 text-[13.5px] text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 focus:ring-emerald-500/20">
+            <i class="fa-solid fa-fingerprint"></i> Presensi Masuk Sekarang
+          </button>
+        </form>
+      <?php endif; ?>
+    </div>
+  </div>
+
+  <!-- Presensi pulang -->
+  <div class="app-card flex flex-col overflow-hidden">
+    <div class="app-card-header">
+      <div class="flex items-center gap-2.5">
+        <span class="grid h-8 w-8 place-items-center rounded-lg bg-rose-50 text-rose-600"><i class="fa-solid fa-right-from-bracket text-[11px]"></i></span>
+        <h3 class="text-[14px] font-bold text-slate-900">Presensi Pulang</h3>
+      </div>
+      <span class="text-[10.5px] font-semibold text-slate-400">Foto dasar profil</span>
+    </div>
+    <div class="flex flex-1 flex-col p-5">
+      <?php if (! $sudahMasuk): ?>
+        <div class="flex items-start gap-2.5 rounded-xl bg-slate-100 px-4 py-3.5 text-[12.5px] text-slate-600">
+          <i class="fa-solid fa-circle-info mt-0.5"></i>
+          <span>Lakukan presensi masuk terlebih dahulu.</span>
+        </div>
+      <?php elseif ($sudahPulang): ?>
+        <div class="flex items-start gap-2.5 rounded-xl bg-emerald-50 px-4 py-3.5 text-[12.5px] text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
+          <i class="fa-solid fa-circle-check mt-0.5"></i>
+          <span>Anda sudah presensi pulang pukul <strong><?= substr($presensi_hari_ini['jam_keluar'], 0, 5) ?></strong>.</span>
+        </div>
+      <?php else: ?>
+        <form method="POST" action="<?= base_url('pegawai/presensi_pulang') ?>" class="form-presensi flex flex-1 flex-col" data-nama="pulang">
+          <?= csrf_field() ?>
+          <input type="hidden" name="latitude" class="input-latitude">
+          <input type="hidden" name="longitude" class="input-longitude">
+          <div class="space-y-2.5 text-[12px] text-slate-500">
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-camera w-4 text-center text-slate-400"></i> Foto presensi menggunakan foto dasar profil Anda.</div>
+            <div class="flex items-center gap-2.5"><i class="fa-solid fa-location-crosshairs w-4 text-center text-slate-400"></i> Pastikan Anda berada dalam radius lokasi presensi.</div>
+          </div>
+          <button type="submit" class="app-btn mt-5 h-12 w-full bg-rose-600 text-[13.5px] text-white shadow-lg shadow-rose-600/20 hover:bg-rose-700 focus:ring-rose-500/20">
+            <i class="fa-solid fa-door-open"></i> Presensi Pulang Sekarang
+          </button>
+        </form>
+      <?php endif; ?>
+    </div>
+  </div>
+</div>
+
+<div class="app-card overflow-hidden">
+  <div class="app-card-header">
     <div>
-      <h6 class="mb-0">Riwayat Presensi Terakhir</h6>
-      <small class="text-secondary">7 data terakhir.</small>
+      <h3 class="text-[15px] font-bold text-slate-900">Riwayat Presensi Terakhir</h3>
+      <p class="mt-0.5 text-[11.5px] text-slate-400">7 data terakhir.</p>
     </div>
-    <a href="<?= base_url('pegawai/rekap') ?>" class="btn btn-sm btn-outline-dark">Lihat semua</a>
+    <a href="<?= base_url('pegawai/rekap') ?>" class="app-btn-outline app-btn-sm">Lihat semua</a>
   </div>
-  <div class="card-body p-3">
+  <div class="p-3 sm:p-4">
     <?php if (empty($riwayat)): ?>
-      <div class="empty-state">Belum ada riwayat presensi.</div>
+      <div class="app-empty">
+        <i class="fa-regular fa-calendar"></i>
+        <div>Belum ada riwayat presensi.</div>
+      </div>
     <?php else: ?>
-      <div class="table-responsive">
-        <table class="table mb-0">
+      <div class="overflow-x-auto">
+        <table class="app-table">
           <thead>
             <tr>
               <th>Tanggal</th>
@@ -222,14 +316,15 @@ if ($sudahMasuk && $lokasi_presensi && ! empty($presensi_hari_ini['jam_masuk']))
           <tbody>
             <?php foreach ($riwayat as $row): ?>
               <tr>
-                <td class="font-weight-semibold"><?= tanggal_indo($row['tanggal_masuk'], true) ?></td>
+                <td class="font-semibold text-slate-800"><?= tanggal_indo($row['tanggal_masuk'], true) ?></td>
                 <td><?= $row['jam_masuk'] ? substr($row['jam_masuk'], 0, 5) : '-' ?></td>
-                <td><?= $row['jam_keluar'] ? substr($row['jam_keluar'], 0, 5) : '<span class="text-secondary">Belum</span>' ?></td>
+                <td><?= $row['jam_keluar'] ? substr($row['jam_keluar'], 0, 5) : '<span class="text-slate-400">Belum</span>' ?></td>
                 <td>
-                  <?php if (! empty($row['foto_masuk'])): ?>
-                    <img src="<?= base_url('uploads/presensi/' . $row['foto_masuk']) ?>" class="avatar avatar-sm" alt="Foto">
+                  <?php $fotoRiwayat = foto_presensi_url($row['foto_masuk'] ?? ''); ?>
+                  <?php if ($fotoRiwayat !== ''): ?>
+                    <img src="<?= $fotoRiwayat ?>" class="h-8 w-8 rounded-lg object-cover ring-2 ring-white shadow-sm" alt="Foto">
                   <?php else: ?>
-                    <span class="text-secondary">-</span>
+                    <span class="text-slate-400">-</span>
                   <?php endif; ?>
                 </td>
               </tr>
@@ -240,25 +335,182 @@ if ($sudahMasuk && $lokasi_presensi && ! empty($presensi_hari_ini['jam_masuk']))
     <?php endif; ?>
   </div>
 </div>
+
+<?= $this->endSection() ?>
+
+<?= $this->section('styles') ?>
+<?php if ($punyaLokasi): ?>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  .titik-anda {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background: #0ea5e9;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, .28);
+    animation: denyutAnda 2s ease-out infinite;
+  }
+  @keyframes denyutAnda {
+    0%   { box-shadow: 0 0 0 4px rgba(14, 165, 233, .30); }
+    70%  { box-shadow: 0 0 0 14px rgba(14, 165, 233, 0); }
+    100% { box-shadow: 0 0 0 4px rgba(14, 165, 233, 0); }
+  }
+  #petaPresensi .leaflet-container { font-family: inherit; }
+</style>
+<?php endif; ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
+<?php if ($punyaLokasi): ?>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  (function () {
+    var el = document.getElementById('petaPresensi');
+    if (!el || typeof L === 'undefined') return;
+
+    var kantorLat = <?= json_encode($lokasiLat) ?>;
+    var kantorLng = <?= json_encode($lokasiLng) ?>;
+    var radius    = <?= json_encode($lokasiRadius) ?>;
+    var namaLokasi = '<?= esc($lokasi_presensi['nama_lokasi'] ?? '', 'js') ?>';
+
+    var jarakEl  = document.getElementById('jarakAnda');
+    var statusEl = document.getElementById('statusRadius');
+    var tombol   = document.getElementById('perbaruiLokasi');
+
+    var zoom = radius <= 50 ? 18 : radius <= 150 ? 17 : radius <= 400 ? 16 : radius <= 1000 ? 15 : 14;
+    var peta = L.map(el, { scrollWheelZoom: false }).setView([kantorLat, kantorLng], zoom);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(peta);
+
+    // Area radius presensi
+    L.circle([kantorLat, kantorLng], {
+      radius: radius,
+      color: '#4f46e5', weight: 2, opacity: .85,
+      fillColor: '#4f46e5', fillOpacity: .12
+    }).addTo(peta);
+
+    // Titik lokasi presensi
+    var ikonKantor = L.divIcon({
+      className: '',
+      html: '<span style="display:grid;place-items:center;width:34px;height:34px;border-radius:9999px;background:#4f46e5;color:#fff;border:3px solid #fff;box-shadow:0 8px 18px -6px rgba(79,70,229,.85)"><i class="fa-solid fa-building" style="font-size:12px"></i></span>',
+      iconSize: [34, 34], iconAnchor: [17, 17]
+    });
+    L.marker([kantorLat, kantorLng], { icon: ikonKantor, title: namaLokasi })
+      .addTo(peta)
+      .bindTooltip(namaLokasi, { direction: 'top', offset: [0, -16] });
+
+    // Posisi pengguna
+    var ikonAnda = L.divIcon({
+      className: '',
+      html: '<span class="titik-anda"></span>',
+      iconSize: [18, 18], iconAnchor: [9, 9]
+    });
+    var penandaAnda     = null;
+    var lingkaranAkurasi = null;
+
+    function jarakMeter(lat1, lng1, lat2, lng2) {
+      var R = 6371000;
+      var dLat = (lat2 - lat1) * Math.PI / 180;
+      var dLng = (lng2 - lng1) * Math.PI / 180;
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function setStatus(kelas, teks) {
+      statusEl.className = 'mt-1 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-bold ring-1 ring-inset ' + kelas;
+      statusEl.innerHTML = '<span class="h-1.5 w-1.5 rounded-full bg-current"></span> ' + teks;
+    }
+
+    function resetTombol() {
+      if (!tombol) return;
+      tombol.disabled = false;
+      tombol.innerHTML = '<i class="fa-solid fa-crosshairs"></i> Perbarui';
+    }
+
+    function gagal(pesan, notif) {
+      jarakEl.textContent = '--';
+      setStatus('bg-amber-50 text-amber-700 ring-amber-600/20', 'GPS tidak aktif');
+      if (notif) Swal.fire('Lokasi tidak terdeteksi', pesan, 'error');
+      resetTombol();
+    }
+
+    function deteksi(notif) {
+      if (!navigator.geolocation) {
+        gagal('Browser Anda tidak mendukung geolokasi. Gunakan browser terbaru.', notif);
+        return;
+      }
+      if (tombol) {
+        tombol.disabled = true;
+        tombol.innerHTML = '<span class="mr-1.5 inline-block h-3 w-3 animate-spin rounded-full border-2 border-slate-300 border-t-brand-600 align-[-2px]"></span> Mencari…';
+      }
+
+      navigator.geolocation.getCurrentPosition(function (pos) {
+        var uLat = pos.coords.latitude;
+        var uLng = pos.coords.longitude;
+        var akurasi = pos.coords.accuracy || 0;
+        var jarak = jarakMeter(uLat, uLng, kantorLat, kantorLng);
+
+        if (!penandaAnda) {
+          penandaAnda = L.marker([uLat, uLng], { icon: ikonAnda, zIndexOffset: 1000, title: 'Posisi Anda' }).addTo(peta);
+        } else {
+          penandaAnda.setLatLng([uLat, uLng]);
+        }
+
+        if (!lingkaranAkurasi) {
+          lingkaranAkurasi = L.circle([uLat, uLng], {
+            radius: akurasi, color: '#0ea5e9', weight: 1, opacity: .5,
+            fillColor: '#0ea5e9', fillOpacity: .08
+          }).addTo(peta);
+        } else {
+          lingkaranAkurasi.setLatLng([uLat, uLng]).setRadius(akurasi);
+        }
+
+        jarakEl.textContent = Math.round(jarak) + ' m';
+        if (jarak <= radius) {
+          setStatus('bg-emerald-50 text-emerald-700 ring-emerald-600/20', 'Di dalam radius');
+        } else {
+          setStatus('bg-rose-50 text-rose-700 ring-rose-600/20', 'Di luar radius');
+        }
+
+        peta.fitBounds([[kantorLat, kantorLng], [uLat, uLng]], { padding: [40, 40], maxZoom: 18 });
+        resetTombol();
+      }, function (err) {
+        var pesan = 'Aktifkan GPS dan izinkan akses lokasi pada browser untuk melakukan presensi.';
+        if (err.code === err.PERMISSION_DENIED) {
+          pesan = 'Akses lokasi ditolak. Izinkan akses lokasi pada pengaturan browser.';
+        }
+        gagal(pesan, notif);
+      }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+    }
+
+    tombol && tombol.addEventListener('click', function () { deteksi(true); });
+
+    setTimeout(function () {
+      peta.invalidateSize();
+      deteksi(false);
+    }, 300);
+  })();
+</script>
+<?php endif; ?>
 <script>
   (function() {
     var jam = <?= (int) date('H') ?>;
     var menit = <?= (int) date('i') ?>;
     var detik = <?= (int) date('s') ?>;
 
-    function dua(n) {
-      return n < 10 ? '0' + n : n;
-    }
-
+    function dua(n) { return n < 10 ? '0' + n : n; }
     function render() {
       document.getElementById('jam').textContent = dua(jam);
       document.getElementById('menit').textContent = dua(menit);
       document.getElementById('detik').textContent = dua(detik);
     }
-
     setInterval(function() {
       detik++;
       if (detik >= 60) { detik = 0; menit++; }
@@ -266,22 +518,17 @@ if ($sudahMasuk && $lokasi_presensi && ! empty($presensi_hari_ini['jam_masuk']))
       if (jam >= 24) { jam = 0; }
       render();
     }, 1000);
-
     render();
   })();
 
   document.querySelectorAll('.form-presensi').forEach(function(form) {
     form.addEventListener('submit', function(event) {
-      if (form.dataset.siap === '1') {
-        return;
-      }
-
+      if (form.dataset.siap === '1') return;
       event.preventDefault();
-
       var tombol = form.querySelector('button[type="submit"]');
       var teksAsli = tombol.innerHTML;
       tombol.disabled = true;
-      tombol.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Mendeteksi lokasi...';
+      tombol.innerHTML = '<span class="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>Mendeteksi lokasi...';
 
       if (!navigator.geolocation) {
         Swal.fire('GPS tidak tersedia', 'Browser Anda tidak mendukung geolokasi. Gunakan browser terbaru.', 'error');
@@ -303,11 +550,7 @@ if ($sudahMasuk && $lokasi_presensi && ! empty($presensi_hari_ini['jam_masuk']))
         Swal.fire('Lokasi tidak terdeteksi', pesan, 'error');
         tombol.disabled = false;
         tombol.innerHTML = teksAsli;
-      }, {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
-      });
+      }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
     });
   });
 </script>

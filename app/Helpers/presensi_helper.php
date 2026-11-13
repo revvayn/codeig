@@ -86,22 +86,61 @@ if (! function_exists('badge_kehadiran')) {
         $status = trim((string) $status);
 
         $map = [
-            'Hadir'        => 'success',
-            'Terlambat'    => 'warning',
-            'Izin'         => 'info',
-            'Sakit'        => 'primary',
-            'Cuti'         => 'secondary',
-            'Alpa'         => 'danger',
-            'Menunggu'     => 'warning',
-            'Disetujui'    => 'success',
-            'Ditolak'      => 'danger',
-            'Aktif'        => 'success',
-            'Tidak Aktif'  => 'secondary',
+            'Hadir'       => 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
+            'Terlambat'   => 'bg-amber-50 text-amber-700 ring-amber-600/20',
+            'Izin'        => 'bg-sky-50 text-sky-700 ring-sky-600/20',
+            'Sakit'       => 'bg-indigo-50 text-indigo-700 ring-indigo-600/20',
+            'Cuti'        => 'bg-violet-50 text-violet-700 ring-violet-600/20',
+            'Alpa'        => 'bg-rose-50 text-rose-700 ring-rose-600/20',
+            'Menunggu'    => 'bg-amber-50 text-amber-700 ring-amber-600/20',
+            'Disetujui'   => 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
+            'Ditolak'     => 'bg-rose-50 text-rose-700 ring-rose-600/20',
+            'Aktif'       => 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
+            'Tidak Aktif' => 'bg-slate-100 text-slate-600 ring-slate-500/20',
         ];
 
-        $warna = $map[$status] ?? 'secondary';
+        $kelas = $map[$status] ?? 'bg-slate-100 text-slate-600 ring-slate-500/20';
 
-        return '<span class="badge bg-' . $warna . '">' . esc($status) . '</span>';
+        return '<span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold ring-1 ring-inset ' . $kelas . '">'
+            . '<span class="h-1.5 w-1.5 rounded-full bg-current opacity-70"></span>'
+            . esc($status) . '</span>';
+    }
+}
+
+if (! function_exists('foto_profil_url')) {
+    /**
+     * URL foto profil pegawai, dengan fallback ke avatar default.
+     */
+    function foto_profil_url(?string $nama): string
+    {
+        if (! empty($nama) && is_file(FCPATH . 'profile/' . $nama)) {
+            return base_url('profile/' . $nama);
+        }
+
+        return base_url('assets/img/team-1.jpg');
+    }
+}
+
+if (! function_exists('foto_presensi_url')) {
+    /**
+     * URL foto presensi. Foto dapat berasal dari upload presensi lama
+     * maupun foto dasar profil pegawai (alur presensi saat ini).
+     */
+    function foto_presensi_url(?string $nama): string
+    {
+        if (empty($nama)) {
+            return '';
+        }
+
+        if (is_file(FCPATH . 'uploads/presensi/' . $nama)) {
+            return base_url('uploads/presensi/' . $nama);
+        }
+
+        if (is_file(FCPATH . 'profile/' . $nama)) {
+            return base_url('profile/' . $nama);
+        }
+
+        return '';
     }
 }
 

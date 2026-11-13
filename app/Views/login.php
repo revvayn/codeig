@@ -7,381 +7,205 @@ $idTerpilih  = old('id_perusahaan');
 $username    = old('username');
 ?>
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full">
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="<?= base_url('assets/img/apple-icon.png') ?>">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#4f46e5" />
   <link rel="icon" type="image/png" href="<?= base_url('assets/img/favicon.png') ?>">
   <title>Login - PresensiKu</title>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Noto+Sans:300,400,500,600,700,800|PT+Mono:300,400,500,600,700" rel="stylesheet" />
-  <link href="<?= base_url('assets/css/nucleo-icons.css') ?>" rel="stylesheet" />
-  <link href="<?= base_url('assets/css/nucleo-svg.css') ?>" rel="stylesheet" />
-  <link id="pagestyle" href="<?= base_url('assets/css/corporate-ui-dashboard.css?v=1.0.0') ?>" rel="stylesheet" />
-  <style>
-    * {
-      box-sizing: border-box;
-    }
 
-    body {
-      min-height: 100vh;
-      margin: 0;
-      font-family: 'Noto Sans', sans-serif;
-      background: #eef2ff;
-    }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
-    .login-wrap {
-      min-height: 100vh;
-      display: flex;
-      align-items: stretch;
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc',
+              400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca',
+              800: '#3730a3', 900: '#312e81', 950: '#1e1b4b',
+            },
+          },
+          boxShadow: {
+            card: '0 1px 2px rgba(15,23,42,.04), 0 18px 40px -24px rgba(15,23,42,.18)',
+          },
+          transitionTimingFunction: {
+            'out-expo': 'cubic-bezier(.16,1,.3,1)',
+          },
+        },
+      },
     }
-
-    .login-brand {
-      position: relative;
-      flex: 1 1 45%;
-      background: linear-gradient(140deg, #111827 0%, #312e81 55%, #4f46e5 100%);
-      color: #fff;
-      padding: 56px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      overflow: hidden;
-    }
-
-    .login-brand::before,
-    .login-brand::after {
-      content: '';
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .08);
-    }
-
-    .login-brand::before {
-      width: 380px;
-      height: 380px;
-      right: -120px;
-      top: -100px;
-    }
-
-    .login-brand::after {
-      width: 260px;
-      height: 260px;
-      left: -90px;
-      bottom: -80px;
-      background: rgba(139, 92, 246, .22);
-    }
-
-    .brand-mark {
-      width: 54px;
-      height: 54px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, .14);
-      border: 1px solid rgba(255, 255, 255, .18);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 24px;
-      backdrop-filter: blur(6px);
-    }
-
-    .login-brand h1 {
-      font-size: 40px;
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -.5px;
-      margin-bottom: 16px;
-    }
-
-    .login-brand p {
-      color: #c7d2fe;
-      font-size: 15px;
-      max-width: 420px;
-      line-height: 1.7;
-    }
-
-    .brand-features {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-top: 32px;
-    }
-
-    .brand-feature {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #e0e7ff;
-      font-size: 13.5px;
-    }
-
-    .brand-feature span.dot {
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
-      background: rgba(255, 255, 255, .12);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-    }
-
-    .login-panel {
-      flex: 1 1 55%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 24px;
-      background: #f8fafc;
-    }
-
-    .login-card {
-      width: 100%;
-      max-width: 430px;
-      background: #fff;
-      border: 1px solid #e8ecf3;
-      border-radius: 22px;
-      padding: 38px 34px;
-      box-shadow: 0 24px 60px rgba(15, 23, 42, .10);
-    }
-
-    .login-card h3 {
-      font-weight: 800;
-      color: #0f172a;
-      font-size: 25px;
-      margin-bottom: 6px;
-    }
-
-    .login-card .subtitle {
-      color: #64748b;
-      font-size: 13.5px;
-      margin-bottom: 26px;
-    }
-
-    .form-label {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #334155;
-      margin-bottom: 7px;
-    }
-
-    .input-icon {
-      position: relative;
-    }
-
-    .input-icon .icon {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #94a3b8;
-      pointer-events: none;
-      display: inline-flex;
-    }
-
-    .input-icon .icon svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .input-icon .form-control,
-    .input-icon .form-select {
-      padding-left: 42px;
-      height: 46px;
-      border-radius: 11px;
-      border-color: #dfe5ef;
-      font-size: 14px;
-    }
-
-    .input-icon .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      border: 0;
-      background: transparent;
-      color: #94a3b8;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .input-icon .form-select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, .13);
-    }
-
-    .btn-login {
-      height: 48px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
-      border: 0;
-      color: #fff;
-      font-weight: 700;
-      font-size: 14.5px;
-      letter-spacing: .2px;
-      box-shadow: 0 12px 22px rgba(79, 70, 229, .28);
-      transition: transform .15s ease, box-shadow .15s ease;
-    }
-
-    .btn-login:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 28px rgba(79, 70, 229, .34);
-      color: #fff;
-    }
-
-    .btn-login:active {
-      transform: translateY(0);
-    }
-
-    .alert {
-      border-radius: 11px;
-      font-size: 13px;
-      border: 0;
-    }
-
-    .invalid-feedback {
-      font-size: 12px;
-      display: block;
-    }
-
-    .login-footer {
-      margin-top: 26px;
-      text-align: center;
-      color: #94a3b8;
-      font-size: 11.5px;
-    }
-
-    @media (max-width: 991.98px) {
-      .login-brand {
-        display: none;
-      }
-
-      .login-panel {
-        background: linear-gradient(160deg, #111827 0%, #312e81 45%, #4f46e5 100%);
-      }
-    }
-  </style>
+  </script>
 </head>
 
-<body>
-  <div class="login-wrap">
-    <section class="login-brand">
-      <div>
-        <div class="brand-mark">P</div>
-        <h1>Presensi Karyawan<br>Lebih Mudah.</h1>
-        <p>Kelola kehadiran, rekap, dan pengajuan cuti seluruh karyawan dalam satu dashboard yang rapi dan real-time.</p>
-        <div class="brand-features">
-          <div class="brand-feature"><span class="dot">&#10003;</span> Presensi masuk &amp; pulang berbasis lokasi</div>
-          <div class="brand-feature"><span class="dot">&#10003;</span> Rekap harian dan bulanan otomatis</div>
-          <div class="brand-feature"><span class="dot">&#10003;</span> Pengajuan izin, sakit, dan cuti</div>
+<body class="min-h-full bg-[#f5f6fb] font-sans text-slate-800 antialiased">
+  <div class="flex min-h-screen flex-col lg:flex-row">
+
+    <!-- Brand panel -->
+    <section class="relative hidden overflow-hidden bg-[#0b1220] p-[68px] text-white lg:flex lg:w-[45%] lg:flex-col lg:justify-between">
+      <div class="pointer-events-none absolute -right-32 -top-28 h-96 w-96 rounded-full bg-brand-600/30 blur-2xl"></div>
+      <div class="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-violet-500/20 blur-2xl"></div>
+
+      <div class="relative">
+        <div class="flex items-center gap-3">
+          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-violet-500 text-xl font-extrabold shadow-lg shadow-brand-950/50">P</span>
+          <div>
+            <div class="text-[16px] font-bold leading-tight">PresensiKu</div>
+            <div class="text-[10.5px] text-slate-400">Sistem Presensi Karyawan</div>
+          </div>
         </div>
+
+        <h1 class="mt-[68px] max-w-md text-[42px] font-extrabold leading-[1.12] tracking-tight">
+          Presensi karyawan<br><span class="text-brand-300">lebih mudah.</span>
+        </h1>
+        <p class="mt-4 max-w-md text-[14px] leading-relaxed text-slate-400">
+          Kelola kehadiran, rekap, dan pengajuan cuti seluruh karyawan dalam satu dashboard yang rapi dan real-time.
+        </p>
+
+        <ul class="mt-[42px] space-y-3 text-[13px] text-slate-300">
+          <li class="flex items-center gap-3">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-white/5 text-brand-300 ring-1 ring-inset ring-white/10"><i class="fa-solid fa-location-crosshairs text-[12px]"></i></span>
+            Presensi masuk &amp; pulang berbasis lokasi
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-white/5 text-brand-300 ring-1 ring-inset ring-white/10"><i class="fa-solid fa-chart-column text-[12px]"></i></span>
+            Rekap harian dan bulanan otomatis
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-white/5 text-brand-300 ring-1 ring-inset ring-white/10"><i class="fa-solid fa-calendar-check text-[12px]"></i></span>
+            Pengajuan izin, sakit, dan cuti
+          </li>
+        </ul>
       </div>
-      <div class="text-white-50 text-sm">&copy; <?= date('Y') ?> PresensiKu. Semua hak dilindungi.</div>
+
+      <div class="relative text-[11px] text-slate-500">&copy; <?= date('Y') ?> PresensiKu. Semua hak dilindungi.</div>
     </section>
 
-    <section class="login-panel">
-      <div class="login-card">
-        <h3>Selamat datang</h3>
-        <p class="subtitle">Masuk dengan perusahaan, username, dan password Anda.</p>
-
-        <?php if ($pesan): ?>
-          <div class="alert alert-danger py-2 px-3 mb-3"><?= esc($pesan) ?></div>
-        <?php endif; ?>
-
-        <?php if (! empty($errors)): ?>
-          <div class="alert alert-danger py-2 px-3 mb-3">
-            <?php foreach ($errors as $error): ?>
-              <div><?= esc($error) ?></div>
-            <?php endforeach; ?>
+    <!-- Form panel -->
+    <section class="flex flex-1 items-center justify-center px-6 py-10 sm:px-10 lg:px-[68px]">
+      <div class="w-full max-w-md">
+        <!-- Mobile brand -->
+        <div class="mb-6 flex items-center gap-3 lg:hidden">
+          <span class="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-violet-500 text-lg font-extrabold text-white shadow-lg shadow-brand-600/25">P</span>
+          <div>
+            <div class="text-[15px] font-bold leading-tight text-slate-900">PresensiKu</div>
+            <div class="text-[10.5px] text-slate-400">Sistem Presensi Karyawan</div>
           </div>
-        <?php endif; ?>
+        </div>
 
-        <form action="<?= base_url('login') ?>" method="POST" autocomplete="off">
-          <?= csrf_field() ?>
+        <div class="rounded-3xl border border-slate-200/80 bg-white p-6 shadow-card sm:p-9">
+          <h2 class="text-[26px] font-extrabold leading-tight tracking-tight text-slate-900">Selamat datang</h2>
+          <p class="mt-1.5 text-[13px] text-slate-500">Masuk dengan perusahaan, username, dan password Anda.</p>
 
-          <div class="mb-3">
-            <label class="form-label" for="id_perusahaan">Nama Perusahaan</label>
-            <div class="input-icon">
-              <span class="icon">
-                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m1.5-6H13.5m-1.5 3H13.5m-1.5 3H13.5M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-                </svg>
-              </span>
-              <select name="id_perusahaan" id="id_perusahaan" class="form-select <?= isset($errors['id_perusahaan']) ? 'is-invalid' : '' ?>">
-                <option value="">-- Pilih Perusahaan --</option>
-                <?php foreach ($perusahaan as $row): ?>
-                  <option value="<?= $row['id'] ?>" <?= (string) $idTerpilih === (string) $row['id'] ? 'selected' : '' ?>>
-                    <?= esc($row['nama_perusahaan']) ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
+          <?php if ($pesan): ?>
+            <div class="mt-5 rounded-xl bg-rose-50 px-4 py-3 text-[12.5px] text-rose-700 ring-1 ring-inset ring-rose-600/10"><?= esc($pesan) ?></div>
+          <?php endif; ?>
+
+          <?php if (! empty($errors)): ?>
+            <div class="mt-5 space-y-1 rounded-xl bg-rose-50 px-4 py-3 text-[12.5px] text-rose-700 ring-1 ring-inset ring-rose-600/10">
+              <?php foreach ($errors as $error): ?>
+                <div><?= esc($error) ?></div>
+              <?php endforeach; ?>
             </div>
-            <?php if (isset($errors['id_perusahaan'])): ?>
-              <div class="text-danger small mt-1"><?= esc($errors['id_perusahaan']) ?></div>
-            <?php endif; ?>
-          </div>
+          <?php endif; ?>
 
-          <div class="mb-3">
-            <label class="form-label" for="username">Username</label>
-            <div class="input-icon">
-              <span class="icon">
-                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-              </span>
-              <input type="text" name="username" id="username" class="form-control <?= isset($errors['username']) ? 'is-invalid' : '' ?>" value="<?= esc($username) ?>" placeholder="Masukkan username">
+          <form action="<?= base_url('login') ?>" method="POST" autocomplete="off" class="mt-6 space-y-4">
+            <?= csrf_field() ?>
+
+            <div>
+              <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.08em] text-slate-500" for="id_perusahaan">Nama Perusahaan</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <i class="fa-regular fa-building text-[14px]"></i>
+                </span>
+                <select name="id_perusahaan" id="id_perusahaan"
+                  class="h-11 w-full appearance-none rounded-xl border border-slate-200 bg-white pl-10 pr-10 text-[13.5px] text-slate-800 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10">
+                  <option value="">-- Pilih Perusahaan --</option>
+                  <?php foreach ($perusahaan as $row): ?>
+                    <option value="<?= $row['id'] ?>" <?= (string) $idTerpilih === (string) $row['id'] ? 'selected' : '' ?>>
+                      <?= esc($row['nama_perusahaan']) ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+                <span class="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] text-slate-400"><i class="fa-solid fa-chevron-down"></i></span>
+              </div>
+              <?php if (isset($errors['id_perusahaan'])): ?>
+                <div class="mt-1.5 text-[11.5px] font-medium text-rose-600"><?= esc($errors['id_perusahaan']) ?></div>
+              <?php endif; ?>
             </div>
-            <?php if (isset($errors['username'])): ?>
-              <div class="text-danger small mt-1"><?= esc($errors['username']) ?></div>
-            <?php endif; ?>
-          </div>
 
-          <div class="mb-4">
-            <label class="form-label" for="password">Password</label>
-            <div class="input-icon">
-              <span class="icon">
-                <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                </svg>
-              </span>
-              <input type="password" name="password" id="password" class="form-control <?= isset($errors['password']) ? 'is-invalid' : '' ?>" placeholder="Masukkan password">
-              <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Tampilkan password">
-                <svg id="eye-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" width="18" height="18">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </button>
+            <div>
+              <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.08em] text-slate-500" for="username">Username</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <i class="fa-regular fa-user text-[14px]"></i>
+                </span>
+                <input type="text" name="username" id="username" value="<?= esc($username) ?>"
+                  class="h-11 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-3.5 text-[13.5px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
+                  placeholder="Masukkan username" autocomplete="username">
+              </div>
+              <?php if (isset($errors['username'])): ?>
+                <div class="mt-1.5 text-[11.5px] font-medium text-rose-600"><?= esc($errors['username']) ?></div>
+              <?php endif; ?>
             </div>
-            <?php if (isset($errors['password'])): ?>
-              <div class="text-danger small mt-1"><?= esc($errors['password']) ?></div>
-            <?php endif; ?>
+
+            <div>
+              <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.08em] text-slate-500" for="password">Password</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                  <i class="fa-solid fa-lock text-[14px]"></i>
+                </span>
+                <input type="password" name="password" id="password"
+                  class="h-11 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-11 text-[13.5px] text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10"
+                  placeholder="Masukkan password" autocomplete="current-password">
+                <button type="button" id="togglePassword" aria-label="Tampilkan password"
+                  class="absolute right-2.5 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
+                  <i class="fa-regular fa-eye text-[13px]"></i>
+                </button>
+              </div>
+              <?php if (isset($errors['password'])): ?>
+                <div class="mt-1.5 text-[11.5px] font-medium text-rose-600"><?= esc($errors['password']) ?></div>
+              <?php endif; ?>
+            </div>
+
+            <button type="submit"
+              class="mt-2 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-brand-600 text-[13.5px] font-bold text-white shadow-lg shadow-brand-600/25 transition duration-200 hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20">
+              <i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk ke Dashboard
+            </button>
+          </form>
+
+          <div class="mt-6 border-t border-slate-100 pt-4 text-center text-[11.5px] text-slate-400">
+            Hubungi admin perusahaan jika lupa password atau akun belum aktif.
           </div>
-
-          <button type="submit" class="btn btn-login w-100">Masuk ke Dashboard</button>
-        </form>
-
-        <div class="login-footer">
-          Hubungi admin perusahaan jika lupa password atau akun belum aktif.
         </div>
       </div>
     </section>
   </div>
 
   <script>
-    function togglePassword() {
+    (function () {
+      var btn   = document.getElementById('togglePassword');
       var input = document.getElementById('password');
-      input.type = input.type === 'password' ? 'text' : 'password';
-    }
+      if (!btn || !input) return;
+
+      btn.addEventListener('click', function () {
+        var show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        btn.setAttribute('aria-label', show ? 'Sembunyikan password' : 'Tampilkan password');
+        btn.innerHTML = '<i class="fa-regular ' + (show ? 'fa-eye-slash' : 'fa-eye') + ' text-[13px]"></i>';
+        input.focus();
+      });
+    })();
   </script>
 </body>
 

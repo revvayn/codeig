@@ -2,59 +2,55 @@
 
 <?= $this->section('content') ?>
 <?php $errors = session()->getFlashdata('errors') ?? []; ?>
-<div class="content-header">
+
+<div class="app-page-head">
   <div>
-    <h3>Edit Perusahaan</h3>
-    <p>Perbarui informasi perusahaan.</p>
+    <h2 class="app-title">Edit Perusahaan</h2>
+    <p class="app-subtitle">Perbarui informasi perusahaan.</p>
   </div>
-  <a href="<?= base_url('admin/perusahaan') ?>" class="btn btn-sm btn-outline-dark">
-    <i class="fas fa-arrow-left me-1"></i> Kembali
-  </a>
+  <a href="<?= base_url('admin/perusahaan') ?>" class="app-btn-outline"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
 </div>
 
-<div class="row">
-  <div class="col-lg-8">
-    <div class="card">
-      <div class="card-body p-4">
-        <?php if (! empty($errors)): ?>
-          <div class="alert alert-danger">
-            <?php foreach ($errors as $error): ?><div><?= esc($error) ?></div><?php endforeach; ?>
-          </div>
-        <?php endif; ?>
-
-        <form action="<?= base_url('admin/perusahaan/update/' . $perusahaan['id']) ?>" method="POST">
-          <?= csrf_field() ?>
-          <div class="mb-3">
-            <label class="form-label">Nama Perusahaan <span class="text-danger">*</span></label>
-            <input type="text" name="nama_perusahaan" class="form-control" value="<?= esc(old('nama_perusahaan', $perusahaan['nama_perusahaan'])) ?>" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Alamat</label>
-            <textarea name="alamat" class="form-control" rows="3"><?= esc(old('alamat', $perusahaan['alamat'])) ?></textarea>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Telepon</label>
-              <input type="text" name="telepon" class="form-control" value="<?= esc(old('telepon', $perusahaan['telepon'])) ?>">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Email</label>
-              <input type="email" name="email" class="form-control" value="<?= esc(old('email', $perusahaan['email'])) ?>">
-            </div>
-          </div>
-          <div class="mb-4">
-            <label class="form-label">Status</label>
-            <select name="status" class="form-select">
-              <option value="Aktif" <?= old('status', $perusahaan['status']) === 'Aktif' ? 'selected' : '' ?>>Aktif</option>
-              <option value="Tidak Aktif" <?= old('status', $perusahaan['status']) === 'Tidak Aktif' ? 'selected' : '' ?>>Tidak Aktif</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-dark">
-            <i class="fas fa-save me-1"></i> Perbarui Perusahaan
-          </button>
-        </form>
+<div class="mx-auto w-full max-w-2xl">
+  <div class="app-card p-6">
+    <?php if (! empty($errors)): ?>
+      <div class="mb-5 rounded-xl bg-rose-50 px-4 py-3 text-[12.5px] text-rose-700 ring-1 ring-inset ring-rose-600/10">
+        <?php foreach ($errors as $error): ?><div><?= esc($error) ?></div><?php endforeach; ?>
       </div>
-    </div>
+    <?php endif; ?>
+
+    <form action="<?= base_url('admin/perusahaan/update/' . $perusahaan['id']) ?>" method="POST" class="space-y-5">
+      <?= csrf_field() ?>
+      <div>
+        <label class="app-label">Nama Perusahaan <span class="text-rose-500">*</span></label>
+        <input type="text" name="nama_perusahaan" class="app-input" value="<?= esc(old('nama_perusahaan', $perusahaan['nama_perusahaan'])) ?>" required>
+      </div>
+      <div>
+        <label class="app-label">Alamat</label>
+        <textarea name="alamat" class="app-textarea" rows="3"><?= esc(old('alamat', $perusahaan['alamat'])) ?></textarea>
+      </div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <label class="app-label">Telepon</label>
+          <input type="text" name="telepon" class="app-input" value="<?= esc(old('telepon', $perusahaan['telepon'])) ?>">
+        </div>
+        <div>
+          <label class="app-label">Email</label>
+          <input type="email" name="email" class="app-input" value="<?= esc(old('email', $perusahaan['email'])) ?>">
+        </div>
+      </div>
+      <div>
+        <label class="app-label">Status</label>
+        <select name="status" class="app-select">
+          <option value="Aktif" <?= old('status', $perusahaan['status']) === 'Aktif' ? 'selected' : '' ?>>Aktif</option>
+          <option value="Tidak Aktif" <?= old('status', $perusahaan['status']) === 'Tidak Aktif' ? 'selected' : '' ?>>Tidak Aktif</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2 pt-1">
+        <button type="submit" class="app-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Perbarui Perusahaan</button>
+        <a href="<?= base_url('admin/perusahaan') ?>" class="app-btn-ghost">Batal</a>
+      </div>
+    </form>
   </div>
 </div>
 <?= $this->endSection() ?>

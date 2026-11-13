@@ -39,6 +39,7 @@ class Ketidakhadiran extends BaseController
         }
 
         $model->update($id, ['status_pengajuan' => $status]);
+        \App\Models\AuditLogModel::catat('update_status', 'ketidakhadiran', (int) $id, 'Status menjadi ' . $status);
         session()->setFlashdata('success', 'Status pengajuan berhasil diubah menjadi ' . $status . '.');
 
         return redirect()->to(base_url('admin/ketidakhadiran'));

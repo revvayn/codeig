@@ -22,6 +22,24 @@ class Home extends BaseController
         $pegawai = $pegawaiModel->find($idPegawai);
         $lokasi  = $pegawai ? $lokasiModel->find($pegawai['lokasi_presensi']) : null;
 
+        // Fallback ke GPS default perusahaan jika pegawai belum di-assign plant.
+        if (! $lokasi && $pegawai) {
+            $perusahaan = (new \App\Models\PerusahaanModel())->find($pegawai['id_perusahaan']);
+            if ($perusahaan && ! empty($perusahaan['latitude'])) {
+                $lokasi = [
+                    'id'            => 0,
+                    'nama_lokasi'   => $perusahaan['nama_perusahaan'],
+                    'alamat_lokasi' => $perusahaan['alamat'] ?? '',
+                    'latitude'      => $perusahaan['latitude'],
+                    'longitude'     => $perusahaan['longitude'],
+                    'radius'        => $perusahaan['radius'] ?? 20,
+                    'zona_waktu'    => $perusahaan['zona_waktu'] ?? 'WIB',
+                    'jam_masuk'     => $perusahaan['jam_masuk'] ?? '08:00:00',
+                    'jam_pulang'    => $perusahaan['jam_pulang'] ?? '17:00:00',
+                ];
+            }
+        }
+
         if ($lokasi) {
             date_default_timezone_set(zona_waktu_php($lokasi['zona_waktu']));
         }
@@ -83,6 +101,9 @@ class Home extends BaseController
         if ($fotoName === false) {
             return redirect()->to(base_url('pegawai/home'));
         }
+        if ($fotoName === '') {
+            $fotoName = $pegawai['foto'] ?? '';
+        }
 
         $presensiModel->insert([
             'id_pegawai'     => $idPegawai,
@@ -139,6 +160,9 @@ class Home extends BaseController
         $fotoName = $this->simpanFoto('foto_keluar');
         if ($fotoName === false) {
             return redirect()->to(base_url('pegawai/home'));
+        }
+        if ($fotoName === '') {
+            $fotoName = $pegawai['foto'] ?? '';
         }
 
         $presensiModel->update($presensi['id'], [

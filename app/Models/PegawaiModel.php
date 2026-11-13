@@ -29,11 +29,32 @@ class PegawaiModel extends Model
             ->join('lokasi_presensi lp', 'lp.id = pg.lokasi_presensi', 'left')
             ->orderBy('pg.nama', 'ASC');
 
+        // Data Pegawai hanya berisi pegawai; akun ber-role Admin dikelola di menu Data Admin (Superadmin).
+        $builder->groupStart()
+            ->where('u.role', 'Pegawai')
+            ->orWhere('u.id', null)
+            ->groupEnd();
+
         if ($idPerusahaan !== null) {
             $builder->where('pg.id_perusahaan', $idPerusahaan);
         }
 
         return $builder->get()->getResultArray();
+    }
+
+    /**
+     * Jumlah pegawai (tanpa akun Admin) pada satu perusahaan.
+     */
+    public function jumlahPegawaiPerusahaan(int $idPerusahaan): int
+    {
+        return $this->db->table('pegawai pg')
+            ->join('users u', 'u.id_pegawai = pg.id', 'left')
+            ->where('pg.id_perusahaan', $idPerusahaan)
+            ->groupStart()
+                ->where('u.role', 'Pegawai')
+                ->orWhere('u.id', null)
+            ->groupEnd()
+            ->countAllResults();
     }
 
     public function DetailPegawai($id = false)

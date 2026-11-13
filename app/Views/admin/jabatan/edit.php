@@ -1,23 +1,31 @@
 <?= $this->extend('admin/layout.php') ?>
-
 <?= $this->section('content') ?>
-<h2><?= $title ?></h2>
-<div class="row">
-    <div class="col-xl-4 col-md-6 d-flex flex-column mx-auto">
-        <div class="card card-plain mt-0">
-            <div class="card-body">
-                <form role="form" method="POST" action="<?=base_url('admin/jabatan/update/'.$jabatan['id'])?>">
-                    <label>Nama Jabatan</label>
-                    <div class="mb-3">
-                        <input type="text" value="<?= $jabatan['jabatan']?>" class="form-control <?=($validation->hasError('jabatan')) ?'is-invalid':'' ?>" name="jabatan" placeholder="Nama Jabatan" aria-label="Jabatan" aria-describedby="name-addon">
-                        <div class="invalid-feedback"><?=$validation->getError('jabatan')?></div>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-dark w-100 mt-4 mb-3">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
+<div class="app-page-head">
+  <div>
+    <h2 class="app-title">Edit Jabatan</h2>
+    <p class="app-subtitle">Perbarui nama jabatan yang sudah ada.</p>
+  </div>
+  <a href="<?= base_url('admin/jabatan') ?>" class="app-btn-outline"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
 </div>
+
+<div class="mx-auto w-full max-w-xl">
+  <div class="app-card p-6">
+    <form method="POST" action="<?= base_url('admin/jabatan/update/' . $jabatan['id']) ?>" class="space-y-5">
+      <?= csrf_field() ?>
+      <div>
+        <label class="app-label">Nama Jabatan <span class="text-rose-500">*</span></label>
+        <input type="text" name="jabatan" class="app-input <?= $validation->hasError('jabatan') ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/10' : '' ?>" value="<?= esc(old('jabatan', $jabatan['jabatan'])) ?>" placeholder="Nama Jabatan" required>
+        <?php if ($validation->hasError('jabatan')): ?>
+          <p class="app-error"><?= $validation->getError('jabatan') ?></p>
+        <?php endif; ?>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="submit" class="app-btn-primary"><i class="fa-solid fa-floppy-disk"></i> Perbarui</button>
+        <a href="<?= base_url('admin/jabatan') ?>" class="app-btn-ghost">Batal</a>
+      </div>
+    </form>
+  </div>
+</div>
+
 <?= $this->endSection() ?>

@@ -14,6 +14,12 @@ class PerusahaanModel extends Model
         'telepon',
         'email',
         'status',
+        'latitude',
+        'longitude',
+        'radius',
+        'zona_waktu',
+        'jam_masuk',
+        'jam_pulang',
     ];
     protected $useTimestamps = false;
 

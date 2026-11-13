@@ -38,9 +38,16 @@ class Perusahaan extends BaseController
             'telepon'         => $this->request->getPost('telepon'),
             'email'           => $this->request->getPost('email'),
             'status'          => $this->request->getPost('status') ?: 'Aktif',
+            'latitude'        => $this->request->getPost('latitude'),
+            'longitude'       => $this->request->getPost('longitude'),
+            'radius'          => $this->request->getPost('radius'),
+            'zona_waktu'      => $this->request->getPost('zona_waktu'),
+            'jam_masuk'       => $this->request->getPost('jam_masuk'),
+            'jam_pulang'      => $this->request->getPost('jam_pulang'),
         ]);
 
         session()->setFlashdata('success', 'Data perusahaan berhasil ditambahkan.');
+        \App\Models\AuditLogModel::catat('create', 'perusahaan', null, 'Menambah perusahaan ' . $this->request->getPost('nama_perusahaan'));
 
         return redirect()->to(base_url('superadmin/perusahaan'));
     }
@@ -80,9 +87,16 @@ class Perusahaan extends BaseController
             'telepon'         => $this->request->getPost('telepon'),
             'email'           => $this->request->getPost('email'),
             'status'          => $this->request->getPost('status') ?: 'Aktif',
+            'latitude'        => $this->request->getPost('latitude'),
+            'longitude'       => $this->request->getPost('longitude'),
+            'radius'          => $this->request->getPost('radius'),
+            'zona_waktu'      => $this->request->getPost('zona_waktu'),
+            'jam_masuk'       => $this->request->getPost('jam_masuk'),
+            'jam_pulang'      => $this->request->getPost('jam_pulang'),
         ]);
 
         session()->setFlashdata('success', 'Data perusahaan berhasil diperbarui.');
+        \App\Models\AuditLogModel::catat('update', 'perusahaan', (int) $id, 'Memperbarui perusahaan ID ' . $id);
 
         return redirect()->to(base_url('superadmin/perusahaan'));
     }
@@ -104,6 +118,7 @@ class Perusahaan extends BaseController
 
         $model->delete($id);
         session()->setFlashdata('success', 'Data perusahaan berhasil dihapus.');
+        \App\Models\AuditLogModel::catat('delete', 'perusahaan', (int) $id, 'Menghapus perusahaan ID ' . $id);
 
         return redirect()->to(base_url('superadmin/perusahaan'));
     }

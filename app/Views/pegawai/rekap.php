@@ -1,14 +1,17 @@
 <?= $this->extend('pegawai/layout.php') ?>
 
 <?= $this->section('content') ?>
-<div class="content-header">
+<div class="app-page-head">
   <div>
-    <h3>Rekap Kehadiran</h3>
-    <p>Riwayat presensi dan pengajuan ketidakhadiran Anda.</p>
+    <h2 class="app-title">Rekap Kehadiran</h2>
+    <p class="app-subtitle">Riwayat presensi dan pengajuan ketidakhadiran Anda.</p>
   </div>
-  <form method="GET" action="<?= base_url('pegawai/rekap') ?>" class="d-flex gap-2">
-    <input type="month" name="bulan" class="form-control form-control-sm" value="<?= esc($bulan) ?>">
-    <button type="submit" class="btn btn-dark btn-sm"><i class="fas fa-search me-1"></i> Tampilkan</button>
+  <form method="GET" action="<?= base_url('pegawai/rekap') ?>" class="flex items-end gap-2">
+    <div>
+      <label class="app-label">Bulan</label>
+      <input type="month" name="bulan" class="app-input h-10 w-[150px] text-[12.5px]" value="<?= esc($bulan) ?>">
+    </div>
+    <button type="submit" class="app-btn-dark"><i class="fa-solid fa-magnifying-glass"></i> Tampilkan</button>
   </form>
 </div>
 
@@ -16,62 +19,60 @@
 $izinDisetujui = array_filter($izin, static fn ($row) => ($row['status_pengajuan'] ?? '') === 'Disetujui');
 $izinMenunggu  = array_filter($izin, static fn ($row) => ($row['status_pengajuan'] ?? '') === 'Menunggu');
 ?>
-<div class="row g-3 mb-4">
-  <div class="col-md-4">
-    <div class="card stat-mini h-100">
-      <div class="icon" style="background:#ecfdf5;color:#059669;">
-        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      </div>
+<div class="mb-[26px] grid grid-cols-1 gap-[26px] sm:grid-cols-3">
+  <div class="app-card relative overflow-hidden p-5">
+    <span class="absolute inset-y-0 left-0 w-1 bg-emerald-500"></span>
+    <div class="flex items-start justify-between">
       <div>
-        <div class="value"><?= (int) $total_hadir ?></div>
-        <div class="label">Hadir - <?= esc($nama_bulan) ?></div>
+        <div class="text-[10.5px] font-bold uppercase tracking-[0.1em] text-slate-400">Hadir</div>
+        <div class="mt-2 text-[34px] font-extrabold leading-none text-slate-900"><?= (int) $total_hadir ?></div>
+        <div class="mt-1.5 text-[11px] text-slate-400"><?= esc($nama_bulan) ?></div>
       </div>
+      <span class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-600"><i class="fa-solid fa-calendar-check text-sm"></i></span>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="card stat-mini h-100">
-      <div class="icon" style="background:#eff6ff;color:#2563eb;">
-        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
-        </svg>
-      </div>
+  <div class="app-card relative overflow-hidden p-5">
+    <span class="absolute inset-y-0 left-0 w-1 bg-sky-500"></span>
+    <div class="flex items-start justify-between">
       <div>
-        <div class="value"><?= count($izinDisetujui) ?></div>
-        <div class="label">Izin Disetujui</div>
+        <div class="text-[10.5px] font-bold uppercase tracking-[0.1em] text-slate-400">Izin Disetujui</div>
+        <div class="mt-2 text-[34px] font-extrabold leading-none text-slate-900"><?= count($izinDisetujui) ?></div>
+        <div class="mt-1.5 text-[11px] text-slate-400">Bulan ini</div>
       </div>
+      <span class="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 text-sky-600"><i class="fa-solid fa-file-lines text-sm"></i></span>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="card stat-mini h-100">
-      <div class="icon" style="background:#fff7ed;color:#ea580c;">
-        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      </div>
+  <div class="app-card relative overflow-hidden p-5">
+    <span class="absolute inset-y-0 left-0 w-1 bg-amber-500"></span>
+    <div class="flex items-start justify-between">
       <div>
-        <div class="value"><?= count($izinMenunggu) ?></div>
-        <div class="label">Menunggu Persetujuan</div>
+        <div class="text-[10.5px] font-bold uppercase tracking-[0.1em] text-slate-400">Menunggu Persetujuan</div>
+        <div class="mt-2 text-[34px] font-extrabold leading-none text-slate-900"><?= count($izinMenunggu) ?></div>
+        <div class="mt-1.5 text-[11px] text-slate-400">Bulan ini</div>
       </div>
+      <span class="grid h-10 w-10 place-items-center rounded-xl bg-amber-50 text-amber-600"><i class="fa-regular fa-clock text-sm"></i></span>
     </div>
   </div>
 </div>
 
-<div class="card mb-4">
-  <div class="card-header py-3 d-flex justify-content-between align-items-center">
+<div class="app-card mb-[26px] overflow-hidden">
+  <div class="app-card-header">
     <div>
-      <h6 class="mb-0">Riwayat Presensi</h6>
-      <small class="text-secondary"><?= esc($nama_bulan) ?></small>
+      <h3 class="text-[15px] font-bold text-slate-900">Riwayat Presensi</h3>
+      <p class="mt-0.5 text-[11.5px] text-slate-400"><?= esc($nama_bulan) ?></p>
     </div>
-    <span class="badge bg-primary"><?= count($presensi) ?> data</span>
+    <span class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1.5 text-[11px] font-bold text-brand-700">
+      <span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span> <?= count($presensi) ?> data
+    </span>
   </div>
-  <div class="card-body p-3">
+  <div class="p-3 sm:p-4">
     <?php if (empty($presensi)): ?>
-      <div class="empty-state">Belum ada presensi pada bulan ini.</div>
+      <div class="app-empty">
+        <i class="fa-regular fa-calendar"></i>
+        <div>Belum ada presensi pada bulan ini.</div>
+      </div>
     <?php else: ?>
-      <div class="table-responsive">
-        <table id="datatables" class="table align-items-center mb-0">
+        <table id="datatables" class="app-table">
           <thead>
             <tr>
               <th>No</th>
@@ -85,49 +86,53 @@ $izinMenunggu  = array_filter($izin, static fn ($row) => ($row['status_pengajuan
           <tbody>
             <?php $no = 1; foreach ($presensi as $row): ?>
               <tr>
-                <td><?= $no++ ?></td>
-                <td class="font-weight-semibold"><?= tanggal_indo($row['tanggal_masuk'], true) ?></td>
+                <td class="text-slate-400"><?= $no++ ?></td>
+                <td class="font-semibold text-slate-800"><?= tanggal_indo($row['tanggal_masuk'], true) ?></td>
                 <td><?= $row['jam_masuk'] ? substr($row['jam_masuk'], 0, 5) : '-' ?></td>
-                <td><?= $row['jam_keluar'] ? substr($row['jam_keluar'], 0, 5) : '<span class="text-secondary">Belum</span>' ?></td>
+                <td><?= $row['jam_keluar'] ? substr($row['jam_keluar'], 0, 5) : '<span class="text-slate-400">Belum</span>' ?></td>
                 <td>
-                  <?php if (! empty($row['foto_masuk'])): ?>
-                    <a href="<?= base_url('uploads/presensi/' . $row['foto_masuk']) ?>" target="_blank">
-                      <img src="<?= base_url('uploads/presensi/' . $row['foto_masuk']) ?>" class="avatar avatar-sm" alt="Foto masuk">
+                  <?php $fotoMasuk = foto_presensi_url($row['foto_masuk'] ?? ''); ?>
+                  <?php if ($fotoMasuk !== ''): ?>
+                    <a href="<?= $fotoMasuk ?>" target="_blank">
+                      <img src="<?= $fotoMasuk ?>" class="h-9 w-9 rounded-lg object-cover ring-2 ring-white shadow-sm" alt="Foto masuk">
                     </a>
-                  <?php else: ?><span class="text-secondary">-</span><?php endif; ?>
+                  <?php else: ?><span class="text-slate-400">-</span><?php endif; ?>
                 </td>
                 <td>
-                  <?php if (! empty($row['foto_keluar'])): ?>
-                    <a href="<?= base_url('uploads/presensi/' . $row['foto_keluar']) ?>" target="_blank">
-                      <img src="<?= base_url('uploads/presensi/' . $row['foto_keluar']) ?>" class="avatar avatar-sm" alt="Foto pulang">
+                  <?php $fotoKeluar = foto_presensi_url($row['foto_keluar'] ?? ''); ?>
+                  <?php if ($fotoKeluar !== ''): ?>
+                    <a href="<?= $fotoKeluar ?>" target="_blank">
+                      <img src="<?= $fotoKeluar ?>" class="h-9 w-9 rounded-lg object-cover ring-2 ring-white shadow-sm" alt="Foto pulang">
                     </a>
-                  <?php else: ?><span class="text-secondary">-</span><?php endif; ?>
+                  <?php else: ?><span class="text-slate-400">-</span><?php endif; ?>
                 </td>
               </tr>
             <?php endforeach; ?>
           </tbody>
         </table>
-      </div>
     <?php endif; ?>
   </div>
 </div>
 
-<div class="card">
-  <div class="card-header py-3 d-flex justify-content-between align-items-center">
+<div class="app-card overflow-hidden">
+  <div class="app-card-header">
     <div>
-      <h6 class="mb-0">Pengajuan Ketidakhadiran</h6>
-      <small class="text-secondary"><?= esc($nama_bulan) ?></small>
+      <h3 class="text-[15px] font-bold text-slate-900">Pengajuan Ketidakhadiran</h3>
+      <p class="mt-0.5 text-[11.5px] text-slate-400"><?= esc($nama_bulan) ?></p>
     </div>
-    <a href="<?= base_url('pegawai/ketidakhadiran/create') ?>" class="btn btn-sm btn-dark">
-      <i class="fas fa-plus me-1"></i> Ajukan
+    <a href="<?= base_url('pegawai/ketidakhadiran/create') ?>" class="app-btn-dark app-btn-sm">
+      <i class="fa-solid fa-plus"></i> Ajukan
     </a>
   </div>
-  <div class="card-body p-3">
+  <div class="p-3 sm:p-4">
     <?php if (empty($izin)): ?>
-      <div class="empty-state">Belum ada pengajuan pada bulan ini.</div>
+      <div class="app-empty">
+        <i class="fa-regular fa-calendar-xmark"></i>
+        <div>Belum ada pengajuan pada bulan ini.</div>
+      </div>
     <?php else: ?>
-      <div class="table-responsive">
-        <table class="table align-items-center mb-0">
+      <div class="overflow-x-auto">
+        <table class="app-table">
           <thead>
             <tr>
               <th>Tanggal</th>
@@ -140,16 +145,18 @@ $izinMenunggu  = array_filter($izin, static fn ($row) => ($row['status_pengajuan
           <tbody>
             <?php foreach ($izin as $row): ?>
               <tr>
-                <td class="font-weight-semibold"><?= tanggal_indo($row['tanggal']) ?></td>
-                <td><span class="badge bg-light text-dark border"><?= esc($row['keterangan']) ?></span></td>
-                <td><?= esc($row['deskripsi']) ?></td>
+                <td class="font-semibold text-slate-800"><?= tanggal_indo($row['tanggal']) ?></td>
+                <td>
+                  <span class="inline-flex rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600 ring-1 ring-inset ring-slate-200"><?= esc($row['keterangan']) ?></span>
+                </td>
+                <td class="max-w-[260px] truncate text-[11.5px] text-slate-500" title="<?= esc($row['deskripsi']) ?>"><?= esc($row['deskripsi']) ?></td>
                 <td><?= badge_kehadiran($row['status_pengajuan']) ?></td>
                 <td>
                   <?php if (! empty($row['file'])): ?>
-                    <a href="<?= base_url('uploads/ketidakhadiran/' . $row['file']) ?>" target="_blank" class="btn btn-sm btn-outline-dark">
-                      <i class="fas fa-paperclip"></i>
+                    <a href="<?= base_url('uploads/ketidakhadiran/' . $row['file']) ?>" target="_blank" class="app-btn-outline app-btn-sm h-8">
+                      <i class="fa-solid fa-paperclip text-[10px]"></i> Lihat
                     </a>
-                  <?php else: ?><span class="text-secondary">-</span><?php endif; ?>
+                  <?php else: ?><span class="text-slate-400">-</span><?php endif; ?>
                 </td>
               </tr>
             <?php endforeach; ?>

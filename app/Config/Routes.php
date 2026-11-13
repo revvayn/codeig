@@ -15,6 +15,10 @@ $routes->get('logout', 'Login::logout');
 $routes->group('admin', ['filter' => 'adminfilter'], static function ($routes) {
     $routes->get('home', 'Admin\Home::index');
 
+    // Profil akun sendiri
+    $routes->get('profile', 'Profile::index');
+    $routes->post('profile/update', 'Profile::update');
+
     // Data Pegawai
     $routes->get('data_pegawai', 'Admin\DataPegawai::index');
     $routes->get('data_pegawai/create', 'Admin\DataPegawai::create');
@@ -51,7 +55,14 @@ $routes->group('admin', ['filter' => 'adminfilter'], static function ($routes) {
 
     // Rekap Kehadiran
     $routes->get('rekap/harian', 'Admin\Rekap::harian');
+    $routes->get('rekap/harian/export', 'Admin\Rekap::exportHarian');
     $routes->get('rekap/bulanan', 'Admin\Rekap::bulanan');
+    $routes->get('rekap/bulanan/export', 'Admin\Rekap::exportBulanan');
+
+    // Import Pegawai
+    $routes->get('data_pegawai/import', 'Admin\DataPegawai::import');
+    $routes->get('data_pegawai/import/template', 'Admin\DataPegawai::downloadTemplate');
+    $routes->post('data_pegawai/import/store', 'Admin\DataPegawai::importStore');
 
     // Ketidakhadiran
     $routes->get('ketidakhadiran', 'Admin\Ketidakhadiran::index');
@@ -63,6 +74,10 @@ $routes->group('admin', ['filter' => 'adminfilter'], static function ($routes) {
 // ---------------------------------------------------------------------------
 $routes->group('superadmin', ['filter' => 'superadminfilter'], static function ($routes) {
     $routes->get('home', 'Superadmin\Home::index');
+
+    // Profil akun sendiri
+    $routes->get('profile', 'Profile::index');
+    $routes->post('profile/update', 'Profile::update');
 
     // Perusahaan
     $routes->get('perusahaan', 'Superadmin\Perusahaan::index');
@@ -79,6 +94,9 @@ $routes->group('superadmin', ['filter' => 'superadminfilter'], static function (
     $routes->get('admin/edit/(:segment)', 'Superadmin\Admin::edit/$1');
     $routes->post('admin/update/(:segment)', 'Superadmin\Admin::update/$1');
     $routes->get('admin/delete/(:num)', 'Superadmin\Admin::delete/$1');
+
+    // Audit Log
+    $routes->get('audit', 'Superadmin\Audit::index');
 });
 
 // ---------------------------------------------------------------------------
@@ -86,6 +104,10 @@ $routes->group('superadmin', ['filter' => 'superadminfilter'], static function (
 // ---------------------------------------------------------------------------
 $routes->group('pegawai', ['filter' => 'pegawaifilter'], static function ($routes) {
     $routes->get('home', 'Pegawai\Home::index');
+
+    // Profil akun sendiri
+    $routes->get('profile', 'Profile::index');
+    $routes->post('profile/update', 'Profile::update');
     $routes->post('presensi_masuk', 'Pegawai\Home::presensi_masuk');
     $routes->post('presensi_pulang', 'Pegawai\Home::presensi_pulang');
 

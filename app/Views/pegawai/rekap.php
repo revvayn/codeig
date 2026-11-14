@@ -11,7 +11,7 @@
       <label class="app-label">Bulan</label>
       <input type="month" name="bulan" class="app-input h-10 w-[150px] text-[12.5px]" value="<?= esc($bulan) ?>">
     </div>
-    <button type="submit" class="app-btn-dark"><i class="fa-solid fa-magnifying-glass"></i> Tampilkan</button>
+    <button type="submit" class="app-btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Tampilkan</button>
   </form>
 </div>
 
@@ -57,9 +57,12 @@ $izinMenunggu  = array_filter($izin, static fn ($row) => ($row['status_pengajuan
 
 <div class="app-card mb-[26px] overflow-hidden">
   <div class="app-card-header">
-    <div>
-      <h3 class="text-[15px] font-bold text-slate-900">Riwayat Presensi</h3>
-      <p class="mt-0.5 text-[11.5px] text-slate-400"><?= esc($nama_bulan) ?></p>
+    <div class="flex items-center gap-2.5">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-solid fa-clock-rotate-left text-[11px]"></i></span>
+      <div>
+        <h3 class="text-[14px] font-bold text-slate-900">Riwayat Presensi</h3>
+        <p class="text-[11px] text-slate-400"><?= esc($nama_bulan) ?></p>
+      </div>
     </div>
     <span class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1.5 text-[11px] font-bold text-brand-700">
       <span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span> <?= count($presensi) ?> data
@@ -116,11 +119,14 @@ $izinMenunggu  = array_filter($izin, static fn ($row) => ($row['status_pengajuan
 
 <div class="app-card overflow-hidden">
   <div class="app-card-header">
-    <div>
-      <h3 class="text-[15px] font-bold text-slate-900">Pengajuan Ketidakhadiran</h3>
-      <p class="mt-0.5 text-[11.5px] text-slate-400"><?= esc($nama_bulan) ?></p>
+    <div class="flex items-center gap-2.5">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-solid fa-calendar-xmark text-[11px]"></i></span>
+      <div>
+        <h3 class="text-[14px] font-bold text-slate-900">Pengajuan Ketidakhadiran</h3>
+        <p class="text-[11px] text-slate-400"><?= esc($nama_bulan) ?></p>
+      </div>
     </div>
-    <a href="<?= base_url('pegawai/ketidakhadiran/create') ?>" class="app-btn-dark app-btn-sm">
+    <a href="<?= base_url('pegawai/ketidakhadiran/create') ?>" class="app-btn-primary app-btn-sm">
       <i class="fa-solid fa-plus"></i> Ajukan
     </a>
   </div>

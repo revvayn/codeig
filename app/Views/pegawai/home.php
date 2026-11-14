@@ -290,9 +290,12 @@ $punyaLokasi  = $lokasiLat !== 0.0 && $lokasiLng !== 0.0 && $lokasiRadius > 0;
 
 <div class="app-card overflow-hidden">
   <div class="app-card-header">
-    <div>
-      <h3 class="text-[15px] font-bold text-slate-900">Riwayat Presensi Terakhir</h3>
-      <p class="mt-0.5 text-[11.5px] text-slate-400">7 data terakhir.</p>
+    <div class="flex items-center gap-2.5">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-solid fa-clock-rotate-left text-[11px]"></i></span>
+      <div>
+        <h3 class="text-[14px] font-bold text-slate-900">Riwayat Presensi Terakhir</h3>
+        <p class="text-[11px] text-slate-400">7 data terakhir.</p>
+      </div>
     </div>
     <a href="<?= base_url('pegawai/rekap') ?>" class="app-btn-outline app-btn-sm">Lihat semua</a>
   </div>

@@ -12,9 +12,9 @@
         <label class="app-label">Bulan</label>
         <input type="month" name="bulan" class="app-input h-10 w-[150px] text-[12.5px]" value="<?= esc($bulan) ?>">
       </div>
-      <button type="submit" class="app-btn-dark"><i class="fa-solid fa-magnifying-glass"></i> Tampilkan</button>
+      <button type="submit" class="app-btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Tampilkan</button>
     </form>
-    <a href="<?= base_url('admin/rekap/bulanan/export?bulan=' . urlencode($bulan)) ?>" class="app-btn-outline border-emerald-200 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800">
+    <a href="<?= base_url('admin/rekap/bulanan/export?bulan=' . urlencode($bulan)) ?>" class="app-btn-outline">
       <i class="fa-solid fa-file-csv"></i> Export CSV
     </a>
   </div>
@@ -39,9 +39,12 @@
 
 <div class="app-card overflow-hidden">
   <div class="app-card-header">
-    <div>
-      <h3 class="text-[15px] font-bold text-slate-900">Rekap <?= esc($nama_bulan) ?></h3>
-      <p class="mt-0.5 text-[11.5px] text-slate-400">Persentase kehadiran dihitung dari hari kerja efektif.</p>
+    <div class="flex items-center gap-2.5">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-solid fa-calendar-days text-[11px]"></i></span>
+      <div>
+        <h3 class="text-[14px] font-bold text-slate-900">Rekap <?= esc($nama_bulan) ?></h3>
+        <p class="text-[11px] text-slate-400">Persentase kehadiran dihitung dari hari kerja efektif.</p>
+      </div>
     </div>
   </div>
   <div class="p-3 sm:p-4">

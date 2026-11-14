@@ -16,15 +16,18 @@
         <?php endforeach; ?>
       </select>
     </div>
-    <button type="submit" class="app-btn-dark"><i class="fa-solid fa-filter"></i> Filter</button>
+    <button type="submit" class="app-btn-primary"><i class="fa-solid fa-filter"></i> Filter</button>
   </form>
 </div>
 
 <div class="app-card overflow-hidden">
   <div class="app-card-header">
-    <div>
-      <h3 class="text-[15px] font-bold text-slate-900">Pengajuan Ketidakhadiran</h3>
-      <p class="mt-0.5 text-[11.5px] text-slate-400"><?= count($data) ?> pengajuan ditemukan</p>
+    <div class="flex items-center gap-2.5">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-solid fa-calendar-xmark text-[11px]"></i></span>
+      <div>
+        <h3 class="text-[14px] font-bold text-slate-900">Pengajuan Ketidakhadiran</h3>
+        <p class="text-[11px] text-slate-400"><?= count($data) ?> pengajuan ditemukan</p>
+      </div>
     </div>
   </div>
   <div class="p-3 sm:p-4">

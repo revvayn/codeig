@@ -107,6 +107,80 @@ if (! function_exists('badge_kehadiran')) {
     }
 }
 
+if (! function_exists('badge_role')) {
+    /**
+     * Badge HTML untuk role pengguna.
+     */
+    function badge_role(?string $role): string
+    {
+        $role = trim((string) $role);
+
+        $map = [
+            'Superadmin' => 'bg-indigo-50 text-indigo-700 ring-indigo-600/20',
+            'Admin'      => 'bg-sky-50 text-sky-700 ring-sky-600/20',
+            'Pegawai'    => 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
+        ];
+
+        $kelas = $map[$role] ?? 'bg-slate-100 text-slate-600 ring-slate-500/20';
+
+        return '<span class="inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold ring-1 ring-inset ' . $kelas . '">'
+            . esc($role !== '' ? $role : '-') . '</span>';
+    }
+}
+
+if (! function_exists('waktu_indo')) {
+    /**
+     * Format datetime menjadi "14 Nov 2026, 11:27".
+     */
+    function waktu_indo(?string $waktu, bool $denganTanggal = true): string
+    {
+        if (empty($waktu)) {
+            return '-';
+        }
+
+        try {
+            $date = new DateTime($waktu);
+        } catch (Exception $e) {
+            return '-';
+        }
+
+        if (! $denganTanggal) {
+            return $date->format('H:i');
+        }
+
+        $bulan = [
+            1 => 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+            'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
+        ];
+
+        return $date->format('j') . ' ' . $bulan[(int) $date->format('n')] . ' ' . $date->format('Y')
+            . ', ' . $date->format('H:i');
+    }
+}
+
+if (! function_exists('label_aksi')) {
+    /**
+     * Terjemahan aksi audit log ke bahasa Indonesia.
+     */
+    function label_aksi(?string $aksi): string
+    {
+        $aksi = strtolower(trim((string) $aksi));
+
+        return match ($aksi) {
+            'create' => 'Tambah',
+            'update' => 'Ubah',
+            'delete' => 'Hapus',
+            'login'  => 'Masuk',
+            'logout' => 'Keluar',
+            'import' => 'Impor',
+            'export' => 'Ekspor',
+            'view'   => 'Lihat',
+            ''       => '-',
+            default  => ucfirst($aksi),
+        };
+    }
+}
+
 if (! function_exists('foto_profil_url')) {
     /**
      * URL foto profil pegawai, dengan fallback ke avatar default.

@@ -10,7 +10,7 @@
     <a href="<?= base_url('admin/data_pegawai/import') ?>" class="app-btn-outline">
       <i class="fa-solid fa-file-import"></i> Import CSV
     </a>
-    <a href="<?= base_url('admin/data_pegawai/create') ?>" class="app-btn-dark">
+    <a href="<?= base_url('admin/data_pegawai/create') ?>" class="app-btn-primary">
       <i class="fa-solid fa-user-plus"></i> Tambah Pegawai
     </a>
   </div>
@@ -31,7 +31,7 @@
       <div class="app-empty">
         <i class="fa-solid fa-user-group"></i>
         <div>Belum ada data pegawai. Tambahkan pegawai pertama Anda.</div>
-        <a href="<?= base_url('admin/data_pegawai/create') ?>" class="app-btn-dark app-btn-sm mt-1">Tambah Pegawai</a>
+        <a href="<?= base_url('admin/data_pegawai/create') ?>" class="app-btn-primary app-btn-sm mt-1">Tambah Pegawai</a>
       </div>
     <?php else: ?>
         <table id="datatables" class="app-table">
@@ -42,7 +42,6 @@
               <th>NIP</th>
               <th>Jabatan</th>
               <th>Lokasi Presensi</th>
-              <th>Role</th>
               <th>Status</th>
               <th class="text-right">Aksi</th>
             </tr>
@@ -64,9 +63,6 @@
                 <td class="font-medium"><?= esc($pegawai['nip']) ?></td>
                 <td><?= esc($pegawai['jabatan']) ?></td>
                 <td><?= esc($pegawai['nama_lokasi'] ?: $pegawai['lokasi_presensi']) ?></td>
-                <td>
-                  <span class="inline-flex rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600 ring-1 ring-inset ring-slate-200"><?= esc($pegawai['role'] ?: '-') ?></span>
-                </td>
                 <td><?= badge_kehadiran($pegawai['status'] ?: 'Tidak Aktif') ?></td>
                 <td>
                   <div class="flex items-center justify-end gap-1.5">

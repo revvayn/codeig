@@ -8,7 +8,7 @@
   </div>
   <div class="flex flex-wrap items-center gap-2">
     <a href="<?= base_url('admin/lokasi_presensi') ?>" class="app-btn-outline"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
-    <a href="<?= base_url('admin/lokasi_presensi/edit/' . $lokasi_presensi['id']) ?>" class="app-btn-dark"><i class="fa-solid fa-pen"></i> Edit</a>
+    <a href="<?= base_url('admin/lokasi_presensi/edit/' . $lokasi_presensi['id']) ?>" class="app-btn-primary"><i class="fa-solid fa-pen"></i> Edit</a>
   </div>
 </div>
 
@@ -25,32 +25,32 @@
       <div class="p-6">
         <div class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
           <div class="sm:col-span-2">
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Alamat</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($lokasi_presensi['alamat_lokasi']) ?></div>
+            <div class="app-label">Alamat</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= esc($lokasi_presensi['alamat_lokasi']) ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Radius</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= (int) $lokasi_presensi['radius'] ?> meter</div>
+            <div class="app-label">Radius</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= (int) $lokasi_presensi['radius'] ?> meter</div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Zona Waktu</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($lokasi_presensi['zona_waktu']) ?></div>
+            <div class="app-label">Zona Waktu</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= esc($lokasi_presensi['zona_waktu']) ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Jam Masuk</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= substr($lokasi_presensi['jam_masuk'], 0, 5) ?></div>
+            <div class="app-label">Jam Masuk</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= $lokasi_presensi['jam_masuk'] ? esc(substr($lokasi_presensi['jam_masuk'], 0, 5)) : '-' ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Jam Pulang</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= substr($lokasi_presensi['jam_pulang'], 0, 5) ?></div>
+            <div class="app-label">Jam Pulang</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= $lokasi_presensi['jam_pulang'] ? esc(substr($lokasi_presensi['jam_pulang'], 0, 5)) : '-' ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Latitude</div>
-            <div class="mt-1 font-mono text-[12px] font-semibold text-slate-700"><?= esc($lokasi_presensi['latitude']) ?></div>
+            <div class="app-label">Latitude</div>
+            <div class="font-mono text-[12px] font-semibold text-slate-700"><?= esc($lokasi_presensi['latitude']) ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Longitude</div>
-            <div class="mt-1 font-mono text-[12px] font-semibold text-slate-700"><?= esc($lokasi_presensi['longitude']) ?></div>
+            <div class="app-label">Longitude</div>
+            <div class="font-mono text-[12px] font-semibold text-slate-700"><?= esc($lokasi_presensi['longitude']) ?></div>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@
     <h2 class="app-title">Data Perusahaan</h2>
     <p class="app-subtitle">Kelola daftar perusahaan yang terdaftar pada sistem presensi.</p>
   </div>
-  <a href="<?= base_url('superadmin/perusahaan/create') ?>" class="app-btn-dark">
+  <a href="<?= base_url('superadmin/perusahaan/create') ?>" class="app-btn-primary">
     <i class="fa-solid fa-plus"></i> Tambah Perusahaan
   </a>
 </div>
@@ -26,7 +26,7 @@
       <div class="app-empty">
         <i class="fa-regular fa-building"></i>
         <div>Belum ada perusahaan terdaftar.</div>
-        <a href="<?= base_url('superadmin/perusahaan/create') ?>" class="app-btn-dark app-btn-sm mt-1">Tambah Perusahaan</a>
+        <a href="<?= base_url('superadmin/perusahaan/create') ?>" class="app-btn-primary app-btn-sm mt-1">Tambah Perusahaan</a>
       </div>
     <?php else: ?>
         <table id="datatables" class="app-table">

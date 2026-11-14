@@ -8,9 +8,9 @@
   </div>
   <div class="flex flex-wrap items-center gap-2">
     <span class="hidden items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[11.5px] font-semibold text-slate-500 sm:inline-flex">
-      <i class="fa-regular fa-calendar text-brand-500"></i> <?= date('d M Y') ?>
+      <i class="fa-regular fa-calendar text-brand-500"></i> <?= tanggal_indo(date('Y-m-d'), true) ?>
     </span>
-    <a href="<?= base_url('superadmin/audit') ?>" class="app-btn-outline">
+    <a href="<?= base_url('superadmin/audit') ?>" class="app-btn-primary">
       <i class="fa-solid fa-clipboard-list"></i> Audit Log
     </a>
   </div>
@@ -27,7 +27,7 @@
   ];
   foreach ($cards as [$label, $value, $gradient, $text, $icon]):
   ?>
-    <div class="app-card group relative overflow-hidden p-5 transition duration-300 hover:-translate-y-0.5 hover:shadow-lift">
+    <div class="app-card group relative overflow-hidden p-5 transition duration-300 hover:-translate-y-0.5 hover:shadow-lift sm:last:col-span-2 xl:last:col-span-1">
       <div class="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br <?= $gradient ?> opacity-[0.08] transition group-hover:opacity-[0.14]"></div>
       <div class="flex items-center justify-between">
         <div class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br <?= $gradient ?> <?= $text ?> shadow-lg shadow-slate-900/10">

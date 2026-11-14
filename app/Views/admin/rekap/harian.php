@@ -12,9 +12,9 @@
         <label class="app-label">Tanggal</label>
         <input type="date" name="tanggal" class="app-input h-10 w-[150px] text-[12.5px]" value="<?= esc($tanggal) ?>">
       </div>
-      <button type="submit" class="app-btn-dark"><i class="fa-solid fa-magnifying-glass"></i> Tampilkan</button>
+      <button type="submit" class="app-btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Tampilkan</button>
     </form>
-    <a href="<?= base_url('admin/rekap/harian/export?tanggal=' . urlencode($tanggal)) ?>" class="app-btn-outline border-emerald-200 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800">
+    <a href="<?= base_url('admin/rekap/harian/export?tanggal=' . urlencode($tanggal)) ?>" class="app-btn-outline">
       <i class="fa-solid fa-file-csv"></i> Export CSV
     </a>
   </div>
@@ -54,9 +54,12 @@ foreach ($rekap as $row) {
 
 <div class="app-card overflow-hidden">
   <div class="app-card-header">
-    <div>
-      <h3 class="text-[15px] font-bold text-slate-900">Rekap <?= tanggal_indo($tanggal, true) ?></h3>
-      <p class="mt-0.5 text-[11.5px] text-slate-400"><?= count($rekap) ?> karyawan</p>
+    <div class="flex items-center gap-2.5">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-solid fa-chart-column text-[11px]"></i></span>
+      <div>
+        <h3 class="text-[14px] font-bold text-slate-900">Rekap <?= tanggal_indo($tanggal, true) ?></h3>
+        <p class="text-[11px] text-slate-400"><?= count($rekap) ?> karyawan</p>
+      </div>
     </div>
     <span class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1.5 text-[11px] font-bold text-brand-700">
       <span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span> Harian
@@ -89,8 +92,8 @@ foreach ($rekap as $row) {
               </td>
               <td><?= esc($row['pegawai']['nip']) ?></td>
               <td><?= esc($row['pegawai']['jabatan']) ?></td>
-              <td><?= esc($row['jam_masuk']) ?></td>
-              <td><?= esc($row['jam_keluar']) ?></td>
+              <td class="font-semibold text-slate-700"><?= $row['jam_masuk'] ? esc(substr($row['jam_masuk'], 0, 5)) : '-' ?></td>
+              <td class="font-semibold text-slate-700"><?= $row['jam_keluar'] ? esc(substr($row['jam_keluar'], 0, 5)) : '-' ?></td>
               <td><?= badge_kehadiran($row['status']) ?></td>
               <td class="max-w-[220px] truncate text-[11.5px] text-slate-400">
                 <?= $row['izin'] ? esc($row['izin']['deskripsi']) : '-' ?>

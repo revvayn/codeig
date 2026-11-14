@@ -6,7 +6,7 @@
     <h2 class="app-title">Data Admin</h2>
     <p class="app-subtitle">Kelola akun admin dan superadmin pada seluruh perusahaan.</p>
   </div>
-  <a href="<?= base_url('superadmin/admin/create') ?>" class="app-btn-dark"><i class="fa-solid fa-user-plus"></i> Tambah Admin</a>
+  <a href="<?= base_url('superadmin/admin/create') ?>" class="app-btn-primary"><i class="fa-solid fa-user-plus"></i> Tambah Admin</a>
 </div>
 
 <div class="app-card overflow-hidden">
@@ -24,7 +24,7 @@
       <div class="app-empty">
         <i class="fa-solid fa-user-shield"></i>
         <div>Belum ada akun admin.</div>
-        <a href="<?= base_url('superadmin/admin/create') ?>" class="app-btn-dark app-btn-sm mt-1">Tambah Admin</a>
+        <a href="<?= base_url('superadmin/admin/create') ?>" class="app-btn-primary app-btn-sm mt-1">Tambah Admin</a>
       </div>
     <?php else: ?>
         <table id="datatables" class="app-table">
@@ -48,9 +48,7 @@
                     <span class="font-semibold text-slate-800"><?= esc($row['username']) ?></span>
                   </div>
                 </td>
-                <td>
-                  <span class="inline-flex rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600 ring-1 ring-inset ring-slate-200"><?= esc($row['role']) ?></span>
-                </td>
+                <td><?= badge_role($row['role']) ?></td>
                 <td><?= esc($row['nama_perusahaan'] ?? '-') ?></td>
                 <td><?= badge_kehadiran($row['status'] ?: 'Tidak Aktif') ?></td>
                 <td>

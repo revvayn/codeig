@@ -3,46 +3,40 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\LokasiPresensiModel;
 use App\Models\PerusahaanModel;
 use App\Models\PegawaiModel;
-use App\Models\UserModel;
 
 class Perusahaan extends BaseController
 {
     public function index()
     {
-        $model = new PerusahaanModel();
+        $idPerusahaan = $this->idPerusahaan();
+        $data         = (new PerusahaanModel())->find($idPerusahaan);
+
+        if (! $data) {
+            session()->setFlashdata('error', 'Data perusahaan tidak ditemukan.');
+
+            return redirect()->to(base_url('admin/home'));
+        }
 
         return view('admin/perusahaan/index', [
-            'title'      => 'Data Perusahaan',
-            'perusahaan' => $model->orderBy('nama_perusahaan', 'ASC')->findAll(),
+            'title'         => 'Data Perusahaan',
+            'perusahaan'    => $data,
+            'jumlahPegawai' => (new PegawaiModel())->jumlahPegawaiPerusahaan($idPerusahaan),
+            'jumlahLokasi'  => (new LokasiPresensiModel())->where('id_perusahaan', $idPerusahaan)->countAllResults(),
         ]);
     }
 
     public function create()
     {
-        return view('admin/perusahaan/create', [
-            'title'      => 'Tambah Perusahaan',
-            'validation' => \Config\Services::validation(),
-        ]);
+        // Admin hanya mengelola perusahaannya sendiri, bukan menambah perusahaan baru.
+        return redirect()->to(base_url('admin/perusahaan'));
     }
 
     public function store()
     {
-        if (! $this->validate($this->rules())) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        }
-
-        (new PerusahaanModel())->insert([
-            'nama_perusahaan' => $this->request->getPost('nama_perusahaan'),
-            'alamat'          => $this->request->getPost('alamat'),
-            'telepon'         => $this->request->getPost('telepon'),
-            'email'           => $this->request->getPost('email'),
-            'status'          => $this->request->getPost('status') ?: 'Aktif',
-        ]);
-
-        session()->setFlashdata('success', 'Data perusahaan berhasil ditambahkan.');
-
+        // Admin hanya mengelola perusahaannya sendiri, bukan menambah perusahaan baru.
         return redirect()->to(base_url('admin/perusahaan'));
     }
 
@@ -51,8 +45,9 @@ class Perusahaan extends BaseController
         $model = new PerusahaanModel();
         $data  = $model->find($id);
 
-        if (! $data) {
-            session()->setFlashdata('error', 'Data perusahaan tidak ditemukan.');
+        if (! $data || ! $this->milikSendiri($id)) {
+            session()->setFlashdata('error', 'Anda hanya dapat mengelola data perusahaan sendiri.');
+
             return redirect()->to(base_url('admin/perusahaan'));
         }
 
@@ -66,8 +61,9 @@ class Perusahaan extends BaseController
     public function update($id)
     {
         $model = new PerusahaanModel();
-        if (! $model->find($id)) {
-            session()->setFlashdata('error', 'Data perusahaan tidak ditemukan.');
+        if (! $model->find($id) || ! $this->milikSendiri($id)) {
+            session()->setFlashdata('error', 'Anda hanya dapat mengelola data perusahaan sendiri.');
+
             return redirect()->to(base_url('admin/perusahaan'));
         }
 
@@ -90,23 +86,20 @@ class Perusahaan extends BaseController
 
     public function delete($id)
     {
-        $model       = new PerusahaanModel();
-        $pegawaiModel = new PegawaiModel();
-
-        if (! $model->find($id)) {
-            session()->setFlashdata('error', 'Data perusahaan tidak ditemukan.');
-            return redirect()->to(base_url('admin/perusahaan'));
-        }
-
-        if ($pegawaiModel->jumlahPerusahaan((int) $id) > 0) {
-            session()->setFlashdata('error', 'Perusahaan tidak bisa dihapus karena masih memiliki data pegawai.');
-            return redirect()->to(base_url('admin/perusahaan'));
-        }
-
-        $model->delete($id);
-        session()->setFlashdata('success', 'Data perusahaan berhasil dihapus.');
+        // Admin tidak menghapus perusahaannya sendiri; penghapusan dilakukan Superadmin.
+        session()->setFlashdata('error', 'Data perusahaan hanya dapat dihapus oleh Superadmin.');
 
         return redirect()->to(base_url('admin/perusahaan'));
+    }
+
+    private function idPerusahaan(): int
+    {
+        return (int) session()->get('id_perusahaan');
+    }
+
+    private function milikSendiri($id): bool
+    {
+        return (int) $id === $this->idPerusahaan();
     }
 
     private function rules(): array

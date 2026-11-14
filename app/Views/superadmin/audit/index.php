@@ -43,12 +43,10 @@
           <tbody>
             <?php foreach ($data as $row): ?>
               <tr>
-                <td class="whitespace-nowrap font-medium text-slate-700"><?= esc($row['created_at']) ?></td>
+                <td class="whitespace-nowrap font-medium text-slate-700"><?= esc(waktu_indo($row['created_at'])) ?></td>
                 <td class="font-semibold text-slate-800"><?= esc($row['username'] ?? '-') ?></td>
-                <td>
-                  <span class="inline-flex rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600 ring-1 ring-inset ring-slate-200"><?= esc($row['role'] ?? '-') ?></span>
-                </td>
-                <td><?= esc($row['action']) ?></td>
+                <td><?= badge_role($row['role'] ?? '-') ?></td>
+                <td class="whitespace-nowrap font-semibold text-slate-700"><?= esc(label_aksi($row['action'])) ?></td>
                 <td><?= esc($row['entity'] ?? '-') ?><?= $row['entity_id'] ? ' #' . (int) $row['entity_id'] : '' ?></td>
                 <td class="max-w-[280px] truncate text-[11.5px] text-slate-500" title="<?= esc($row['description'] ?? '-') ?>"><?= esc($row['description'] ?? '-') ?></td>
                 <td class="font-mono text-[11px] text-slate-400"><?= esc($row['ip_address'] ?? '-') ?></td>

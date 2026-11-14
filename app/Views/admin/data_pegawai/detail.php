@@ -8,7 +8,7 @@
   </div>
   <div class="flex flex-wrap items-center gap-2">
     <a href="<?= base_url('admin/data_pegawai') ?>" class="app-btn-outline"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
-    <a href="<?= base_url('admin/data_pegawai/edit/' . $data_pegawai['id']) ?>" class="app-btn-dark"><i class="fa-solid fa-pen"></i> Edit</a>
+    <a href="<?= base_url('admin/data_pegawai/edit/' . $data_pegawai['id']) ?>" class="app-btn-primary"><i class="fa-solid fa-pen"></i> Edit</a>
   </div>
 </div>
 
@@ -23,12 +23,12 @@
 
       <div class="mt-6 grid grid-cols-2 gap-3 text-left">
         <div class="rounded-xl bg-slate-50 p-3">
-          <div class="text-[10px] font-bold uppercase tracking-wide text-slate-400">Role</div>
-          <div class="mt-0.5 text-[12.5px] font-semibold text-slate-700"><?= esc($data_pegawai['role'] ?: '-') ?></div>
-        </div>
-        <div class="rounded-xl bg-slate-50 p-3">
           <div class="text-[10px] font-bold uppercase tracking-wide text-slate-400">Jabatan</div>
           <div class="mt-0.5 truncate text-[12.5px] font-semibold text-slate-700"><?= esc($data_pegawai['jabatan']) ?></div>
+        </div>
+        <div class="rounded-xl bg-slate-50 p-3">
+          <div class="text-[10px] font-bold uppercase tracking-wide text-slate-400">Lokasi</div>
+          <div class="mt-0.5 truncate text-[12.5px] font-semibold text-slate-700"><?= esc($data_pegawai['nama_lokasi'] ?: $data_pegawai['lokasi_presensi']) ?></div>
         </div>
       </div>
     </div>
@@ -42,32 +42,24 @@
       <div class="p-6">
         <div class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Nama Lengkap</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['nama']) ?></div>
+            <div class="app-label">Nama Lengkap</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['nama']) ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">NIP</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['nip']) ?></div>
+            <div class="app-label">NIP</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['nip']) ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Jenis Kelamin</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['jenis_kelamin']) ?></div>
+            <div class="app-label">Jenis Kelamin</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['jenis_kelamin']) ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">No. Handphone</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['no_handphone']) ?></div>
+            <div class="app-label">No. Handphone</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['no_handphone']) ?></div>
           </div>
           <div class="sm:col-span-2">
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Alamat</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['alamat']) ?></div>
-          </div>
-          <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Jabatan</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['jabatan']) ?></div>
-          </div>
-          <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Lokasi Presensi</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['nama_lokasi'] ?: $data_pegawai['lokasi_presensi']) ?></div>
+            <div class="app-label">Alamat</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['alamat']) ?></div>
           </div>
         </div>
 
@@ -76,16 +68,16 @@
         <h4 class="mb-4 text-[13px] font-bold text-slate-800">Akun Login</h4>
         <div class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-3">
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Username</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['username'] ?: '-') ?></div>
+            <div class="app-label">Username</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['username'] ?: '-') ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Role</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['role'] ?: '-') ?></div>
+            <div class="app-label">Role</div>
+            <div><?= badge_role($data_pegawai['role'] ?? '-') ?></div>
           </div>
           <div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.08em] text-slate-400">Perusahaan</div>
-            <div class="mt-1 text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['nama_perusahaan'] ?: session()->get('nama_perusahaan')) ?></div>
+            <div class="app-label">Perusahaan</div>
+            <div class="text-[13px] font-semibold text-slate-800"><?= esc($data_pegawai['nama_perusahaan'] ?: session()->get('nama_perusahaan')) ?></div>
           </div>
         </div>
       </div>

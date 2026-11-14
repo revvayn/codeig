@@ -24,10 +24,9 @@ $avatar     = (! empty($foto) && is_file(FCPATH . 'profile/' . $foto))
       <span class="max-w-[180px] truncate"><?= esc($perusahaan) ?></span>
     </span>
 
-    <button type="button" title="Notifikasi"
-      class="relative grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:border-brand-200 hover:text-brand-600">
+    <button type="button" id="notifButton" title="Notifikasi" aria-label="Notifikasi"
+      class="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:border-brand-200 hover:text-brand-600">
       <i class="fa-regular fa-bell text-sm"></i>
-      <span class="absolute right-2.5 top-2.5 h-1.5 w-1.5 rounded-full bg-rose-500 ring-2 ring-white"></span>
     </button>
 
     <div class="relative">

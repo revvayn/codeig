@@ -6,14 +6,17 @@
     <h2 class="app-title">Data Jabatan</h2>
     <p class="app-subtitle">Kelola daftar jabatan yang tersedia pada perusahaan Anda.</p>
   </div>
-  <a href="<?= base_url('admin/jabatan/create') ?>" class="app-btn-dark"><i class="fa-solid fa-plus"></i> Tambah Jabatan</a>
+  <a href="<?= base_url('admin/jabatan/create') ?>" class="app-btn-primary"><i class="fa-solid fa-plus"></i> Tambah Jabatan</a>
 </div>
 
 <div class="app-card overflow-hidden">
   <div class="app-card-header">
-    <div>
-      <h3 class="text-[15px] font-bold text-slate-900">Daftar Jabatan</h3>
-      <p class="mt-0.5 text-[11.5px] text-slate-400"><?= count($jabatan) ?> jabatan terdaftar</p>
+    <div class="flex items-center gap-2.5">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-solid fa-sitemap text-[11px]"></i></span>
+      <div>
+        <h3 class="text-[14px] font-bold text-slate-900">Daftar Jabatan</h3>
+        <p class="text-[11px] text-slate-400"><?= count($jabatan) ?> jabatan terdaftar</p>
+      </div>
     </div>
   </div>
   <div class="p-3 sm:p-4">
@@ -21,7 +24,7 @@
       <div class="app-empty">
         <i class="fa-solid fa-sitemap"></i>
         <div>Belum ada data jabatan.</div>
-        <a href="<?= base_url('admin/jabatan/create') ?>" class="app-btn-dark app-btn-sm mt-1">Tambah Jabatan</a>
+        <a href="<?= base_url('admin/jabatan/create') ?>" class="app-btn-primary app-btn-sm mt-1">Tambah Jabatan</a>
       </div>
     <?php else: ?>
         <table id="datatables" class="app-table">

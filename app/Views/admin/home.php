@@ -4,13 +4,13 @@
 <div class="app-page-head">
   <div>
     <h2 class="app-title">Dashboard Admin</h2>
-    <p class="app-subtitle">Ringkasan kehadiran karyawan pada <?= tanggal_indo($tanggal, true) ?>.</p>
+    <p class="app-subtitle">Ringkasan kehadiran karyawan perusahaan Anda hari ini.</p>
   </div>
   <div class="flex flex-wrap items-center gap-2">
     <span class="hidden items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-2 text-[11.5px] font-semibold text-slate-500 sm:inline-flex">
       <i class="fa-regular fa-calendar text-brand-500"></i> <?= tanggal_indo($tanggal, true) ?>
     </span>
-    <a href="<?= base_url('admin/rekap/harian') ?>" class="app-btn-dark">
+    <a href="<?= base_url('admin/rekap/harian') ?>" class="app-btn-primary">
       <i class="fa-solid fa-chart-column"></i> Lihat Rekap Harian
     </a>
   </div>
@@ -26,19 +26,19 @@
   ];
   foreach ($cards as [$label, $value, $gradient, $text, $iconBg, $path]):
   ?>
-    <div class="app-card group relative overflow-hidden p-6 transition duration-300 hover:-translate-y-0.5 hover:shadow-lift">
+    <div class="app-card group relative overflow-hidden p-5 transition duration-300 hover:-translate-y-0.5 hover:shadow-lift">
       <div class="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br <?= $gradient ?> opacity-[0.07] transition group-hover:opacity-[0.12]"></div>
-      <div class="flex items-start justify-between">
-        <div class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br <?= $gradient ?> <?= $text ?> shadow-lg shadow-slate-900/10">
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
+      <div class="flex items-center justify-between">
+        <div class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br <?= $gradient ?> <?= $text ?> shadow-lg shadow-slate-900/10">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="<?= $path ?>" />
           </svg>
         </div>
-        <span class="rounded-full bg-slate-50 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-400"><?= $label === 'Total Pegawai' ? 'Total' : 'Hari ini' ?></span>
+        <span class="rounded-full bg-slate-50 px-2 py-1 text-[9.5px] font-bold uppercase tracking-wide text-slate-400"><?= $label === 'Total Pegawai' ? 'Total' : 'Hari ini' ?></span>
       </div>
-      <div class="mt-5">
+      <div class="mt-4">
         <div class="text-[34px] font-extrabold leading-none tracking-tight text-slate-900"><?= $value ?></div>
-        <div class="mt-2 text-[11.5px] font-bold uppercase tracking-[0.08em] text-slate-400"><?= $label ?></div>
+        <div class="mt-2 text-[10.5px] font-bold uppercase tracking-[0.08em] text-slate-400"><?= $label ?></div>
       </div>
     </div>
   <?php endforeach; ?>
@@ -46,9 +46,12 @@
 
 <div class="app-card overflow-hidden">
   <div class="app-card-header">
-    <div>
-      <h3 class="text-[15px] font-bold text-slate-900">Presensi Hari Ini</h3>
-      <p class="mt-0.5 text-[11.5px] text-slate-400">Daftar karyawan yang sudah melakukan presensi masuk.</p>
+    <div class="flex items-center gap-2.5">
+      <span class="grid h-8 w-8 place-items-center rounded-lg bg-brand-50 text-brand-600"><i class="fa-regular fa-clock text-[11px]"></i></span>
+      <div>
+        <h3 class="text-[14px] font-bold text-slate-900">Presensi Hari Ini</h3>
+        <p class="text-[11px] text-slate-400">Daftar karyawan yang sudah melakukan presensi masuk.</p>
+      </div>
     </div>
     <span class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1.5 text-[11px] font-bold text-brand-700">
       <span class="h-1.5 w-1.5 rounded-full bg-brand-500"></span> <?= count($presensi_hari_ini) ?> data

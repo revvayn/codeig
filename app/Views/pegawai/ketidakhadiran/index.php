@@ -6,7 +6,7 @@
     <h2 class="app-title">Pengajuan Ketidakhadiran</h2>
     <p class="app-subtitle">Ajukan izin, sakit, atau cuti dan pantau status persetujuannya.</p>
   </div>
-  <a href="<?= base_url('pegawai/ketidakhadiran/create') ?>" class="app-btn-dark">
+  <a href="<?= base_url('pegawai/ketidakhadiran/create') ?>" class="app-btn-primary">
     <i class="fa-solid fa-plus"></i> Ajukan Baru
   </a>
 </div>
@@ -26,7 +26,7 @@
       <div class="app-empty">
         <i class="fa-regular fa-calendar-xmark"></i>
         <div>Belum ada pengajuan ketidakhadiran.</div>
-        <a href="<?= base_url('pegawai/ketidakhadiran/create') ?>" class="app-btn-dark app-btn-sm mt-1">Buat pengajuan pertama</a>
+        <a href="<?= base_url('pegawai/ketidakhadiran/create') ?>" class="app-btn-primary app-btn-sm mt-1">Buat pengajuan pertama</a>
       </div>
     <?php else: ?>
         <table id="datatables" class="app-table">
